@@ -150,6 +150,42 @@
     100% { background-position: 60px 60px; }
   }
 
+  /* Mots flotants */
+  .floating-words {
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  z-index:1;
+}
+
+.floating-words span {
+  position:absolute;
+  font-family: var(--font-mono);
+  font-size: clamp(0.7rem,1.2vw,1rem);
+  letter-spacing:0.25em;
+  text-transform:uppercase;
+  color: rgba(0,229,192,0.35);
+  animation: floatWord 12s linear infinite;
+  white-space:nowrap;
+}
+
+/* positions random */
+.floating-words span:nth-child(1){top:18%;left:12%;animation-duration:14s;}
+.floating-words span:nth-child(2){top:22%;right:10%;animation-duration:16s;}
+.floating-words span:nth-child(3){top:40%;left:6%;animation-duration:12s;}
+.floating-words span:nth-child(4){top:55%;right:8%;animation-duration:15s;}
+.floating-words span:nth-child(5){bottom:22%;left:15%;animation-duration:13s;}
+.floating-words span:nth-child(6){bottom:30%;right:18%;animation-duration:17s;}
+.floating-words span:nth-child(7){top:65%;left:40%;animation-duration:11s;}
+.floating-words span:nth-child(8){top:12%;left:50%;animation-duration:18s;}
+.floating-words span:nth-child(9){bottom:12%;right:40%;animation-duration:14s;}
+
+@keyframes floatWord{
+  0%{transform:translateY(0px);}
+  50%{transform:translateY(-18px);}
+  100%{transform:translateY(0px);}
+}
+
   /* Mountain shape from logo */
   .hero-mountain {
     position: absolute;
@@ -1063,6 +1099,17 @@
     </div>
   </div>
   <div class="hero-content">
+  <div class="floating-words">
+  <span>SCAN 3D</span>
+  <span>MODÉLISATION</span>
+  <span>IMPRESSION</span>
+  <span>POST-TRAITEMENT</span>
+  <span>PEINTURE</span>
+  <span>STRATIFICATION</span>
+  <span>SCULPTURE</span>
+  <span>PROTOTYPAGE</span>
+  <span>GRAND FORMAT</span>
+</div>
     <div class="hero-logo-wrap"><img src="img/logo.png" alt="MIA 3D Annecy" class="hero-logo-img"></div>
     <p class="hero-sub">L'artisan de l'impression 3D — du concept à la pièce finie</p>
     
