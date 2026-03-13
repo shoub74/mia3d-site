@@ -158,6 +158,782 @@
     z-index: 2;
     opacity: 0;
     pointer-events: none;
+    transition: opacity 0.65s ease;
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .world-thumb-expand img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0.2) saturate(0.5);
+    transition: filter 0.55s ease;
+  }
+  .world-thumb-expand.visible { opacity: 1; }
+  /* Au hover miniature seulement : image lumineuse */
+  .world.panel-hovered .world-thumb-expand.visible img {
+    filter: brightness(0.6) saturate(1);
+  }
+
+  /* Contenu texte — z-index 3, au-dessus du slideshow (z-index 2) */
+  .world-content {
+    position: relative; z-index: 3;
+    padding: 3rem 2.5rem; padding-bottom: 8rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  /* Texte masqué UNIQUEMENT au hover d'une miniature */
+  .world.panel-hovered .world-content { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+
+  .world-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
+  .world-industrial .world-label { color: #7EB8D4; }
+  .world-artistic   .world-label { color: var(--teal-light); }
+  .world-label::before { content: ''; display: block; width: 20px; height: 1px; }
+  .world-industrial .world-label::before { background: #7EB8D4; }
+  .world-artistic   .world-label::before { background: var(--teal-light); }
+
+  .world-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; letter-spacing: 0.03em; color: var(--white); margin-bottom: 1.5rem; }
+  .world-desc { font-size: 0.9rem; font-weight: 300; line-height: 1.8; color: var(--muted); max-width: 360px; }
+
+  .world-big-icon { position: absolute; bottom: -1rem; right: 1.5rem; font-size: 8rem; opacity: 0.05; line-height: 1; pointer-events: none; z-index: 2; transition: opacity 0.4s; }
+  .world.panel-hovered .world-big-icon { opacity: 0; }
+
+  /* Strip miniatures — z-index 10, toujours au-dessus de tout */
+  .world-photos {
+    position: absolute; bottom: 1.5rem; left: 2rem; right: 2rem;
+    display: flex; gap: 8px;
+    z-index: 10;
+  }
+
+  .world-thumb {
+    width: 72px; height: 54px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.15);
+    cursor: pointer;
+    flex-shrink: 0;
+    background: #000;
+    transition: border-color 0.3s;
+  }
+  .world-thumb:hover { border-color: rgba(255,255,255,0.7); }
+  .world-thumb img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+    transition: filter 0.3s ease;
+  }
+  .world-thumb:hover img { filter: brightness(1.1); }
+
+  /* REALISATIONS */
+  #realisations { background: var(--black); position: relative; }
+  #realisations::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+  .real-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+  .filter-bar { display: flex; gap: 0.5rem; }
+  .filter-btn { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.45rem 1rem; border: 1px solid var(--grey2); background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); }
+  .filter-btn:hover, .filter-btn.active { background: rgba(0,201,167,0.1); border-color: var(--teal-dark); color: var(--teal-light); }
+  .real-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .real-card { position: relative; aspect-ratio: 4/3; background: var(--dark2); overflow: hidden; cursor: pointer; border: 1px solid var(--grey); transition: border-color 0.3s; }
+  .real-card:hover { border-color: var(--teal-dark); }
+  .real-card.large { grid-column: span 2; aspect-ratio: 16/9; }
+  .real-card-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; background: var(--dark2); position: relative; transition: transform 0.4s; }
+  .real-card:hover .real-card-inner { transform: scale(1.04); }
+  .real-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; opacity: 0; transition: opacity 0.3s; }
+  .real-card:hover .real-card-overlay { opacity: 1; }
+  .real-card-cat { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-mid); margin-bottom: 0.4rem; }
+  .real-card-name { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--white); }
+
+  /* SAVOIR FAIRE */
+  #savoir { background: var(--dark); position: relative; }
+  #savoir::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+  .savoir-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--grey); border: 1px solid var(--grey); margin-top: 4rem; }
+  .savoir-item { background: var(--dark); padding: 2.5rem; position: relative; overflow: hidden; transition: background 0.3s; }
+  .savoir-item:hover { background: var(--dark2); }
+  .savoir-item::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0; height: 2px; background: var(--teal-mid); transition: width 0.4s; }
+  .savoir-item:hover::after { width: 100%; }
+  .savoir-num { font-family: var(--font-mono); font-size: 0.6rem; color: var(--teal-dark); letter-spacing: 0.2em; margin-bottom: 1.2rem; }
+  .savoir-item h3 { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 0.8rem; }
+  .savoir-item p { font-size: 0.88rem; font-weight: 300; line-height: 1.7; color: var(--muted); }
+
+  /* CONTACT */
+  #contact { background: var(--black); position: relative; }
+  #contact::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+  .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
+  .contact-phone { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.05em; color: var(--teal-light); display: block; text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
+  .contact-phone:hover { color: var(--white); }
+  .contact-socials { display: flex; gap: 1rem; margin-top: 2rem; }
+  .social-link { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 0.5rem 1rem; border: 1px solid var(--grey2); transition: all 0.2s; clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%); }
+  .social-link:hover { color: var(--teal-light); border-color: var(--teal-dark); background: rgba(0,201,167,0.07); }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { position: relative; }
+  .form-group label { display: block; font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.5rem; }
+  .form-group input, .form-group textarea { width: 100%; background: var(--dark2); border: 1px solid var(--grey2); color: var(--white); font-family: var(--font-body); font-size: 0.95rem; font-weight: 300; padding: 0.85rem 1rem; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--teal-dark); }
+  .form-group textarea { resize: vertical; min-height: 120px; }
+  .btn-submit { align-self: flex-start; background: var(--teal-mid); border: none; color: var(--black); font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.1em; padding: 1rem 2.5rem; cursor: pointer; clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%); transition: background 0.2s, transform 0.2s; }
+  .btn-submit:hover { background: var(--teal-light); transform: translateX(4px); }
+
+  /* FOOTER */
+  footer { background: var(--dark); border-top: 1px solid var(--grey); padding: 3rem; display: flex; align-items: center; justify-content: space-between; }
+  .footer-copy { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.1em; color: var(--muted); text-transform: uppercase; }
+
+  /* REVEAL */
+  .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s, transform 0.7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="nav-logo-img"><img src="img/logo.png" alt="MIA 3D Annecy" style="height:44px; width:auto; display:block;"></a>
+  <ul class="nav-links">
+    <li><a href="#journey">Notre processus</a></li>
+    <li><a href="#worlds">Nos univers</a></li>
+    <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#savoir">Savoir-faire</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:1.2rem;">
+    <a href="tel:+33670501555" style="font-family:var(--font-mono);font-size:1rem;letter-spacing:0.1em;color:var(--teal-light);text-decoration:none;font-weight:700;">06 70 50 15 55</a>
+    <a href="#contact" class="nav-cta">Parlons de votre projet</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-lake">
+      <img src="img/lac-annecy.jpg" alt="Lac d'Annecy">
+    </div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-logo-wrap"><img src="img/logo.png" alt="MIA 3D Annecy" class="hero-logo-img"></div>
+    <p class="hero-sub">L'artisan de l'impression 3D — du concept à la pièce finie</p>
+  </div>
+  <div class="hero-scroll">
+    <span>NOUS DÉCOUVRIR</span>
+    <svg class="scroll-arrow" xmlns="http://www.w3.org/2000/svg" width="28" height="40" viewBox="0 0 28 40">
+      <line x1="14" y1="0" x2="14" y2="30" stroke="#00C9A7" stroke-width="1.5"/>
+      <polyline points="4,20 14,32 24,20" fill="none" stroke="#00C9A7" stroke-width="1.5" stroke-linejoin="round"/>
+    </svg>
+  </div>
+</section>
+
+<!-- JOURNEY -->
+<section id="journey">
+  <div class="container">
+    <div class="journey-intro reveal">
+      <div>
+        <p class="section-label">01 · Le voyage de la matière</p>
+        <h2 class="section-title gradient-style">De l'idée<br>à l'<span>objet</span><br>parfait</h2>
+      </div>
+      <p class="journey-desc">
+        Chaque pièce que nous créons traverse un processus complet maîtrisé de A à Z. L'impression 3D n'est que le point de départ — c'est notre savoir-faire artisanal du post-traitement qui transforme une ébauche en une pièce d'exception, industrielle ou artistique.
+      </p>
+    </div>
+    <div class="timeline reveal" id="timeline">
+      <div class="timeline-track" id="timeline-track">
+        <div class="timeline-line-bg"></div>
+        <div class="timeline-progress" id="timeline-progress"></div>
+        <div class="timeline-orb" id="timeline-orb"></div>
+      </div>
+      <div class="step active" data-step="0" onclick="showStep(0, true)">
+        <span class="step-number">01</span><div class="step-dot"></div><span class="step-icon">📐</span><p class="step-name">Modélisation</p><span class="step-tag">CAO · Scan 3D</span>
+      </div>
+      <div class="step" data-step="1" onclick="showStep(1, true)">
+        <span class="step-number">02</span><div class="step-dot"></div><span class="step-icon">🖨️</span><p class="step-name">Impression</p><span class="step-tag">FDM · SLA</span>
+      </div>
+      <div class="step" data-step="2" onclick="showStep(2, true)">
+        <span class="step-number">03</span><div class="step-dot"></div><span class="step-icon">🔧</span><p class="step-name">Post-traitement</p><span class="step-tag">Ponçage · Assemblage</span>
+      </div>
+      <div class="step" data-step="3" onclick="showStep(3, true)">
+        <span class="step-number">04</span><div class="step-dot"></div><span class="step-icon">🎨</span><p class="step-name">Peinture &amp; Finition</p><span class="step-tag">Aérographe · Stratification</span>
+      </div>
+      <div class="step" data-step="4" onclick="showStep(4, true)">
+        <span class="step-number">05</span><div class="step-dot"></div><span class="step-icon">✨</span><p class="step-name">Pièce finale</p><span class="step-tag">Livraison · Clé en main</span>
+      </div>
+    </div>
+    <div class="step-detail visible" id="step-detail"></div>
+  </div>
+</section>
+
+<!-- TWO WORLDS -->
+<section id="worlds">
+  <div class="container">
+    <div class="worlds-header reveal">
+      <p class="section-label">02 · Nos univers</p>
+      <h2 class="section-title">Un <span class="accent">outil</span>,<br>deux univers</h2>
+      <p>La même technologie, la même précision — mais deux façons radicalement différentes de la sublimer.</p>
+    </div>
+
+    <div class="worlds-wrap reveal">
+    <div class="worlds-split">
+
+      <!-- INDUSTRIEL -->
+      <div class="world world-industrial" id="world-ind">
+
+        <div class="world-cover">
+          <img src="img/worlds/ind-cover.jpg" alt="Univers industriel">
+        </div>
+
+        <div class="world-thumb-expand" id="ind-expand-0">
+          <img src="img/worlds/ind-1.png" alt="">
+        </div>
+        <div class="world-thumb-expand" id="ind-expand-1">
+          <img src="img/worlds/ind-2.png" alt="">
+        </div>
+        <div class="world-thumb-expand" id="ind-expand-2">
+          <img src="img/worlds/ind-3.jpg" alt="">
+        </div>
+
+        <div class="world-content">
+          <p class="world-label">Univers industriel</p>
+          <h3 class="world-title">Précision<br>&amp; Série</h3>
+          <p class="world-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
+        </div>
+
+        <span class="world-big-icon">⚙️</span>
+
+        <div class="world-photos">
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 0)"
+            onmouseleave="hideExpand('ind')">
+            <img src="img/worlds/ind-1.png" alt="Prototype">
+          </div>
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 1)"
+            onmouseleave="hideExpand('ind')">
+            <img src="img/worlds/ind-2.png" alt="Série technique">
+          </div>
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 2)"
+            onmouseleave="hideExpand('ind')">
+            <img src="img/worlds/ind-3.jpg" alt="Maquette">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ARTISTIQUE -->
+      <div class="world world-artistic" id="world-art">
+
+        <div class="world-cover">
+          <img src="img/worlds/art-cover.png" alt="Univers artistique">
+        </div>
+
+        <div class="world-thumb-expand" id="art-expand-0">
+          <img src="img/worlds/art-1.jpg" alt="">
+        </div>
+        <div class="world-thumb-expand" id="art-expand-1">
+          <img src="img/worlds/art-2.jpg" alt="">
+        </div>
+        <div class="world-thumb-expand" id="art-expand-2">
+          <img src="img/worlds/art-3.jpg" alt="">
+        </div>
+
+        <div class="world-content">
+          <p class="world-label">Univers artistique</p>
+          <h3 class="world-title">Art<br>&amp; Émotion</h3>
+          <p class="world-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
+        </div>
+
+        <span class="world-big-icon">🎭</span>
+
+        <div class="world-photos">
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 0)"
+            onmouseleave="hideExpand('art')">
+            <img src="img/worlds/art-1.jpg" alt="Sculpture">
+          </div>
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 1)"
+            onmouseleave="hideExpand('art')">
+            <img src="img/worlds/art-2.jpg" alt="Art Toy">
+          </div>
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 2)"
+            onmouseleave="hideExpand('art')">
+            <img src="img/worlds/art-3.jpg" alt="Trophée">
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- REALISATIONS -->
+<section id="realisations">
+  <div class="container">
+    <div class="real-header reveal">
+      <div>
+        <p class="section-label">03 · Réalisations</p>
+        <h2 class="section-title">On peut<br><span class="accent">vraiment</span><br>tout faire</h2>
+      </div>
+      <div class="filter-bar">
+        <button class="filter-btn active" onclick="filterCards('all', this)">Tout</button>
+        <button class="filter-btn" onclick="filterCards('industriel', this)">Industriel</button>
+        <button class="filter-btn" onclick="filterCards('artistique', this)">Artistique</button>
+        <button class="filter-btn" onclick="filterCards('surmesure', this)">Sur-mesure</button>
+      </div>
+    </div>
+    <div class="real-grid" id="real-grid">
+      <div class="real-card large" data-cat="industriel"><div class="real-card-inner">⚙️</div><div class="real-card-overlay"><span class="real-card-cat">Industriel</span><span class="real-card-name">Grandes séries techniques</span></div></div>
+      <div class="real-card" data-cat="artistique"><div class="real-card-inner">🧸</div><div class="real-card-overlay"><span class="real-card-cat">Artistique</span><span class="real-card-name">Art Toys</span></div></div>
+      <div class="real-card" data-cat="surmesure"><div class="real-card-inner">🏆</div><div class="real-card-overlay"><span class="real-card-cat">Sur-mesure</span><span class="real-card-name">Trophées personnalisés</span></div></div>
+      <div class="real-card" data-cat="artistique"><div class="real-card-inner">🗿</div><div class="real-card-overlay"><span class="real-card-cat">Artistique</span><span class="real-card-name">Sculptures</span></div></div>
+      <div class="real-card large" data-cat="surmesure"><div class="real-card-inner">🏗️</div><div class="real-card-overlay"><span class="real-card-cat">Sur-mesure</span><span class="real-card-name">Maquettes de projet</span></div></div>
+      <div class="real-card" data-cat="surmesure"><div class="real-card-inner">✨</div><div class="real-card-overlay"><span class="real-card-cat">Sur-mesure</span><span class="real-card-name">Décoration unique</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SAVOIR-FAIRE -->
+<section id="savoir">
+  <div class="container">
+    <div class="reveal" style="max-width:600px;">
+      <p class="section-label">04 · Savoir-faire</p>
+      <h2 class="section-title">Artisans<br>des <span class="accent">nouvelles</span><br>technologies</h2>
+    </div>
+    <div class="savoir-grid reveal">
+      <div class="savoir-item"><p class="savoir-num">01</p><h3>Scan 3D &amp; Modélisation</h3><p>Analyse de votre cahier des charges, scan 3D de l'existant, modélisation ou reverse engineering. Nous créons ou reconstituons votre pièce en numérique avant de la produire.</p></div>
+      <div class="savoir-item"><p class="savoir-num">02</p><h3>Impression FDM &amp; SLA</h3><p>Dépôt de fil fondu pour les pièces structurelles, stéréolithographie pour la précision et le détail. Des pièces de quelques millimètres à plusieurs mètres d'envergure.</p></div>
+      <div class="savoir-item"><p class="savoir-num">03</p><h3>Post-traitement artisanal</h3><p>Ponçage, assemblage, stratification, traitement de surface. C'est ici que la vraie valeur se crée — transformer une pièce brute en un objet impeccable.</p></div>
+      <div class="savoir-item"><p class="savoir-num">04</p><h3>Peinture &amp; Finitions</h3><p>Aérographe, peinture à la main, effets de matière, patine. Chaque pièce reçoit la finition qu'elle mérite — du prototype industriel à la sculpture d'art unique.</p></div>
+    </div>
+    <div style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:3rem;" class="reveal">
+      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">MIA</span>Made In Annecy</div>
+      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">100%</span>Fabrication locale</div>
+      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">Bio</span>Matière biosourcée</div>
+      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">∞</span>Clé en main</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="contact-inner">
+      <div class="reveal">
+        <p class="section-label">05 · Contact</p>
+        <h2 class="section-title">Parlons<br>de votre<br><span class="accent">projet</span></h2>
+        <p style="font-size:1.05rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;">Un projet industriel ou artistique, petit ou grand, simple ou complexe — nous sommes là pour en discuter et trouver la meilleure solution avec vous.</p>
+        <a href="tel:+33670501555" class="contact-phone">06 70 50 15 55</a>
+        <div class="contact-socials">
+          <a href="https://www.instagram.com/mia3dimpression/" class="social-link" target="_blank">Instagram</a>
+          <a href="https://www.facebook.com/mia3d.impression/" class="social-link" target="_blank">Facebook</a>
+        </div>
+      </div>
+      <div class="contact-form reveal">
+        <div class="form-group"><label>Votre nom</label><input type="text" placeholder="Jean Dupont"></div>
+        <div class="form-group"><label>Email</label><input type="email" placeholder="jean@exemple.fr"></div>
+        <div class="form-group"><label>Décrivez votre projet</label><textarea placeholder="Pièce technique, sculpture, trophée, maquette… Dites-nous tout !"></textarea></div>
+        <button class="btn-submit">Envoyer →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <img src="img/logo.png" alt="MIA 3D" style="height:36px; width:auto;">
+  <span class="footer-copy">© 2025 Mia3D · Tous droits réservés · Made In Annecy</span>
+</footer>
+
+<script>
+  // ---- WORLDS : slideshow auto + expand au hover miniature ----
+
+  var worldState = {
+    ind: { current: 0, timer: null, hovered: false },
+    art: { current: 0, timer: null, hovered: false }
+  };
+
+  // Fondu au noir entre chaque image :
+  // 1. fade out de l'image courante (opacity 0, 0.7s)
+  // 2. après 0.8s, on bascule sur la suivante et fade in (opacity 1, 0.7s)
+  function setExpand(world, index) {
+    for (var i = 0; i < 3; i++) {
+      var el = document.getElementById(world + '-expand-' + i);
+      if (el) el.classList.remove('visible');
+    }
+    var target = document.getElementById(world + '-expand-' + index);
+    if (target) target.classList.add('visible');
+  }
+
+  function crossfadeExpand(world, nextIndex) {
+    var state = worldState[world];
+    var current = document.getElementById(world + '-expand-' + state.current);
+    // Fade out : on retire .visible → opacity passe à 0 via transition CSS
+    if (current) current.classList.remove('visible');
+    // Après la durée du fade out, on affiche la suivante
+    setTimeout(function() {
+      if (!state.hovered) {
+        state.current = nextIndex;
+        var next = document.getElementById(world + '-expand-' + nextIndex);
+        if (next) next.classList.add('visible');
+      }
+    }, 700); // délai = durée du fade out
+  }
+
+  function startSlideshow(world) {
+    var state = worldState[world];
+    if (state.timer) clearInterval(state.timer);
+    // Afficher la première image immédiatement
+    setExpand(world, state.current);
+    state.timer = setInterval(function() {
+      if (!state.hovered) {
+        var next = (state.current + 1) % 3;
+        crossfadeExpand(world, next);
+      }
+    }, 4000);
+  }
+
+  function showExpand(world, index) {
+    var state = worldState[world];
+    state.hovered = true;
+    state.current = index;
+    setExpand(world, index);
+    var panel = document.getElementById('world-' + world);
+    if (panel) panel.classList.add('panel-hovered');
+  }
+
+  function hideExpand(world) {
+    var state = worldState[world];
+    state.hovered = false;
+    var panel = document.getElementById('world-' + world);
+    if (panel) panel.classList.remove('panel-hovered');
+  }
+
+  // ---- NAV scroll ----
+  var nav = document.getElementById('nav');
+  window.addEventListener('scroll', function() {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ---- JOURNEY timeline ----
+  var steps = [
+    { name: 'Modélisation 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "Tout commence ici. Analyse de votre cahier des charges, scan 3D de l'existant ou création from scratch. Nous construisons en numérique la pièce parfaite avant de toucher à la matière.", visual: '&#128208;', bg: 'linear-gradient(135deg, #0d1a22, #081018)' },
+    { name: 'Impression 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "FDM pour les grandes pièces et les séries, SLA pour la précision et les détails fins. La pièce prend forme couche par couche. Ce qui sort de l'imprimante n'est qu'une ébauche — le vrai travail commence maintenant.", visual: '&#128424;', bg: 'linear-gradient(135deg, #0d1a1a, #081018)' },
+    { name: 'Post-traitement', badge: 'industrial', badgeLabel: '&#9733; L\'étape clé', desc: "C'est ici que notre savoir-faire artisanal fait toute la différence. Ponçage, assemblage, stratification, traitement de surface. Des heures de travail manuel qui effacent toute trace d'impression.", visual: '&#128295;', bg: 'linear-gradient(135deg, #1a1505, #100e02)' },
+    { name: 'Peinture & Finition', badge: 'artistic', badgeLabel: '&#127912; Étape artistique', desc: "Aérographe, peinture à la main, effets de matière, patines, laques. C'est la touche finale qui transforme un objet en oeuvre, qu'il soit industriel ou artistique.", visual: '&#127912;', bg: 'linear-gradient(135deg, #0d1a14, #06100a)' },
+    { name: 'Pièce finale', badge: 'artistic', badgeLabel: '&#10003; Résultat clé en main', desc: "La pièce que vous recevez n'a plus rien à voir avec ce qui est sorti de l'imprimante. Finie, peinte, assemblée, prête à l'usage — c'est le résultat d'un processus artisanal complet.", visual: '&#10024;', bg: 'linear-gradient(135deg, #001a14, #000e0a)' }
+  ];
+
+  var currentStep = 0;
+  var autoTimer = null;
+
+  function alignTrack() {
+    var timeline = document.getElementById('timeline');
+    var track = document.getElementById('timeline-track');
+    if (!timeline || !track) return;
+    var firstDot = timeline.querySelector('.step-dot');
+    if (!firstDot) return;
+    var tRect = timeline.getBoundingClientRect();
+    var dRect = firstDot.getBoundingClientRect();
+    var dotCenterY = dRect.top - tRect.top + dRect.height / 2;
+    track.style.top = (dotCenterY - 8) + 'px';
+  }
+
+  function getStepPercent(index) {
+    var track = document.getElementById('timeline-track');
+    var stepEls = document.querySelectorAll('.step');
+    if (!stepEls[index] || !track) return 0;
+    var tRect = track.getBoundingClientRect();
+    var sRect = stepEls[index].getBoundingClientRect();
+    var centerX = sRect.left + sRect.width / 2;
+    var pct = (centerX - tRect.left) / tRect.width * 100;
+    return Math.max(0, Math.min(100, pct));
+  }
+
+  function moveOrbTo(index, animate) {
+    var orb = document.getElementById('timeline-orb');
+    var progress = document.getElementById('timeline-progress');
+    if (!orb || !progress) return;
+    var pct = getStepPercent(index);
+    if (!animate) {
+      orb.style.transition = 'none';
+      progress.style.transition = 'none';
+      orb.style.left = pct + '%';
+      progress.style.width = pct + '%';
+      orb.getBoundingClientRect();
+      orb.style.transition = 'left 5s linear';
+      progress.style.transition = 'width 5s linear';
+    } else {
+      orb.style.transition = 'left 5s linear';
+      progress.style.transition = 'width 5s linear';
+      orb.style.left = pct + '%';
+      progress.style.width = pct + '%';
+    }
+  }
+
+  function updateDotStates(activeIndex) {
+    document.querySelectorAll('.step').forEach(function(s, i) {
+      s.classList.remove('active', 'visited');
+      if (i === activeIndex) s.classList.add('active');
+      else if (i < activeIndex) s.classList.add('visited');
+    });
+  }
+
+  function showDetail(index) {
+    var detail = document.getElementById('step-detail');
+    var s = steps[index];
+    if (!detail || !s) return;
+    detail.classList.remove('visible');
+    setTimeout(function() {
+      detail.innerHTML =
+        '<div>' +
+          '<span class="step-detail-badge ' + s.badge + '">' + s.badgeLabel + '</span>' +
+          '<h3>' + s.name + '</h3>' +
+          '<p>' + s.desc + '</p>' +
+        '</div>' +
+        '<div class="step-detail-visual" style="background:' + s.bg + '">' +
+          '<span style="font-size:5rem;position:relative;z-index:1;">' + s.visual + '</span>' +
+        '</div>';
+      detail.classList.add('visible');
+    }, 200);
+  }
+
+  function showStep(index, fromUser) {
+    if (fromUser) {
+      clearAutoPlay();
+      currentStep = index;
+      updateDotStates(index);
+      moveOrbTo(index, false);
+      showDetail(index);
+      startAutoPlay();
+    }
+  }
+
+  function startAutoPlay() {
+    clearAutoPlay();
+    function tick() {
+      var from = currentStep;
+      var to = from + 1;
+      if (to >= steps.length) {
+        autoTimer = setTimeout(function() {
+          currentStep = 0;
+          updateDotStates(0);
+          moveOrbTo(0, false);
+          showDetail(0);
+          tick();
+        }, 5000);
+        return;
+      }
+      moveOrbTo(to, true);
+      autoTimer = setTimeout(function() {
+        currentStep = to;
+        updateDotStates(to);
+        showDetail(to);
+        tick();
+      }, 5000);
+    }
+    tick();
+  }
+
+  function clearAutoPlay() {
+    if (autoTimer) { clearTimeout(autoTimer); clearInterval(autoTimer); autoTimer = null; }
+  }
+
+  function filterCards(cat, btn) {
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    document.querySelectorAll('.real-card').forEach(function(card) {
+      card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  var timelineStarted = false;
+  window.addEventListener('load', function() {
+    startSlideshow('ind');
+    startSlideshow('art');
+    alignTrack();
+    showDetail(0);
+    updateDotStates(0);
+    setTimeout(function() { moveOrbTo(0, false); }, 150);
+    var timelineSection = document.getElementById('journey');
+    var visibilityObserver = new IntersectionObserver(function(entries) {
+      entries.forEach(function(e) {
+        if (e.isIntersecting) {
+          if (!timelineStarted) { timelineStarted = true; alignTrack(); moveOrbTo(0, false); }
+          startAutoPlay();
+        } else { clearAutoPlay(); }
+      });
+    }, { threshold: 0.3 });
+    if (timelineSection) visibilityObserver.observe(timelineSection);
+  });
+
+  window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
+</script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MIA 3D — L'Artisan de l'Impression 3D · Annecy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal-light: #00E5C0;
+    --teal-mid:   #00C9A7;
+    --teal-dark:  #009E85;
+    --black:      #0A0A0A;
+    --dark:       #111111;
+    --dark2:      #1A1A1A;
+    --grey:       #2A2A2A;
+    --grey2:      #3A3A3A;
+    --muted:      #888888;
+    --white:      #F5F5F5;
+    --font-display: 'Bebas Neue', sans-serif;
+    --font-body:    'DM Sans', sans-serif;
+    --font-mono:    'Space Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--black); color: var(--white); font-family: var(--font-body); overflow-x: hidden; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--black); }
+  ::-webkit-scrollbar-thumb { background: var(--teal-mid); }
+
+  /* NAV */
+  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; display: flex; align-items: center; justify-content: space-between; padding: 1.2rem 3rem; transition: background 0.4s, backdrop-filter 0.4s; }
+  nav.scrolled { background: rgba(10,10,10,0.92); backdrop-filter: blur(12px); border-bottom: 1px solid rgba(0,229,192,0.1); }
+  .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+  .nav-links a { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+  .nav-links a:hover { color: var(--teal-light); }
+  .nav-cta { background: transparent; border: 1px solid var(--teal-mid); color: var(--teal-light); font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.55rem 1.3rem; cursor: pointer; text-decoration: none; transition: background 0.2s, color 0.2s; clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%); }
+  .nav-cta:hover { background: var(--teal-mid); color: var(--black); }
+
+  /* HERO */
+  #hero { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  .hero-bg { position: absolute; inset: 0; background: var(--black); }
+  .hero-lake { position: absolute; inset: 0; z-index: 0; }
+  .hero-lake img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; opacity: 0.18; mix-blend-mode: luminosity; filter: saturate(1.4); }
+  .hero-lake::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 40%, rgba(0,201,167,0.10) 0%, transparent 65%), linear-gradient(to bottom, rgba(10,10,10,0.2) 0%, rgba(10,10,10,0.6) 100%); }
+  .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridDrift 20s linear infinite; }
+  @keyframes gridDrift { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
+  .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 2rem; }
+  .hero-sub { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 400; color: var(--white); margin-top: 2rem; letter-spacing: 0.12em; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; text-transform: uppercase; background: linear-gradient(90deg, var(--teal-light), var(--white), var(--teal-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+  .hero-logo-wrap { opacity: 0; animation: fadeUp 0.8s 0.5s forwards; margin-bottom: 1rem; }
+  .hero-logo-img { height: clamp(240px, 44vw, 440px); width: auto; display: block; margin: 0 auto; }
+  .hero-scroll { position: absolute; bottom: 2rem; left: 0; right: 0; margin: 0 auto; width: fit-content; display: flex; flex-direction: column; align-items: center; gap: 0.8rem; opacity: 0; animation: fadeUp 0.8s 1.1s forwards; cursor: pointer; }
+  .hero-scroll span { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; color: var(--teal-light); text-transform: uppercase; }
+  .scroll-arrow { animation: scrollPulse 2s ease-in-out infinite; display: block; }
+  @keyframes scrollPulse { 0%, 100% { opacity: 0.3; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* SECTION COMMONS */
+  section { padding: 8rem 0; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 3rem; }
+  .section-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.25em; color: var(--teal-mid); text-transform: uppercase; margin-bottom: 1rem; }
+  .section-title { font-family: var(--font-display); font-size: clamp(3rem, 7vw, 6rem); line-height: 0.95; letter-spacing: 0.02em; color: var(--white); margin-bottom: 1.5rem; }
+  .section-title .accent { color: var(--teal-light); }
+  .section-title.gradient-style { background: linear-gradient(90deg, var(--teal-light), var(--white), var(--teal-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; letter-spacing: 0.12em; text-transform: uppercase; font-size: clamp(2.5rem, 6vw, 5.5rem); }
+
+  /* JOURNEY */
+  #journey { background: var(--black); position: relative; }
+  #journey::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+  .journey-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 6rem; }
+  .journey-desc { font-size: 1.25rem; font-weight: 300; line-height: 1.9; color: var(--white); border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; display: flex; align-items: center; }
+  .timeline { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
+  .timeline-track { position: absolute; left: 10%; right: 10%; top: 22px; height: 16px; z-index: 0; pointer-events: none; }
+  .timeline-line-bg { position: absolute; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); background: var(--grey2); }
+  .timeline-progress { position: absolute; top: 50%; left: 0; width: 0%; height: 2px; transform: translateY(-50%); background: linear-gradient(90deg, var(--teal-dark), var(--teal-light)); transition: width 5s linear; }
+  .timeline-orb { position: absolute; top: 50%; left: 0%; width: 16px; height: 16px; border-radius: 50%; transform: translate(-50%, -50%); background: radial-gradient(circle, #fff 15%, var(--teal-light) 55%); box-shadow: 0 0 8px 3px rgba(0,229,192,0.9), 0 0 20px 6px rgba(0,229,192,0.4); transition: left 5s linear; z-index: 3; }
+  .step { position: relative; padding: 0 1rem; cursor: pointer; transition: transform 0.3s; text-align: center; display: flex; flex-direction: column; align-items: center; }
+  .step:hover { transform: translateY(-4px); }
+  .step-number { font-family: var(--font-mono); font-size: 0.6rem; color: var(--teal-mid); letter-spacing: 0.15em; display: block; margin-bottom: 0.6rem; }
+  .step-dot { width: 16px; height: 16px; border-radius: 50%; background: var(--grey); border: 2px solid var(--grey2); margin-bottom: 0.8rem; transition: background 0.3s, border-color 0.3s, box-shadow 0.3s; position: relative; z-index: 2; flex-shrink: 0; }
+  .step:hover .step-dot, .step.active .step-dot, .step.visited .step-dot { background: var(--teal-mid); border-color: var(--teal-light); box-shadow: 0 0 14px rgba(0,201,167,0.6); }
+  .step-icon { font-size: 1.8rem; margin-bottom: 0.6rem; display: block; filter: grayscale(1) opacity(0.4); transition: filter 0.3s; }
+  .step:hover .step-icon, .step.active .step-icon, .step.visited .step-icon { filter: none; }
+  .step-name { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.05em; color: var(--muted); text-align: center; transition: color 0.3s; margin-bottom: 0.4rem; }
+  .step:hover .step-name, .step.active .step-name, .step.visited .step-name { color: var(--teal-light); }
+  .step-tag { display: block; font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.1em; color: var(--grey2); text-align: center; text-transform: uppercase; transition: color 0.3s; }
+  .step:hover .step-tag, .step.active .step-tag, .step.visited .step-tag { color: var(--muted); }
+  .step-detail { margin-top: 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; background: var(--dark2); border: 1px solid var(--grey); padding: 3rem; clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%); opacity: 0; transform: translateY(20px); transition: opacity 0.4s, transform 0.4s; }
+  .step-detail.visible { opacity: 1; transform: translateY(0); }
+  .step-detail-badge { display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; padding: 0.35rem 0.8rem; border: 1px solid; margin-bottom: 1.2rem; }
+  .step-detail-badge.industrial { color: #7EB8D4; border-color: rgba(126,184,212,0.3); background: rgba(126,184,212,0.06); }
+  .step-detail-badge.artistic { color: var(--teal-light); border-color: rgba(0,229,192,0.3); background: rgba(0,229,192,0.06); }
+  .step-detail h3 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 1rem; }
+  .step-detail p { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: var(--muted); }
+  .step-detail-visual { aspect-ratio: 4/3; background: var(--grey); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
+  .step-detail-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,192,0.1) 0%, transparent 50%); }
+
+  /* TWO WORLDS */
+  #worlds { background: var(--dark); position: relative; }
+  #worlds::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+
+  .worlds-header { text-align: center; margin-bottom: 4rem; }
+  .worlds-header p { font-size: 1rem; font-weight: 300; color: var(--muted); max-width: 500px; margin: 1rem auto 0; line-height: 1.7; }
+
+  #worlds .container { max-width: 100%; padding: 0 2rem; }
+  #worlds .worlds-header { max-width: 1200px; margin-left: auto; margin-right: auto; margin-bottom: 4rem; }
+
+  .worlds-wrap { width: 100%; }
+  .worlds-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--grey); overflow: hidden; }
+
+  .world {
+    position: relative;
+    overflow: hidden;
+    min-height: 560px;
+  }
+  .world + .world { border-left: 1px solid var(--grey); }
+  .world-industrial { background: #000; }
+  .world-artistic   { background: #000; }
+
+  /* Grilles déco */
+  .world-industrial::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(126,184,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(126,184,212,0.04) 1px, transparent 1px);
+    background-size: 30px 30px; pointer-events: none; z-index: 0; transition: opacity 0.4s;
+  }
+  .world-artistic::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0; transform: rotate(15deg) scale(1.5); transform-origin: center; transition: opacity 0.4s;
+  }
+  .world:hover::before { opacity: 0; }
+
+  /* Cover image */
+  .world-cover {
+    position: absolute; inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: #000;
+  }
+  .world-cover img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0.2) saturate(0.5);
+    transition: filter 0.55s ease, transform 0.65s ease;
+    transform: scale(1.02);
+  }
+  /* La cover ne s'illumine plus au hover du panneau — le slideshow gère l'affichage */
+  .world.panel-hovered .world-cover img {
+    filter: brightness(0.15) saturate(0.3);
+  }
+
+  /* Expand slideshow — z-index 2, transparent comme la cover par défaut */
+  .world-thumb-expand {
+    position: absolute; inset: 0;
+    z-index: 2;
+    opacity: 0;
+    pointer-events: none;
     transition: opacity 0.8s ease;
     background: #000;
     display: flex;
