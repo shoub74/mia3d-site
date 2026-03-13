@@ -116,6 +116,11 @@
   .worlds-header { text-align: center; margin-bottom: 4rem; }
   .worlds-header p { font-size: 1rem; font-weight: 300; color: var(--muted); max-width: 500px; margin: 1rem auto 0; line-height: 1.7; }
 
+  /* Conteneur élargi — déborde légèrement du container */
+  .worlds-wrap {
+    margin: 0 -1rem;
+  }
+
   .worlds-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -127,8 +132,7 @@
   .world {
     position: relative;
     overflow: hidden;
-    cursor: pointer;
-    min-height: 500px;
+    min-height: 560px;
   }
   .world + .world { border-left: 1px solid var(--grey); }
   .world-industrial { background: #0d1520; }
@@ -144,6 +148,7 @@
     background-size: 30px 30px;
     pointer-events: none;
     z-index: 0;
+    transition: opacity 0.4s;
   }
   .world-artistic::before {
     content: '';
@@ -156,37 +161,43 @@
     z-index: 0;
     transform: rotate(15deg) scale(1.5);
     transform-origin: center;
+    transition: opacity 0.4s;
   }
+  .world:hover::before { opacity: 0; }
 
-  /* Photo de fond (hover) */
+  /* Cover — visible en transparence par défaut, pleine au hover */
   .world-cover {
     position: absolute;
     inset: 0;
     z-index: 1;
-    opacity: 0;
-    transition: opacity 0.55s ease;
     pointer-events: none;
   }
-  .world:hover .world-cover { opacity: 1; }
   .world-cover img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    transform: scale(1.06);
-    transition: transform 0.65s ease;
-    filter: brightness(0.5);
+    filter: brightness(0.18) saturate(0.6);
+    transition: filter 0.55s ease, transform 0.65s ease;
+    transform: scale(1.03);
   }
-  .world:hover .world-cover img { transform: scale(1); }
+  .world:hover .world-cover img {
+    filter: brightness(0.55) saturate(1);
+    transform: scale(1);
+  }
 
   /* Contenu texte */
   .world-content {
     position: relative;
     z-index: 3;
     padding: 3rem 2.5rem;
-    padding-bottom: 10rem;
+    padding-bottom: 11rem;
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
-  .world:hover .world-content { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+  .world:hover .world-content {
+    opacity: 0;
+    transform: translateY(-10px);
+    pointer-events: none;
+  }
 
   .world-label {
     font-family: var(--font-mono);
@@ -233,41 +244,45 @@
   }
   .world:hover .world-big-icon { opacity: 0; }
 
-  /* Strip de photos en bas */
+  /* Strip de photos en bas — visible par défaut ET au hover */
   .world-photos {
     position: absolute;
     bottom: 2rem;
     left: 2rem; right: 2rem;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
-    z-index: 3;
-    transition: opacity 0.3s ease;
+    gap: 8px;
+    z-index: 4;
   }
-  .world:hover .world-photos { opacity: 0; pointer-events: none; }
 
   .world-thumb {
     aspect-ratio: 4/3;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    cursor: pointer;
+    position: relative;
   }
   .world-thumb img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    filter: grayscale(0.3) brightness(0.8);
-    transition: transform 0.4s ease;
+    filter: brightness(0.75);
+    transition: transform 0.45s ease, filter 0.45s ease;
   }
-  .world:hover .world-thumb img { transform: scale(1.06); }
+  /* Zoom sur la miniature au hover */
+  .world-thumb:hover img {
+    transform: scale(1.18);
+    filter: brightness(1);
+  }
 
-  /* Légende au hover */
+  /* Légende au hover panneau */
   .world-hover-caption {
     position: absolute;
-    bottom: 2rem; left: 2rem; right: 2rem;
-    z-index: 4;
+    bottom: 9rem; left: 2rem; right: 2rem;
+    z-index: 5;
     opacity: 0;
-    transform: translateY(10px);
-    transition: opacity 0.45s 0.18s ease, transform 0.45s 0.18s ease;
+    transform: translateY(6px);
+    transition: opacity 0.4s 0.15s ease, transform 0.4s 0.15s ease;
     pointer-events: none;
   }
   .world:hover .world-hover-caption { opacity: 1; transform: translateY(0); }
@@ -423,7 +438,8 @@
       <p>La même technologie, la même précision — mais deux façons radicalement différentes de la sublimer.</p>
     </div>
 
-    <div class="worlds-split reveal">
+    <div class="worlds-wrap reveal">
+    <div class="worlds-split">
 
       <!-- INDUSTRIEL -->
       <div class="world world-industrial">
@@ -498,6 +514,7 @@
         </div>
 
       </div>
+    </div>
     </div>
   </div>
 </section>
