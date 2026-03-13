@@ -144,8 +144,8 @@
     min-height: 560px;
   }
   .world + .world { border-left: 1px solid var(--grey); }
-  .world-industrial { background: #0d1520; }
-  .world-artistic   { background: #0a1510; }
+  .world-industrial { background: #0A0A0A; }
+  .world-artistic   { background: #0A0A0A; }
 
   /* Grille décorative */
   .world-industrial::before {
@@ -256,14 +256,14 @@
   }
   .world:hover .world-big-icon { opacity: 0; }
 
-  /* Strip de petites photos en bas */
+  /* Strip de petites photos en bas — toujours au-dessus des expand */
   .world-photos {
     position: absolute;
     bottom: 1.5rem;
     left: 2rem; right: 2rem;
     display: flex;
     gap: 8px;
-    z-index: 4;
+    z-index: 6;
     justify-content: flex-start;
   }
 
@@ -277,7 +277,7 @@
     flex-shrink: 0;
     transition: border-color 0.3s;
   }
-  .world-thumb:hover { border-color: rgba(255,255,255,0.5); }
+  .world-thumb:hover { border-color: rgba(255,255,255,0.6); }
 
   .world-thumb img {
     width: 100%; height: 100%;
@@ -288,26 +288,14 @@
   }
   .world-thumb:hover img { filter: brightness(1); }
 
-  /* Au hover d'une miniature : elle prend la place de la cover */
-  .world-thumb-cover {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    pointer-events: none;
-  }
-  .world-thumb:hover ~ .world-thumb-cover { opacity: 0; }
-  .world-thumb:hover .world-thumb-cover { opacity: 0; }
-
-  /* On utilise JS pour gérer ça proprement */
+  /* Expand plein panneau au hover miniature — sous les photos */
   .world-thumb-expand {
     position: absolute;
     inset: 0;
-    z-index: 5;
+    z-index: 3;
     opacity: 0;
     pointer-events: none;
-    transition: opacity 0.45s ease;
+    transition: opacity 0.35s ease;
   }
   .world-thumb-expand img {
     width: 100%; height: 100%;
@@ -316,24 +304,6 @@
     filter: brightness(0.65);
   }
   .world-thumb-expand.visible { opacity: 1; }
-
-  /* Légende — cachée au hover panneau */
-  .world-hover-caption {
-    position: absolute;
-    bottom: 1.5rem; right: 2rem;
-    z-index: 6;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.4s 0.15s ease, transform 0.4s 0.15s ease;
-    pointer-events: none;
-  }
-  .world:hover .world-hover-caption { opacity: 0; }
-
-  .whc-dots { display: flex; gap: 6px; margin-bottom: 0.6rem; }
-  .whc-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); }
-  .whc-dot.on { background: var(--teal-light); }
-  .world-industrial .whc-dot.on { background: #7EB8D4; }
-  .whc-text { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(255,255,255,0.5); }
 
   /* REALISATIONS */
   #realisations { background: var(--black); position: relative; }
