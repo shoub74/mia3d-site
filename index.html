@@ -297,11 +297,15 @@
     pointer-events: none;
     transition: opacity 0.35s ease;
   }
-  .world-thumb-expand img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    display: block;
-    filter: brightness(0.65);
+.world-thumb-expand {
+  background: #000;
+}
+.world-thumb-expand img {
+  width: 100%; height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: brightness(0.85);
+}
   }
   .world-thumb-expand.visible { opacity: 1; }
 
