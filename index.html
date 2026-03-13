@@ -49,9 +49,6 @@
   .hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px); background-size: 60px 60px; animation: gridDrift 20s linear infinite; }
   @keyframes gridDrift { 0% { background-position: 0 0; } 100% { background-position: 60px 60px; } }
   .hero-content { position: relative; z-index: 2; text-align: center; padding: 0 2rem; }
-  .hero-eyebrow { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.25em; color: var(--teal-mid); text-transform: uppercase; margin-bottom: 1.5rem; opacity: 0; animation: fadeUp 0.8s 0.3s forwards; }
-  .hero-title { font-family: var(--font-display); font-size: clamp(5rem, 14vw, 13rem); line-height: 0.9; letter-spacing: 0.02em; color: var(--white); opacity: 0; animation: fadeUp 0.8s 0.5s forwards; }
-  .hero-title .accent { color: var(--teal-light); }
   .hero-sub { font-family: var(--font-display); font-size: clamp(1.4rem, 3vw, 2.4rem); font-weight: 400; color: var(--white); margin-top: 2rem; letter-spacing: 0.12em; opacity: 0; animation: fadeUp 0.8s 0.7s forwards; text-transform: uppercase; background: linear-gradient(90deg, var(--teal-light), var(--white), var(--teal-light)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
   .hero-logo-wrap { opacity: 0; animation: fadeUp 0.8s 0.5s forwards; margin-bottom: 1rem; }
   .hero-logo-img { height: clamp(240px, 44vw, 440px); width: auto; display: block; margin: 0 auto; }
@@ -100,43 +97,18 @@
   .step-detail-visual { aspect-ratio: 4/3; background: var(--grey); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
   .step-detail-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,192,0.1) 0%, transparent 50%); }
 
-  /* TWO WORLDS — nouvelle version */
-  #worlds {
-    background: var(--dark);
-    position: relative;
-  }
-  #worlds::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--teal-dark), transparent);
-  }
+  /* TWO WORLDS */
+  #worlds { background: var(--dark); position: relative; }
+  #worlds::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
 
   .worlds-header { text-align: center; margin-bottom: 4rem; }
   .worlds-header p { font-size: 1rem; font-weight: 300; color: var(--muted); max-width: 500px; margin: 1rem auto 0; line-height: 1.7; }
 
-  /* Conteneur élargi — pleine largeur page */
-  #worlds .container {
-    max-width: 100%;
-    padding: 0 2rem;
-  }
-  #worlds .worlds-header {
-    max-width: 1200px;
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 4rem;
-  }
+  #worlds .container { max-width: 100%; padding: 0 2rem; }
+  #worlds .worlds-header { max-width: 1200px; margin-left: auto; margin-right: auto; margin-bottom: 4rem; }
 
   .worlds-wrap { width: 100%; }
-
-  .worlds-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0;
-    border: 1px solid var(--grey);
-    overflow: hidden;
-  }
+  .worlds-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--grey); overflow: hidden; }
 
   .world {
     position: relative;
@@ -144,45 +116,28 @@
     min-height: 560px;
   }
   .world + .world { border-left: 1px solid var(--grey); }
-  .world-industrial { background: #0A0A0A; }
-  .world-artistic   { background: #0A0A0A; }
+  .world-industrial { background: #000; }
+  .world-artistic   { background: #000; }
 
-  /* Grille décorative */
+  /* Grilles déco */
   .world-industrial::before {
-    content: '';
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(126,184,212,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(126,184,212,0.04) 1px, transparent 1px);
-    background-size: 30px 30px;
-    pointer-events: none;
-    z-index: 0;
-    transition: opacity 0.4s;
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(126,184,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(126,184,212,0.04) 1px, transparent 1px);
+    background-size: 30px 30px; pointer-events: none; z-index: 0; transition: opacity 0.4s;
   }
   .world-artistic::before {
-    content: '';
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px);
-    background-size: 40px 40px;
-    pointer-events: none;
-    z-index: 0;
-    transform: rotate(15deg) scale(1.5);
-    transform-origin: center;
-    transition: opacity 0.4s;
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px);
+    background-size: 40px 40px; pointer-events: none; z-index: 0; transform: rotate(15deg) scale(1.5); transform-origin: center; transition: opacity 0.4s;
   }
   .world:hover::before { opacity: 0; }
 
-  /* Cover — visible en transparence par défaut, pleine au hover panneau */
+  /* Cover image */
   .world-cover {
-    position: absolute;
-    inset: 0;
+    position: absolute; inset: 0;
     z-index: 1;
     pointer-events: none;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background: #000;
   }
   .world-cover img {
     width: 100%; height: 100%;
@@ -193,92 +148,70 @@
     transform: scale(1.02);
   }
   .world:hover .world-cover img {
-    filter: brightness(0.6) saturate(1);
+    filter: brightness(0.55) saturate(1);
     transform: scale(1);
   }
 
-  /* Contenu texte */
-  .world-content {
-    position: relative;
-    z-index: 3;
-    padding: 3rem 2.5rem;
-    padding-bottom: 8rem;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .world:hover .world-content {
+  /* Expand plein panneau — z-index 5, au-dessus de la cover */
+  .world-thumb-expand {
+    position: absolute; inset: 0;
+    z-index: 5;
     opacity: 0;
-    transform: translateY(-10px);
     pointer-events: none;
-  }
-
-  .world-label {
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 1.5rem;
+    transition: opacity 0.35s ease;
+    background: #000;
     display: flex;
     align-items: center;
-    gap: 0.8rem;
+    justify-content: center;
   }
+  .world-thumb-expand img {
+    width: 100%; height: 100%;
+    object-fit: contain;
+    display: block;
+    filter: brightness(0.88);
+  }
+  .world-thumb-expand.visible { opacity: 1; }
+
+  /* Contenu texte — z-index 3, masqué au hover panneau mais PAS au hover miniature */
+  .world-content {
+    position: relative; z-index: 3;
+    padding: 3rem 2.5rem; padding-bottom: 8rem;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  /* On masque le contenu seulement quand le panneau entier est survolé
+     ET qu'aucune miniature n'est survolée — géré en JS */
+  .world.panel-hovered .world-content { opacity: 0; transform: translateY(-10px); pointer-events: none; }
+
+  .world-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
   .world-industrial .world-label { color: #7EB8D4; }
   .world-artistic   .world-label { color: var(--teal-light); }
   .world-label::before { content: ''; display: block; width: 20px; height: 1px; }
   .world-industrial .world-label::before { background: #7EB8D4; }
   .world-artistic   .world-label::before { background: var(--teal-light); }
 
-  .world-title {
-    font-family: var(--font-display);
-    font-size: clamp(2.5rem, 5vw, 4.5rem);
-    line-height: 0.95;
-    letter-spacing: 0.03em;
-    color: var(--white);
-    margin-bottom: 1.5rem;
-  }
-  .world-desc {
-    font-size: 0.9rem;
-    font-weight: 300;
-    line-height: 1.8;
-    color: var(--muted);
-    max-width: 360px;
-  }
+  .world-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; letter-spacing: 0.03em; color: var(--white); margin-bottom: 1.5rem; }
+  .world-desc { font-size: 0.9rem; font-weight: 300; line-height: 1.8; color: var(--muted); max-width: 360px; }
 
-  /* Icône décorative */
-  .world-big-icon {
-    position: absolute;
-    bottom: -1rem; right: 1.5rem;
-    font-size: 8rem;
-    opacity: 0.05;
-    line-height: 1;
-    pointer-events: none;
-    z-index: 2;
-    transition: opacity 0.4s;
-  }
-  .world:hover .world-big-icon { opacity: 0; }
+  .world-big-icon { position: absolute; bottom: -1rem; right: 1.5rem; font-size: 8rem; opacity: 0.05; line-height: 1; pointer-events: none; z-index: 2; transition: opacity 0.4s; }
+  .world.panel-hovered .world-big-icon { opacity: 0; }
 
-  /* Strip de petites photos en bas — toujours au-dessus des expand */
+  /* Strip miniatures — z-index 10, toujours au-dessus de tout */
   .world-photos {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 2rem; right: 2rem;
-    display: flex;
-    gap: 8px;
-    z-index: 6;
-    justify-content: flex-start;
+    position: absolute; bottom: 1.5rem; left: 2rem; right: 2rem;
+    display: flex; gap: 8px;
+    z-index: 10;
   }
 
   .world-thumb {
-    width: 72px;
-    height: 54px;
+    width: 72px; height: 54px;
     overflow: hidden;
     border: 1px solid rgba(255,255,255,0.15);
     cursor: pointer;
-    position: relative;
     flex-shrink: 0;
+    background: #000;
     transition: border-color 0.3s;
   }
-  .world-thumb:hover { border-color: rgba(255,255,255,0.6); }
-
+  .world-thumb:hover { border-color: rgba(255,255,255,0.7); }
   .world-thumb img {
     width: 100%; height: 100%;
     object-fit: cover;
@@ -286,28 +219,7 @@
     filter: brightness(0.7);
     transition: filter 0.3s ease;
   }
-  .world-thumb:hover img { filter: brightness(1); }
-
-  /* Expand plein panneau au hover miniature — sous les photos */
-  .world-thumb-expand {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.35s ease;
-  }
-.world-thumb-expand {
-  background: #000;
-}
-.world-thumb-expand img {
-  width: 100%; height: 100%;
-  object-fit: contain;
-  display: block;
-  filter: brightness(0.85);
-}
-  }
-  .world-thumb-expand.visible { opacity: 1; }
+  .world-thumb:hover img { filter: brightness(1.1); }
 
   /* REALISATIONS */
   #realisations { background: var(--black); position: relative; }
@@ -322,8 +234,6 @@
   .real-card.large { grid-column: span 2; aspect-ratio: 16/9; }
   .real-card-inner { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 3.5rem; background: var(--dark2); position: relative; transition: transform 0.4s; }
   .real-card:hover .real-card-inner { transform: scale(1.04); }
-  .real-card-inner img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.4s; }
-  .real-card:hover .real-card-inner img { transform: scale(1.04); }
   .real-card-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(10,10,10,0.95) 0%, transparent 50%); display: flex; flex-direction: column; justify-content: flex-end; padding: 1.5rem; opacity: 0; transition: opacity 0.3s; }
   .real-card:hover .real-card-overlay { opacity: 1; }
   .real-card-cat { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-mid); margin-bottom: 0.4rem; }
@@ -345,7 +255,6 @@
   #contact { background: var(--black); position: relative; }
   #contact::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
   .contact-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center; }
-  .contact-info p { font-size: 1.05rem; font-weight: 300; color: var(--muted); line-height: 1.8; margin-bottom: 2.5rem; }
   .contact-phone { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.05em; color: var(--teal-light); display: block; text-decoration: none; margin-bottom: 1rem; transition: color 0.2s; }
   .contact-phone:hover { color: var(--white); }
   .contact-socials { display: flex; gap: 1rem; margin-top: 2rem; }
@@ -458,7 +367,7 @@
     <div class="worlds-split">
 
       <!-- INDUSTRIEL -->
-      <div class="world world-industrial">
+      <div class="world world-industrial" id="world-ind">
 
         <div class="world-cover">
           <img src="img/worlds/ind-cover.jpg" alt="Univers industriel">
@@ -467,11 +376,9 @@
         <div class="world-thumb-expand" id="ind-expand-0">
           <img src="img/worlds/ind-1.png" alt="">
         </div>
-
         <div class="world-thumb-expand" id="ind-expand-1">
           <img src="img/worlds/ind-2.png" alt="">
         </div>
-
         <div class="world-thumb-expand" id="ind-expand-2">
           <img src="img/worlds/ind-3.jpg" alt="">
         </div>
@@ -485,15 +392,19 @@
         <span class="world-big-icon">⚙️</span>
 
         <div class="world-photos">
-          <div class="world-thumb" onmouseenter="showExpand('ind',0)" onmouseleave="hideExpand('ind')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 0)"
+            onmouseleave="hideExpand('ind')">
             <img src="img/worlds/ind-1.png" alt="Prototype">
           </div>
-
-          <div class="world-thumb" onmouseenter="showExpand('ind',1)" onmouseleave="hideExpand('ind')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 1)"
+            onmouseleave="hideExpand('ind')">
             <img src="img/worlds/ind-2.png" alt="Série technique">
           </div>
-
-          <div class="world-thumb" onmouseenter="showExpand('ind',2)" onmouseleave="hideExpand('ind')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('ind', 2)"
+            onmouseleave="hideExpand('ind')">
             <img src="img/worlds/ind-3.jpg" alt="Maquette">
           </div>
         </div>
@@ -501,7 +412,7 @@
       </div>
 
       <!-- ARTISTIQUE -->
-      <div class="world world-artistic">
+      <div class="world world-artistic" id="world-art">
 
         <div class="world-cover">
           <img src="img/worlds/art-cover.png" alt="Univers artistique">
@@ -510,11 +421,9 @@
         <div class="world-thumb-expand" id="art-expand-0">
           <img src="img/worlds/art-1.jpg" alt="">
         </div>
-
         <div class="world-thumb-expand" id="art-expand-1">
           <img src="img/worlds/art-2.jpg" alt="">
         </div>
-
         <div class="world-thumb-expand" id="art-expand-2">
           <img src="img/worlds/art-3.jpg" alt="">
         </div>
@@ -528,15 +437,19 @@
         <span class="world-big-icon">🎭</span>
 
         <div class="world-photos">
-          <div class="world-thumb" onmouseenter="showExpand('art',0)" onmouseleave="hideExpand('art')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 0)"
+            onmouseleave="hideExpand('art')">
             <img src="img/worlds/art-1.jpg" alt="Sculpture">
           </div>
-
-          <div class="world-thumb" onmouseenter="showExpand('art',1)" onmouseleave="hideExpand('art')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 1)"
+            onmouseleave="hideExpand('art')">
             <img src="img/worlds/art-2.jpg" alt="Art Toy">
           </div>
-
-          <div class="world-thumb" onmouseenter="showExpand('art',2)" onmouseleave="hideExpand('art')">
+          <div class="world-thumb"
+            onmouseenter="showExpand('art', 2)"
+            onmouseleave="hideExpand('art')">
             <img src="img/worlds/art-3.jpg" alt="Trophée">
           </div>
         </div>
@@ -603,7 +516,7 @@
       <div class="reveal">
         <p class="section-label">05 · Contact</p>
         <h2 class="section-title">Parlons<br>de votre<br><span class="accent">projet</span></h2>
-        <p class="contact-info" style="font-size:1.05rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;">Un projet industriel ou artistique, petit ou grand, simple ou complexe — nous sommes là pour en discuter et trouver la meilleure solution avec vous.</p>
+        <p style="font-size:1.05rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;">Un projet industriel ou artistique, petit ou grand, simple ou complexe — nous sommes là pour en discuter et trouver la meilleure solution avec vous.</p>
         <a href="tel:+33670501555" class="contact-phone">06 70 50 15 55</a>
         <div class="contact-socials">
           <a href="https://www.instagram.com/mia3dimpression/" class="social-link" target="_blank">Instagram</a>
@@ -627,23 +540,39 @@
 </footer>
 
 <script>
+  // ---- WORLDS : expand miniatures ----
+  // showExpand : affiche l'image en grand + masque le texte du panneau
   function showExpand(world, index) {
-    hideExpand(world);
-    var el = document.getElementById(world + '-expand-' + index);
-    if (el) el.classList.add('visible');
+    // Masquer tous les expands de ce panneau
+    for (var i = 0; i < 3; i++) {
+      var el = document.getElementById(world + '-expand-' + i);
+      if (el) el.classList.remove('visible');
+    }
+    // Afficher l'expand demandé
+    var target = document.getElementById(world + '-expand-' + index);
+    if (target) target.classList.add('visible');
+    // Masquer le texte du panneau
+    var panel = document.getElementById('world-' + world);
+    if (panel) panel.classList.add('panel-hovered');
   }
+
   function hideExpand(world) {
     for (var i = 0; i < 3; i++) {
       var el = document.getElementById(world + '-expand-' + i);
       if (el) el.classList.remove('visible');
     }
+    // Rétablir le texte
+    var panel = document.getElementById('world-' + world);
+    if (panel) panel.classList.remove('panel-hovered');
   }
 
+  // ---- NAV scroll ----
   var nav = document.getElementById('nav');
   window.addEventListener('scroll', function() {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   });
 
+  // ---- JOURNEY timeline ----
   var steps = [
     { name: 'Modélisation 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "Tout commence ici. Analyse de votre cahier des charges, scan 3D de l'existant ou création from scratch. Nous construisons en numérique la pièce parfaite avant de toucher à la matière.", visual: '&#128208;', bg: 'linear-gradient(135deg, #0d1a22, #081018)' },
     { name: 'Impression 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "FDM pour les grandes pièces et les séries, SLA pour la précision et les détails fins. La pièce prend forme couche par couche. Ce qui sort de l'imprimante n'est qu'une ébauche — le vrai travail commence maintenant.", visual: '&#128424;', bg: 'linear-gradient(135deg, #0d1a1a, #081018)' },
