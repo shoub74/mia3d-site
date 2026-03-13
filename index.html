@@ -174,23 +174,26 @@
   }
   .world:hover::before { opacity: 0; }
 
-  /* Cover — visible en transparence par défaut, pleine au hover */
+  /* Cover — visible en transparence par défaut, pleine au hover panneau */
   .world-cover {
     position: absolute;
     inset: 0;
     z-index: 1;
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
   .world-cover img {
     width: 100%; height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
-    filter: brightness(0.18) saturate(0.6);
+    filter: brightness(0.2) saturate(0.5);
     transition: filter 0.55s ease, transform 0.65s ease;
-    transform: scale(1.03);
+    transform: scale(1.02);
   }
   .world:hover .world-cover img {
-    filter: brightness(0.55) saturate(1);
+    filter: brightness(0.6) saturate(1);
     transform: scale(1);
   }
 
@@ -199,7 +202,7 @@
     position: relative;
     z-index: 3;
     padding: 3rem 2.5rem;
-    padding-bottom: 11rem;
+    padding-bottom: 8rem;
     transition: opacity 0.3s ease, transform 0.3s ease;
   }
   .world:hover .world-content {
@@ -253,57 +256,78 @@
   }
   .world:hover .world-big-icon { opacity: 0; }
 
-  /* Strip de photos en bas — visible par défaut ET au hover */
+  /* Strip de petites photos en bas */
   .world-photos {
     position: absolute;
-    bottom: 2rem;
+    bottom: 1.5rem;
     left: 2rem; right: 2rem;
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    display: flex;
     gap: 8px;
     z-index: 4;
+    justify-content: flex-start;
   }
 
   .world-thumb {
-    aspect-ratio: 4/3;
+    width: 72px;
+    height: 54px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.15);
     cursor: pointer;
     position: relative;
-    transition: position 0s;
+    flex-shrink: 0;
+    transition: border-color 0.3s;
   }
+  .world-thumb:hover { border-color: rgba(255,255,255,0.5); }
+
   .world-thumb img {
     width: 100%; height: 100%;
     object-fit: cover;
     display: block;
-    filter: brightness(0.75);
-    transition: transform 0.45s ease, filter 0.45s ease;
+    filter: brightness(0.7);
+    transition: filter 0.3s ease;
   }
+  .world-thumb:hover img { filter: brightness(1); }
 
-  /* Au hover : la miniature s'agrandit en plein panneau */
-  .world-thumb:hover {
+  /* Au hover d'une miniature : elle prend la place de la cover */
+  .world-thumb-cover {
     position: absolute;
     inset: 0;
-    z-index: 6;
-    aspect-ratio: unset;
-    border: none;
+    z-index: 5;
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    pointer-events: none;
   }
-  .world-thumb:hover img {
-    transform: scale(1);
-    filter: brightness(0.75);
-  }
+  .world-thumb:hover ~ .world-thumb-cover { opacity: 0; }
+  .world-thumb:hover .world-thumb-cover { opacity: 0; }
 
-  /* Légende au hover panneau */
+  /* On utilise JS pour gérer ça proprement */
+  .world-thumb-expand {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.45s ease;
+  }
+  .world-thumb-expand img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.65);
+  }
+  .world-thumb-expand.visible { opacity: 1; }
+
+  /* Légende — cachée au hover panneau */
   .world-hover-caption {
     position: absolute;
-    bottom: 9rem; left: 2rem; right: 2rem;
-    z-index: 5;
+    bottom: 1.5rem; right: 2rem;
+    z-index: 6;
     opacity: 0;
     transform: translateY(6px);
     transition: opacity 0.4s 0.15s ease, transform 0.4s 0.15s ease;
     pointer-events: none;
   }
-  .world:hover .world-hover-caption { opacity: 1; transform: translateY(0); }
+  .world:hover .world-hover-caption { opacity: 0; }
 
   .whc-dots { display: flex; gap: 6px; margin-bottom: 0.6rem; }
   .whc-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); }
@@ -462,10 +486,15 @@
       <!-- INDUSTRIEL -->
       <div class="world world-industrial">
 
-        <!-- Cover photo plein panneau au hover -->
+        <!-- Cover photo transparente par défaut -->
         <div class="world-cover">
           <img src="img/worlds/ind-cover.jpg" alt="Univers industriel">
         </div>
+
+        <!-- Couches d'expansion pour chaque miniature -->
+        <div class="world-thumb-expand" id="ind-expand-0"><img src="img/worlds/ind-1.jpg" alt=""></div>
+        <div class="world-thumb-expand" id="ind-expand-1"><img src="img/worlds/ind-2.jpg" alt=""></div>
+        <div class="world-thumb-expand" id="ind-expand-2"><img src="img/worlds/ind-3.jpg" alt=""></div>
 
         <!-- Texte -->
         <div class="world-content">
@@ -479,19 +508,9 @@
 
         <!-- 3 petites photos en bas -->
         <div class="world-photos">
-          <div class="world-thumb"><img src="img/worlds/ind-1.jpg" alt="Prototype"></div>
-          <div class="world-thumb"><img src="img/worlds/ind-2.jpg" alt="Série technique"></div>
-          <div class="world-thumb"><img src="img/worlds/ind-3.jpg" alt="Maquette"></div>
-        </div>
-
-        <!-- Légende hover -->
-        <div class="world-hover-caption">
-          <div class="whc-dots">
-            <div class="whc-dot on"></div>
-            <div class="whc-dot"></div>
-            <div class="whc-dot"></div>
-          </div>
-          <span class="whc-text">Prototypes · Séries · Maquettes</span>
+          <div class="world-thumb" onmouseenter="showExpand('ind',0)" onmouseleave="hideExpand('ind')"><img src="img/worlds/ind-1.jpg" alt="Prototype"></div>
+          <div class="world-thumb" onmouseenter="showExpand('ind',1)" onmouseleave="hideExpand('ind')"><img src="img/worlds/ind-2.jpg" alt="Série technique"></div>
+          <div class="world-thumb" onmouseenter="showExpand('ind',2)" onmouseleave="hideExpand('ind')"><img src="img/worlds/ind-3.jpg" alt="Maquette"></div>
         </div>
 
       </div>
@@ -499,10 +518,15 @@
       <!-- ARTISTIQUE -->
       <div class="world world-artistic">
 
-        <!-- Cover photo plein panneau au hover -->
+        <!-- Cover photo transparente par défaut -->
         <div class="world-cover">
           <img src="img/worlds/art-cover.jpg" alt="Univers artistique">
         </div>
+
+        <!-- Couches d'expansion pour chaque miniature -->
+        <div class="world-thumb-expand" id="art-expand-0"><img src="img/worlds/art-1.jpg" alt=""></div>
+        <div class="world-thumb-expand" id="art-expand-1"><img src="img/worlds/art-2.jpg" alt=""></div>
+        <div class="world-thumb-expand" id="art-expand-2"><img src="img/worlds/art-3.jpg" alt=""></div>
 
         <!-- Texte -->
         <div class="world-content">
@@ -516,19 +540,9 @@
 
         <!-- 3 petites photos en bas -->
         <div class="world-photos">
-          <div class="world-thumb"><img src="img/worlds/art-1.jpg" alt="Sculpture"></div>
-          <div class="world-thumb"><img src="img/worlds/art-2.jpg" alt="Art Toy"></div>
-          <div class="world-thumb"><img src="img/worlds/art-3.jpg" alt="Trophée"></div>
-        </div>
-
-        <!-- Légende hover -->
-        <div class="world-hover-caption">
-          <div class="whc-dots">
-            <div class="whc-dot on"></div>
-            <div class="whc-dot"></div>
-            <div class="whc-dot"></div>
-          </div>
-          <span class="whc-text">Sculptures · Art Toys · Trophées</span>
+          <div class="world-thumb" onmouseenter="showExpand('art',0)" onmouseleave="hideExpand('art')"><img src="img/worlds/art-1.jpg" alt="Sculpture"></div>
+          <div class="world-thumb" onmouseenter="showExpand('art',1)" onmouseleave="hideExpand('art')"><img src="img/worlds/art-2.jpg" alt="Art Toy"></div>
+          <div class="world-thumb" onmouseenter="showExpand('art',2)" onmouseleave="hideExpand('art')"><img src="img/worlds/art-3.jpg" alt="Trophée"></div>
         </div>
 
       </div>
@@ -616,6 +630,18 @@
 </footer>
 
 <script>
+  function showExpand(world, index) {
+    hideExpand(world);
+    var el = document.getElementById(world + '-expand-' + index);
+    if (el) el.classList.add('visible');
+  }
+  function hideExpand(world) {
+    for (var i = 0; i < 3; i++) {
+      var el = document.getElementById(world + '-expand-' + i);
+      if (el) el.classList.remove('visible');
+    }
+  }
+
   var nav = document.getElementById('nav');
   window.addEventListener('scroll', function() {
     nav.classList.toggle('scrolled', window.scrollY > 60);
