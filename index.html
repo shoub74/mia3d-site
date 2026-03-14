@@ -371,92 +371,40 @@
 
       <!-- INDUSTRIEL -->
       <div class="world world-industrial" id="world-ind">
-
-        <div class="world-cover">
-          <img src="img/worlds/ind-cover.jpg" alt="Univers industriel">
+        <div class="world-cover"><img src="img/worlds/ind-cover.jpg" alt="Univers industriel"></div>
+        <div class="world-slide-wrap" id="ind-slide-wrap">
+          <img class="world-slide-img" id="ind-slide-img" src="img/worlds/ind-1.png" alt="">
         </div>
-
-        <div class="world-thumb-expand" id="ind-expand-0">
-          <img src="img/worlds/ind-1.png" alt="">
-        </div>
-        <div class="world-thumb-expand" id="ind-expand-1">
-          <img src="img/worlds/ind-2.png" alt="">
-        </div>
-        <div class="world-thumb-expand" id="ind-expand-2">
-          <img src="img/worlds/ind-3.jpg" alt="">
-        </div>
-
         <div class="world-content">
           <p class="world-label">Univers industriel</p>
           <h3 class="world-title">Précision<br>&amp; Série</h3>
           <p class="world-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
         </div>
-
         <span class="world-big-icon">⚙️</span>
-
         <div class="world-photos">
-          <div class="world-thumb"
-            onmouseenter="showExpand('ind', 0)"
-            onmouseleave="hideExpand('ind')">
-            <img src="img/worlds/ind-1.png" alt="Prototype">
-          </div>
-          <div class="world-thumb"
-            onmouseenter="showExpand('ind', 1)"
-            onmouseleave="hideExpand('ind')">
-            <img src="img/worlds/ind-2.png" alt="Série technique">
-          </div>
-          <div class="world-thumb"
-            onmouseenter="showExpand('ind', 2)"
-            onmouseleave="hideExpand('ind')">
-            <img src="img/worlds/ind-3.jpg" alt="Maquette">
-          </div>
+          <div class="world-thumb" onmouseenter="thumbEnter('ind',0)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-1.png" alt="Prototype"></div>
+          <div class="world-thumb" onmouseenter="thumbEnter('ind',1)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-2.png" alt="Série technique"></div>
+          <div class="world-thumb" onmouseenter="thumbEnter('ind',2)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-3.jpg" alt="Maquette"></div>
         </div>
-
       </div>
 
       <!-- ARTISTIQUE -->
       <div class="world world-artistic" id="world-art">
-
-        <div class="world-cover">
-          <img src="img/worlds/art-cover.png" alt="Univers artistique">
+        <div class="world-cover"><img src="img/worlds/art-cover.png" alt="Univers artistique"></div>
+        <div class="world-slide-wrap" id="art-slide-wrap">
+          <img class="world-slide-img" id="art-slide-img" src="img/worlds/art-1.jpg" alt="">
         </div>
-
-        <div class="world-thumb-expand" id="art-expand-0">
-          <img src="img/worlds/art-1.jpg" alt="">
-        </div>
-        <div class="world-thumb-expand" id="art-expand-1">
-          <img src="img/worlds/art-2.jpg" alt="">
-        </div>
-        <div class="world-thumb-expand" id="art-expand-2">
-          <img src="img/worlds/art-3.jpg" alt="">
-        </div>
-
         <div class="world-content">
           <p class="world-label">Univers artistique</p>
           <h3 class="world-title">Art<br>&amp; Émotion</h3>
           <p class="world-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
-
         <span class="world-big-icon">🎭</span>
-
         <div class="world-photos">
-          <div class="world-thumb"
-            onmouseenter="showExpand('art', 0)"
-            onmouseleave="hideExpand('art')">
-            <img src="img/worlds/art-1.jpg" alt="Sculpture">
-          </div>
-          <div class="world-thumb"
-            onmouseenter="showExpand('art', 1)"
-            onmouseleave="hideExpand('art')">
-            <img src="img/worlds/art-2.jpg" alt="Art Toy">
-          </div>
-          <div class="world-thumb"
-            onmouseenter="showExpand('art', 2)"
-            onmouseleave="hideExpand('art')">
-            <img src="img/worlds/art-3.jpg" alt="Trophée">
-          </div>
+          <div class="world-thumb" onmouseenter="thumbEnter('art',0)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-1.jpg" alt="Sculpture"></div>
+          <div class="world-thumb" onmouseenter="thumbEnter('art',1)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-2.jpg" alt="Art Toy"></div>
+          <div class="world-thumb" onmouseenter="thumbEnter('art',2)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-3.jpg" alt="Trophée"></div>
         </div>
-
       </div>
 
     </div>
@@ -550,87 +498,92 @@
     art: { current: 0, timer: null, hovered: false }
   };
 
+  // ---- WORLDS SLIDESHOW ----
+  // Sources des images pour chaque monde
+  var worldSrcs = {
+    ind: ['img/worlds/ind-1.png', 'img/worlds/ind-2.png', 'img/worlds/ind-3.jpg'],
+    art: ['img/worlds/art-1.jpg', 'img/worlds/art-2.jpg', 'img/worlds/art-3.jpg']
+  };
   var FADE_MS = 1300;
   var HOLD_MS = 5000;
+  // État : index courant et timer pour chaque monde
+  var slideState = {
+    ind: { idx: 0, timer: null, paused: false },
+    art: { idx: 0, timer: null, paused: false }
+  };
 
-  function getEl(world, idx) {
-    return document.getElementById(world + '-expand-' + idx);
-  }
+  function getWrap(world) { return document.getElementById(world + '-slide-wrap'); }
+  function getImg(world)  { return document.getElementById(world + '-slide-img'); }
 
-  function setExpand(world, index) {
-    for (var i = 0; i < 3; i++) {
-      var el = getEl(world, i);
-      if (!el) continue;
-      el.style.cssText += '; opacity: ' + (i === index ? '1' : '0') + ' !important';
+  // Fade le wrap de op1 à op2 en FADE_MS ms, puis appelle cb
+  function fadeWrap(world, op1, op2, cb) {
+    var wrap = getWrap(world);
+    var start = performance.now();
+    function tick(ts) {
+      var p = Math.min((ts - start) / FADE_MS, 1);
+      wrap.style.opacity = op1 + (op2 - op1) * p;
+      if (p < 1) { requestAnimationFrame(tick); }
+      else { wrap.style.opacity = op2; if (cb) cb(); }
     }
+    requestAnimationFrame(tick);
   }
 
-  // Copie exacte du test qui fonctionne, adaptée pour world/index
-  function slideStep1(world) {
-    var state = worldState[world];
-    state.timer = setTimeout(function() { slideStep2(world); }, HOLD_MS);
-  }
-
-  function slideStep2(world) {
-    var state = worldState[world];
-    if (state.hovered) { slideStep1(world); return; }
-    var fromIdx = state.current;
-    var toIdx   = (fromIdx + 1) % 3;
-    var el      = getEl(world, fromIdx);
-    var startOp = parseFloat(el.style.opacity) || 1;
-    var startTime = performance.now();
-    function fadeOut() {
-      var p = Math.min((performance.now() - startTime) / FADE_MS, 1);
-      el.style.opacity = startOp * (1 - p);
-      if (p < 1) { requestAnimationFrame(fadeOut); }
-      else { el.style.opacity = '0'; slideStep3(world, toIdx); }
-    }
-    requestAnimationFrame(fadeOut);
-  }
-
-  function slideStep3(world, toIdx) {
-    var state   = worldState[world];
-    var el      = getEl(world, toIdx);
-    el.style.opacity = '0';
-    var startTime = performance.now();
-    function fadeIn() {
-      var p = Math.min((performance.now() - startTime) / FADE_MS, 1);
-      el.style.opacity = p;
-      if (p < 1) { requestAnimationFrame(fadeIn); }
-      else { el.style.opacity = '1'; state.current = toIdx; slideStep1(world); }
-    }
-    requestAnimationFrame(fadeIn);
+  // Lance un cycle : attend HOLD_MS, fade out, change src, fade in, répète
+  function scheduleSlide(world) {
+    var st = slideState[world];
+    st.timer = setTimeout(function() {
+      if (st.paused) { scheduleSlide(world); return; }
+      // Fade OUT
+      fadeWrap(world, 1, 0, function() {
+        // Changer l'image (src)
+        st.idx = (st.idx + 1) % 3;
+        getImg(world).src = worldSrcs[world][st.idx];
+        // Fade IN
+        fadeWrap(world, 0, 1, function() {
+          scheduleSlide(world);
+        });
+      });
+    }, HOLD_MS);
   }
 
   function startSlideshow(world) {
-    var state = worldState[world];
-    if (state.timer) clearTimeout(state.timer);
-    // Forcer opacity sans aucune transition CSS possible
-    for (var i = 0; i < 3; i++) {
-      var el = getEl(world, i);
-      if (!el) continue;
-      el.style.cssText = el.style.cssText.replace(/transition[^;]*/g, '');
-      el.style.opacity = (i === state.current) ? '1' : '0';
-    }
-    slideStep1(world);
+    var st = slideState[world];
+    if (st.timer) clearTimeout(st.timer);
+    st.paused = false;
+    st.idx = 0;
+    // Afficher la première image immédiatement
+    getImg(world).src = worldSrcs[world][0];
+    getWrap(world).style.opacity = '1';
+    scheduleSlide(world);
   }
 
-
-  function showExpand(world, index) {
-    var state = worldState[world];
-    state.hovered = true;
-    state.current = index;
-    setExpand(world, index);
+  // Appelé au mouseenter d'une miniature
+  function thumbEnter(world, index) {
+    var st = slideState[world];
+    st.paused = true;
+    if (st.timer) clearTimeout(st.timer);
+    // Changer la src immédiatement et garder visible
+    st.idx = index;
+    getImg(world).src = worldSrcs[world][index];
+    getWrap(world).style.opacity = '1';
+    // Masquer le texte
     var panel = document.getElementById('world-' + world);
     if (panel) panel.classList.add('panel-hovered');
   }
 
-  function hideExpand(world) {
-    var state = worldState[world];
-    state.hovered = false;
+  // Appelé au mouseleave d'une miniature
+  function thumbLeave(world) {
+    var st = slideState[world];
+    st.paused = false;
+    // Rétablir le texte
     var panel = document.getElementById('world-' + world);
     if (panel) panel.classList.remove('panel-hovered');
+    // Reprendre le slideshow depuis l'image courante
+    scheduleSlide(world);
   }
+
+
+
 
   // ---- NAV scroll ----
   var nav = document.getElementById('nav');
