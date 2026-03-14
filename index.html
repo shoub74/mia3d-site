@@ -69,8 +69,8 @@
   /* JOURNEY */
   #journey { background: var(--black); position: relative; }
   #journey::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
-  .journey-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 6rem; }
-  .journey-desc { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; display: flex; align-items: center; }
+  .journey-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: stretch; margin-bottom: 6rem; }
+  .journey-desc { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; display: flex; align-items: center; justify-content: flex-start; }
   .timeline { position: relative; display: grid; grid-template-columns: repeat(5, 1fr); gap: 0; }
   .timeline-track { position: absolute; left: 10%; right: 10%; top: 22px; height: 16px; z-index: 0; pointer-events: none; }
   .timeline-line-bg { position: absolute; top: 50%; left: 0; right: 0; height: 2px; transform: translateY(-50%); background: var(--grey2); }
