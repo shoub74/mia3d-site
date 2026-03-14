@@ -171,9 +171,8 @@
     filter: brightness(0.2) saturate(0.5);
     transition: filter 0.55s ease;
   }
-  .world-thumb-expand.visible { opacity: 1; }
   /* Au hover miniature seulement : image lumineuse */
-  .world.panel-hovered .world-thumb-expand.visible img {
+  .world.panel-hovered .world-thumb-expand img {
     filter: brightness(0.6) saturate(1);
   }
 
@@ -553,81 +552,67 @@
 
   var FADE_MS = 1300;
   var HOLD_MS = 5000;
-  var t1 = { ind: null, art: null };
-  var t2 = { ind: null, art: null };
 
-  // Retourne l'élément expand d'un monde
   function getEl(world, idx) {
     return document.getElementById(world + '-expand-' + idx);
   }
 
-  // Remet tous les expands à opacity:0 sans animation, sauf index qui est à 1
   function setExpand(world, index) {
     for (var i = 0; i < 3; i++) {
       var el = getEl(world, i);
       if (!el) continue;
-      el.classList.remove('anim-in', 'anim-out');
-      el.style.opacity = (i === index) ? '1' : '0';
+      el.style.cssText += '; opacity: ' + (i === index ? '1' : '0') + ' !important';
     }
   }
 
-  function doTransition(world) {
+  // Copie exacte du test qui fonctionne, adaptée pour world/index
+  function slideStep1(world) {
     var state = worldState[world];
-    if (state.hovered) {
-      t1[world] = setTimeout(function(){ doTransition(world); }, HOLD_MS);
-      return;
-    }
+    state.timer = setTimeout(function() { slideStep2(world); }, HOLD_MS);
+  }
+
+  function slideStep2(world) {
+    var state = worldState[world];
+    if (state.hovered) { slideStep1(world); return; }
     var fromIdx = state.current;
     var toIdx   = (fromIdx + 1) % 3;
-    var fromEl  = getEl(world, fromIdx);
-    var toEl    = getEl(world, toIdx);
-
-    // Préparer toEl invisible sans animation
-    if (toEl) {
-      toEl.classList.remove('anim-in', 'anim-out');
-      toEl.style.opacity = '0';
+    var el      = getEl(world, fromIdx);
+    var startOp = parseFloat(el.style.opacity) || 1;
+    var startTime = performance.now();
+    function fadeOut() {
+      var p = Math.min((performance.now() - startTime) / FADE_MS, 1);
+      el.style.opacity = startOp * (1 - p);
+      if (p < 1) { requestAnimationFrame(fadeOut); }
+      else { el.style.opacity = '0'; slideStep3(world, toIdx); }
     }
+    requestAnimationFrame(fadeOut);
+  }
 
-    // Lancer fade OUT sur fromEl
-    if (fromEl) {
-      fromEl.classList.remove('anim-in', 'anim-out');
-      void fromEl.offsetWidth; // reflow
-      fromEl.classList.add('anim-out');
+  function slideStep3(world, toIdx) {
+    var state   = worldState[world];
+    var el      = getEl(world, toIdx);
+    el.style.opacity = '0';
+    var startTime = performance.now();
+    function fadeIn() {
+      var p = Math.min((performance.now() - startTime) / FADE_MS, 1);
+      el.style.opacity = p;
+      if (p < 1) { requestAnimationFrame(fadeIn); }
+      else { el.style.opacity = '1'; state.current = toIdx; slideStep1(world); }
     }
-
-    // Après fade OUT : lancer fade IN sur toEl
-    t2[world] = setTimeout(function() {
-      state.current = toIdx;
-      if (fromEl) {
-        fromEl.classList.remove('anim-out');
-        fromEl.style.opacity = '0';
-      }
-      if (toEl) {
-        toEl.classList.remove('anim-in', 'anim-out');
-        void toEl.offsetWidth;
-        toEl.classList.add('anim-in');
-      }
-      // Après fade IN : planifier le prochain cycle
-      t1[world] = setTimeout(function() {
-        if (toEl) {
-          toEl.classList.remove('anim-in');
-          toEl.style.opacity = '1';
-        }
-        t1[world] = setTimeout(function() {
-          doTransition(world);
-        }, HOLD_MS);
-      }, FADE_MS);
-    }, FADE_MS);
+    requestAnimationFrame(fadeIn);
   }
 
   function startSlideshow(world) {
-    clearTimeout(t1[world]);
-    clearTimeout(t2[world]);
     var state = worldState[world];
-    setExpand(world, state.current);
-    t1[world] = setTimeout(function() {
-      doTransition(world);
-    }, HOLD_MS);
+    if (state.timer) clearTimeout(state.timer);
+    // Forcer opacity sans aucune transition CSS possible
+    for (var i = 0; i < 3; i++) {
+      var el = getEl(world, i);
+      if (!el) continue;
+      el.style.cssText = el.style.cssText.replace(/transition[^;]*/g, '');
+      el.style.opacity = (i === state.current) ? '1' : '0';
+    }
+    slideStep1(world);
   }
 
 
