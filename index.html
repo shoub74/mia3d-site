@@ -111,8 +111,9 @@
   .worlds-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    border: 1px solid var(--grey);
-    overflow: hidden;
+    padding: 3px; /* épaisseur du contour */
+    background: linear-gradient(90deg, var(--teal-light), #ffffff, var(--teal-light));
+    gap: 3px;
   }
 
   /* Chaque panneau : hauteur fixe, fond noir */
@@ -122,7 +123,6 @@
     background: #000;
     overflow: hidden;
   }
-  .w-panel + .w-panel { border-left: 1px solid var(--grey); }
 
   /* Image de fond — couvre tout le panneau, object-fit contain */
   .w-bg {
