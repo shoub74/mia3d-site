@@ -551,39 +551,31 @@
     art: { current: 0, timer: null, hovered: false }
   };
 
-  var FADE_MS = 1300; // ms pour fade in / fade out
-  var HOLD_MS = 5000; // ms d'affichage entre fondus
-  var STEP_MS = 16;   // intervalle requestAnimationFrame-like
+  var FADE_MS = 1300;
+  var HOLD_MS = 5000;
 
-  // Anime l'opacité d'un élément de 'from' à 'to' en 'duration' ms, puis appelle 'cb'
-  function animateOpacity(el, from, to, duration, cb) {
-    if (!el) { if (cb) cb(); return; }
-    var start = null;
-    el.style.transition = 'none';
-    el.style.opacity = from;
-    // Forcer le reflow
-    el.getBoundingClientRect();
-    function step(ts) {
-      if (!start) start = ts;
-      var progress = Math.min((ts - start) / duration, 1);
-      el.style.opacity = from + (to - from) * progress;
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        el.style.opacity = to;
-        if (cb) cb();
-      }
-    }
-    requestAnimationFrame(step);
-  }
-
+  // Affiche immédiatement une image, cache toutes les autres
   function setExpand(world, index) {
     for (var i = 0; i < 3; i++) {
       var el = document.getElementById(world + '-expand-' + i);
-      if (el) { el.style.transition = 'none'; el.style.opacity = 0; }
+      if (!el) continue;
+      el.style.transition = 'none';
+      el.style.opacity = (i === index) ? '1' : '0';
     }
-    var target = document.getElementById(world + '-expand-' + index);
-    if (target) { target.style.transition = 'none'; target.style.opacity = 1; }
+  }
+
+  // Fondu d'une image vers opacity cible, puis callback
+  function fadeTo(el, targetOpacity, cb) {
+    if (!el) { if (cb) cb(); return; }
+    // Appliquer la transition CSS directement sur l'élément
+    el.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
+    // Forcer reflow pour que la transition parte bien du state actuel
+    void el.offsetWidth;
+    el.style.opacity = targetOpacity;
+    var tid = setTimeout(function() {
+      el.style.transition = 'none';
+      if (cb) cb();
+    }, FADE_MS + 50); // +50ms marge
   }
 
   function scheduleNext(world) {
@@ -593,14 +585,21 @@
         scheduleNext(world);
         return;
       }
-      // Fade OUT image courante
-      var currentEl = document.getElementById(world + '-expand-' + state.current);
-      animateOpacity(currentEl, 1, 0, FADE_MS, function() {
-        // Noir atteint — avancer au suivant
-        state.current = (state.current + 1) % 3;
-        var nextEl = document.getElementById(world + '-expand-' + state.current);
-        // Fade IN image suivante
-        animateOpacity(nextEl, 0, 1, FADE_MS, function() {
+      var fromIdx = state.current;
+      var toIdx   = (state.current + 1) % 3;
+      var fromEl  = document.getElementById(world + '-expand-' + fromIdx);
+      var toEl    = document.getElementById(world + '-expand-' + toIdx);
+
+      // S'assurer que toEl part bien de 0 avant de commencer
+      if (toEl) { toEl.style.transition = 'none'; toEl.style.opacity = '0'; void toEl.offsetWidth; }
+
+      // 1. Fade OUT image courante
+      fadeTo(fromEl, '0', function() {
+        // 2. Mettre à jour l'index
+        state.current = toIdx;
+        // 3. Fade IN image suivante
+        fadeTo(toEl, '1', function() {
+          // 4. Planifier le prochain cycle
           scheduleNext(world);
         });
       });
