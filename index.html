@@ -152,6 +152,14 @@
   .w-panel-ind .w-label { color:#7EB8D4; }
   .w-panel-art .w-label { color:var(--teal-light); }
   .w-label::before { content:''; display:block; width:20px; height:1px; }
+
+  /* Version droite pour la section art */
+  .w-content-right { text-align: right; }
+  .w-content-right .w-label { justify-content: flex-end; }
+  .w-content-right .w-label::before { display: none; }
+  .w-content-right .w-label::after { content:''; display:block; width:20px; height:1px; background:var(--teal-light); }
+  .w-content-right .w-desc { margin-left: auto; }
+  .w-thumbs-right { justify-content: flex-end; }
   .w-panel-ind .w-label::before { background:#7EB8D4; }
   .w-panel-art .w-label::before { background:var(--teal-light); }
   .w-title {
@@ -350,12 +358,12 @@
         <div class="w-bg" id="wbg-art">
           <img id="wimg-art" src="img/worlds/art-1.jpg" alt="">
         </div>
-        <div class="w-content" id="wcontent-art">
+        <div class="w-content w-content-right" id="wcontent-art">
           <p class="w-label">Univers artistique</p>
           <h3 class="w-title">Art<br>&amp; Émotion</h3>
           <p class="w-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
-        <div class="w-thumbs">
+        <div class="w-thumbs w-thumbs-right">
           <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-1.jpg" alt=""></div>
           <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-2.jpg" alt=""></div>
           <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-3.jpg" alt=""></div>
@@ -486,7 +494,7 @@
     var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
     st.timer = setTimeout(function() {
-      if (st.hovered) return; // pause si hover
+      if (st.hovered || st.panelHovered) return; // pause si hover
       st.fading = true;
       // 1. Fade vers noir (0)
       wFade(w, W_OPACITY_NORMAL, 0, function() {
@@ -512,27 +520,31 @@
   function wStart(w) {
     var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
-    st.idx    = 0;
-    st.hovered = false;
-    st.fading  = false;
+    st.idx         = 0;
+    st.hovered     = false;
+    st.panelHovered = false;
+    st.fading      = false;
     wImg(w).src = W_SRCS[w][0];
     wBg(w).style.opacity = W_OPACITY_NORMAL;
     wSchedule(w);
   }
 
-  // Hover sur le panneau entier → image pleine, pas de texte
+  // Hover sur le panneau entier → stop slideshow, image pleine, pas de texte
   function wPanelOn(w) {
     var st = wState[w];
+    st.panelHovered = true;
+    if (st.timer) clearTimeout(st.timer);
     wBg(w).style.opacity = W_OPACITY_HOVER;
     wPanel(w).classList.add('is-hovered');
   }
 
   function wPanelOff(w) {
     var st = wState[w];
-    // Ne restaurer que si aucune miniature n'est active
+    st.panelHovered = false;
     if (!st.hovered) {
       wBg(w).style.opacity = W_OPACITY_NORMAL;
       wPanel(w).classList.remove('is-hovered');
+      wSchedule(w); // reprendre le slideshow
     }
   }
 
