@@ -94,8 +94,44 @@
   .step-detail-badge.artistic { color: var(--teal-light); border-color: rgba(0,229,192,0.3); background: rgba(0,229,192,0.06); }
   .step-detail h3 { font-family: var(--font-display); font-size: 2.5rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 1rem; }
   .step-detail p { font-size: 0.95rem; font-weight: 300; line-height: 1.8; color: var(--muted); }
-  .step-detail-visual { aspect-ratio: 4/3; background: var(--grey); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
-  .step-detail-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,192,0.1) 0%, transparent 50%); }
+
+  /* VIDEO dans step-detail */
+  .step-detail-video-wrap {
+    position: relative;
+    aspect-ratio: 4/3;
+    background: var(--grey);
+    overflow: hidden;
+    border: 1px solid var(--grey2);
+  }
+  .step-detail-video-wrap::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(0,229,192,0.08) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+  .step-detail-video-wrap video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .step-detail-video-wrap video.loaded {
+    opacity: 1;
+  }
+  /* Fallback emoji si la vidéo ne charge pas */
+  .step-detail-video-wrap .video-fallback {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    z-index: 0;
+  }
 
   /* ═══ TWO WORLDS ═══ */
   #worlds { background: var(--dark); position: relative; }
@@ -107,16 +143,14 @@
   #worlds .container { max-width:100%; padding:0 2rem; }
   #worlds .worlds-header { max-width:1200px; margin-left:auto; margin-right:auto; }
 
-  /* Grille 2 colonnes, pleine largeur */
   .worlds-split {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    padding: 3px; /* épaisseur du contour */
+    padding: 3px;
     background: linear-gradient(90deg, var(--teal-light), #ffffff, var(--teal-light));
     gap: 3px;
   }
 
-  /* Chaque panneau : hauteur fixe, fond noir */
   .w-panel {
     position: relative;
     height: 560px;
@@ -124,7 +158,6 @@
     overflow: hidden;
   }
 
-  /* Image de fond — couvre tout le panneau, object-fit contain */
   .w-bg {
     position: absolute;
     inset: 0;
@@ -136,7 +169,6 @@
     display: block;
   }
 
-  /* Contenu textuel — par-dessus l'image, z-index 2 */
   .w-content {
     position: absolute;
     inset: 0;
@@ -153,7 +185,6 @@
   .w-panel-art .w-label { color:var(--teal-light); }
   .w-label::before { content:''; display:block; width:20px; height:1px; }
 
-  /* Version droite pour la section art */
   .w-content-right { text-align: right; }
   .w-content-right .w-label { justify-content: flex-end; }
   .w-content-right .w-label::before { display: none; }
@@ -171,7 +202,6 @@
     color:var(--muted); max-width:340px;
   }
 
-  /* Miniatures — z-index 3, toujours visibles */
   .w-thumbs {
     position: absolute;
     bottom: 1.5rem; left: 2rem; right: 2rem;
@@ -189,7 +219,6 @@
   .w-thumb img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.65); transition:filter 0.25s; }
   .w-thumb:hover img { filter:brightness(1.1); }
 
-  /* État hover : contenu masqué */
   .w-panel.is-hovered .w-content { display: none; }
 
   /* REALISATIONS */
@@ -454,29 +483,116 @@
 </footer>
 
 <script>
+  // ════════ DONNÉES ÉTAPES ════════
+  var steps = [
+    {
+      name: 'Modélisation 3D',
+      badge: 'industrial', badgeLabel: '&#9881; Étape technique',
+      desc: "Tout commence ici. Analyse de votre cahier des charges, scan 3D de l'existant ou création from scratch. Nous construisons en numérique la pièce parfaite avant de toucher à la matière.",
+      video: 'videos/01-modelisation.mp4',
+      visual: '&#128208;',
+      bg: 'linear-gradient(135deg, #0d1a22, #081018)'
+    },
+    {
+      name: 'Impression 3D',
+      badge: 'industrial', badgeLabel: '&#9881; Étape technique',
+      desc: "FDM pour les grandes pièces et les séries, SLA pour la précision et les détails fins. La pièce prend forme couche par couche. Ce qui sort de l'imprimante n'est qu'une ébauche — le vrai travail commence maintenant.",
+      video: 'videos/02-impression.mp4',
+      visual: '&#128424;',
+      bg: 'linear-gradient(135deg, #0d1a1a, #081018)'
+    },
+    {
+      name: 'Post-traitement',
+      badge: 'industrial', badgeLabel: '&#9733; L\'étape clé',
+      desc: "C'est ici que notre savoir-faire artisanal fait toute la différence. Ponçage, assemblage, stratification, traitement de surface. Des heures de travail manuel qui effacent toute trace d'impression.",
+      video: 'videos/03-post-traitement.mp4',
+      visual: '&#128295;',
+      bg: 'linear-gradient(135deg, #1a1505, #100e02)'
+    },
+    {
+      name: 'Peinture & Finition',
+      badge: 'artistic', badgeLabel: '&#127912; Étape artistique',
+      desc: "Aérographe, peinture à la main, effets de matière, patines, laques. C'est la touche finale qui transforme un objet en oeuvre, qu'il soit industriel ou artistique.",
+      video: 'videos/04-peinture.mp4',
+      visual: '&#127912;',
+      bg: 'linear-gradient(135deg, #0d1a14, #06100a)'
+    },
+    {
+      name: 'Pièce finale',
+      badge: 'artistic', badgeLabel: '&#10003; Résultat clé en main',
+      desc: "La pièce que vous recevez n'a plus rien à voir avec ce qui est sorti de l'imprimante. Finie, peinte, assemblée, prête à l'usage — c'est le résultat d'un processus artisanal complet.",
+      video: 'videos/05-piece-finale.mp4',
+      visual: '&#10024;',
+      bg: 'linear-gradient(135deg, #001a14, #000e0a)'
+    }
+  ];
+
+  var currentStep = 0;
+  var autoTimer = null;
+  var STEP_DURATION = 4000; // 4 secondes par étape
+
+  // ════════ GESTION VIDÉO ════════
+  var currentVideo = null;
+
+  function loadStepVideo(index) {
+    var detail = document.getElementById('step-detail');
+    if (!detail) return;
+
+    var wrap = detail.querySelector('.step-detail-video-wrap');
+    if (!wrap) return;
+
+    // Arrêter l'ancienne vidéo proprement
+    if (currentVideo) {
+      currentVideo.pause();
+      currentVideo.src = '';
+      currentVideo.load();
+    }
+
+    var vid = wrap.querySelector('video');
+    if (!vid) return;
+
+    vid.classList.remove('loaded');
+    vid.src = steps[index].video;
+    vid.load();
+
+    // Lancer la lecture dès que possible
+    vid.addEventListener('canplay', function onCanPlay() {
+      vid.removeEventListener('canplay', onCanPlay);
+      vid.play().catch(function() {});
+      vid.classList.add('loaded');
+    });
+
+    // Couper à 4 secondes si la vidéo est plus longue
+    vid.addEventListener('timeupdate', function onTime() {
+      if (vid.currentTime >= 4) {
+        vid.pause();
+        vid.removeEventListener('timeupdate', onTime);
+      }
+    });
+
+    currentVideo = vid;
+  }
+
   // ════════ WORLDS SLIDESHOW ════════
   var W_SRCS = {
     ind: ['img/worlds/ind-1.png','img/worlds/ind-2.png','img/worlds/ind-3.jpg','img/worlds/ind-4.jpg'],
     art: ['img/worlds/art-1.jpg','img/worlds/art-2.jpg','img/worlds/art-3.jpg','img/worlds/art-4.png']
   };
-  var W_FADE = 1300;  // ms fondu
-  var W_HOLD = 5000;  // ms entre changements
+  var W_FADE = 1300;
+  var W_HOLD = 5000;
 
-  // État par panneau
   var wState = {
     ind: { idx: 0, timer: null, hovered: false, fading: false },
     art: { idx: 0, timer: null, hovered: false, fading: false }
   };
 
-  // Opacity du fond en mode normal (transparent) vs hover (plein)
   var W_OPACITY_NORMAL = 0.22;
   var W_OPACITY_HOVER  = 1.0;
 
-  function wImg(w)  { return document.getElementById('wimg-' + w); }
-  function wBg(w)   { return document.getElementById('wbg-' + w); }
-  function wPanel(w){ return document.getElementById('wp-' + w); }
+  function wImg(w)   { return document.getElementById('wimg-' + w); }
+  function wBg(w)    { return document.getElementById('wbg-' + w); }
+  function wPanel(w) { return document.getElementById('wp-' + w); }
 
-  // Anime l'opacity du bg de A vers B en W_FADE ms, puis cb()
   function wFade(w, fromOp, toOp, cb) {
     var bg = wBg(w);
     var t0 = performance.now();
@@ -489,47 +605,40 @@
     requestAnimationFrame(tick);
   }
 
-  // Planifie le prochain changement d'image
   function wSchedule(w) {
     var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
     st.timer = setTimeout(function() {
-      if (st.hovered || st.panelHovered) return; // pause si hover
+      if (st.hovered || st.panelHovered) return;
       st.fading = true;
-      // 1. Fade vers noir (0)
       wFade(w, W_OPACITY_NORMAL, 0, function() {
         if (st.hovered) {
-          // Interrompu par un hover pendant le fondu — restaurer
           wBg(w).style.opacity = W_OPACITY_NORMAL;
           st.fading = false;
           return;
         }
-        // 2. Changer l'image
         st.idx = (st.idx + 1) % W_SRCS[w].length;
         wImg(w).src = W_SRCS[w][st.idx];
-        // 3. Fade retour à l'opacity normale
         wFade(w, 0, W_OPACITY_NORMAL, function() {
           st.fading = false;
-          wSchedule(w); // cycle suivant
+          wSchedule(w);
         });
       });
     }, W_HOLD);
   }
 
-  // Démarre le slideshow d'un panneau
   function wStart(w) {
     var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
-    st.idx         = 0;
-    st.hovered     = false;
+    st.idx          = 0;
+    st.hovered      = false;
     st.panelHovered = false;
-    st.fading      = false;
+    st.fading       = false;
     wImg(w).src = W_SRCS[w][0];
     wBg(w).style.opacity = W_OPACITY_NORMAL;
     wSchedule(w);
   }
 
-  // Hover sur le panneau entier → stop slideshow, image pleine, pas de texte
   function wPanelOn(w) {
     var st = wState[w];
     st.panelHovered = true;
@@ -544,11 +653,10 @@
     if (!st.hovered) {
       wBg(w).style.opacity = W_OPACITY_NORMAL;
       wPanel(w).classList.remove('is-hovered');
-      wSchedule(w); // reprendre le slideshow
+      wSchedule(w);
     }
   }
 
-  // Hover sur une miniature → image pleine, pas de texte
   function wThumbOn(w, idx) {
     var st = wState[w];
     st.hovered = true;
@@ -559,7 +667,6 @@
     wPanel(w).classList.add('is-hovered');
   }
 
-  // Fin du hover → retour transparence + texte + reprise slideshow
   function wThumbOff(w) {
     var st = wState[w];
     st.hovered = false;
@@ -568,27 +675,16 @@
     wSchedule(w);
   }
 
-  // ---- NAV scroll ----
+  // ════════ NAV ════════
   var nav = document.getElementById('nav');
   window.addEventListener('scroll', function() {
     nav.classList.toggle('scrolled', window.scrollY > 60);
   });
 
-  // ---- JOURNEY timeline ----
-  var steps = [
-    { name: 'Modélisation 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "Tout commence ici. Analyse de votre cahier des charges, scan 3D de l'existant ou création from scratch. Nous construisons en numérique la pièce parfaite avant de toucher à la matière.", visual: '&#128208;', bg: 'linear-gradient(135deg, #0d1a22, #081018)' },
-    { name: 'Impression 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "FDM pour les grandes pièces et les séries, SLA pour la précision et les détails fins. La pièce prend forme couche par couche. Ce qui sort de l'imprimante n'est qu'une ébauche — le vrai travail commence maintenant.", visual: '&#128424;', bg: 'linear-gradient(135deg, #0d1a1a, #081018)' },
-    { name: 'Post-traitement', badge: 'industrial', badgeLabel: '&#9733; L\'étape clé', desc: "C'est ici que notre savoir-faire artisanal fait toute la différence. Ponçage, assemblage, stratification, traitement de surface. Des heures de travail manuel qui effacent toute trace d'impression.", visual: '&#128295;', bg: 'linear-gradient(135deg, #1a1505, #100e02)' },
-    { name: 'Peinture & Finition', badge: 'artistic', badgeLabel: '&#127912; Étape artistique', desc: "Aérographe, peinture à la main, effets de matière, patines, laques. C'est la touche finale qui transforme un objet en oeuvre, qu'il soit industriel ou artistique.", visual: '&#127912;', bg: 'linear-gradient(135deg, #0d1a14, #06100a)' },
-    { name: 'Pièce finale', badge: 'artistic', badgeLabel: '&#10003; Résultat clé en main', desc: "La pièce que vous recevez n'a plus rien à voir avec ce qui est sorti de l'imprimante. Finie, peinte, assemblée, prête à l'usage — c'est le résultat d'un processus artisanal complet.", visual: '&#10024;', bg: 'linear-gradient(135deg, #001a14, #000e0a)' }
-  ];
-
-  var currentStep = 0;
-  var autoTimer = null;
-
+  // ════════ TIMELINE ════════
   function alignTrack() {
     var timeline = document.getElementById('timeline');
-    var track = document.getElementById('timeline-track');
+    var track    = document.getElementById('timeline-track');
     if (!timeline || !track) return;
     var firstDot = timeline.querySelector('.step-dot');
     if (!firstDot) return;
@@ -599,61 +695,70 @@
   }
 
   function getStepPercent(index) {
-    var track = document.getElementById('timeline-track');
+    var track   = document.getElementById('timeline-track');
     var stepEls = document.querySelectorAll('.step');
     if (!stepEls[index] || !track) return 0;
-    var tRect = track.getBoundingClientRect();
-    var sRect = stepEls[index].getBoundingClientRect();
+    var tRect   = track.getBoundingClientRect();
+    var sRect   = stepEls[index].getBoundingClientRect();
     var centerX = sRect.left + sRect.width / 2;
-    var pct = (centerX - tRect.left) / tRect.width * 100;
+    var pct     = (centerX - tRect.left) / tRect.width * 100;
     return Math.max(0, Math.min(100, pct));
   }
 
   function moveOrbTo(index, animate) {
-    var orb = document.getElementById('timeline-orb');
+    var orb      = document.getElementById('timeline-orb');
     var progress = document.getElementById('timeline-progress');
     if (!orb || !progress) return;
     var pct = getStepPercent(index);
     if (!animate) {
-      orb.style.transition = 'none';
+      orb.style.transition      = 'none';
       progress.style.transition = 'none';
-      orb.style.left = pct + '%';
-      progress.style.width = pct + '%';
+      orb.style.left            = pct + '%';
+      progress.style.width      = pct + '%';
       orb.getBoundingClientRect();
-      orb.style.transition = 'left 5s linear';
-      progress.style.transition = 'width 5s linear';
+      orb.style.transition      = 'left ' + (STEP_DURATION / 1000) + 's linear';
+      progress.style.transition = 'width ' + (STEP_DURATION / 1000) + 's linear';
     } else {
-      orb.style.transition = 'left 5s linear';
-      progress.style.transition = 'width 5s linear';
-      orb.style.left = pct + '%';
-      progress.style.width = pct + '%';
+      orb.style.transition      = 'left ' + (STEP_DURATION / 1000) + 's linear';
+      progress.style.transition = 'width ' + (STEP_DURATION / 1000) + 's linear';
+      orb.style.left            = pct + '%';
+      progress.style.width      = pct + '%';
     }
   }
 
   function updateDotStates(activeIndex) {
     document.querySelectorAll('.step').forEach(function(s, i) {
       s.classList.remove('active', 'visited');
-      if (i === activeIndex) s.classList.add('active');
-      else if (i < activeIndex) s.classList.add('visited');
+      if (i === activeIndex)      s.classList.add('active');
+      else if (i < activeIndex)   s.classList.add('visited');
     });
   }
 
   function showDetail(index) {
     var detail = document.getElementById('step-detail');
-    var s = steps[index];
+    var s      = steps[index];
     if (!detail || !s) return;
+
     detail.classList.remove('visible');
+
     setTimeout(function() {
+      // Construire le HTML avec le lecteur vidéo
       detail.innerHTML =
         '<div>' +
           '<span class="step-detail-badge ' + s.badge + '">' + s.badgeLabel + '</span>' +
           '<h3>' + s.name + '</h3>' +
           '<p>' + s.desc + '</p>' +
         '</div>' +
-        '<div class="step-detail-visual" style="background:' + s.bg + '">' +
-          '<span style="font-size:5rem;position:relative;z-index:1;">' + s.visual + '</span>' +
+        '<div class="step-detail-video-wrap">' +
+          '<div class="video-fallback">' + s.visual + '</div>' +
+          '<video muted playsinline preload="auto"></video>' +
         '</div>';
+
       detail.classList.add('visible');
+
+      // Charger et jouer la vidéo
+      loadStepVideo(index);
+
     }, 200);
   }
 
@@ -672,7 +777,8 @@
     clearAutoPlay();
     function tick() {
       var from = currentStep;
-      var to = from + 1;
+      var to   = from + 1;
+
       if (to >= steps.length) {
         autoTimer = setTimeout(function() {
           currentStep = 0;
@@ -680,16 +786,17 @@
           moveOrbTo(0, false);
           showDetail(0);
           tick();
-        }, 5000);
+        }, STEP_DURATION);
         return;
       }
+
       moveOrbTo(to, true);
       autoTimer = setTimeout(function() {
         currentStep = to;
         updateDotStates(to);
         showDetail(to);
         tick();
-      }, 5000);
+      }, STEP_DURATION);
     }
     tick();
   }
@@ -698,6 +805,7 @@
     if (autoTimer) { clearTimeout(autoTimer); clearInterval(autoTimer); autoTimer = null; }
   }
 
+  // ════════ FILTRES RÉALISATIONS ════════
   function filterCards(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
     btn.classList.add('active');
@@ -706,11 +814,13 @@
     });
   }
 
+  // ════════ REVEAL ════════
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.1 });
   document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
 
+  // ════════ INIT ════════
   var timelineStarted = false;
   window.addEventListener('load', function() {
     wStart('ind');
@@ -719,19 +829,32 @@
     showDetail(0);
     updateDotStates(0);
     setTimeout(function() { moveOrbTo(0, false); }, 150);
-    var timelineSection = document.getElementById('journey');
+
+    var timelineSection    = document.getElementById('journey');
     var visibilityObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
         if (e.isIntersecting) {
-          if (!timelineStarted) { timelineStarted = true; alignTrack(); moveOrbTo(0, false); }
+          if (!timelineStarted) {
+            timelineStarted = true;
+            alignTrack();
+            moveOrbTo(0, false);
+          }
           startAutoPlay();
-        } else { clearAutoPlay(); }
+        } else {
+          clearAutoPlay();
+          // Mettre en pause la vidéo quand on quitte la section
+          if (currentVideo) { currentVideo.pause(); }
+        }
       });
     }, { threshold: 0.3 });
+
     if (timelineSection) visibilityObserver.observe(timelineSection);
   });
 
-  window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
+  window.addEventListener('resize', function() {
+    alignTrack();
+    moveOrbTo(currentStep, false);
+  });
 </script>
 </body>
 </html>
