@@ -551,40 +551,59 @@
     art: { current: 0, timer: null, hovered: false }
   };
 
-  var FADE_MS = 1300; // durée transition CSS opacity
-  var HOLD_MS = 5000; // durée d'affichage pleine entre deux fondus
+  var FADE_MS = 1300; // ms pour fade in / fade out
+  var HOLD_MS = 5000; // ms d'affichage entre fondus
+  var STEP_MS = 16;   // intervalle requestAnimationFrame-like
+
+  // Anime l'opacité d'un élément de 'from' à 'to' en 'duration' ms, puis appelle 'cb'
+  function animateOpacity(el, from, to, duration, cb) {
+    if (!el) { if (cb) cb(); return; }
+    var start = null;
+    el.style.transition = 'none';
+    el.style.opacity = from;
+    // Forcer le reflow
+    el.getBoundingClientRect();
+    function step(ts) {
+      if (!start) start = ts;
+      var progress = Math.min((ts - start) / duration, 1);
+      el.style.opacity = from + (to - from) * progress;
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        el.style.opacity = to;
+        if (cb) cb();
+      }
+    }
+    requestAnimationFrame(step);
+  }
 
   function setExpand(world, index) {
     for (var i = 0; i < 3; i++) {
       var el = document.getElementById(world + '-expand-' + i);
-      if (el) el.classList.remove('visible');
+      if (el) { el.style.transition = 'none'; el.style.opacity = 0; }
     }
     var target = document.getElementById(world + '-expand-' + index);
-    if (target) target.classList.add('visible');
+    if (target) { target.style.transition = 'none'; target.style.opacity = 1; }
   }
 
   function scheduleNext(world) {
     var state = worldState[world];
-    // Attendre HOLD_MS, puis lancer le fondu
     state.timer = setTimeout(function() {
       if (state.hovered) {
-        // Pause hover : on replanifie sans toucher aux images
         scheduleNext(world);
         return;
       }
-      // Fade out : retirer .visible de l'image courante
+      // Fade OUT image courante
       var currentEl = document.getElementById(world + '-expand-' + state.current);
-      if (currentEl) currentEl.classList.remove('visible');
-
-      // Après FADE_MS (image disparue = noir), afficher la suivante
-      state.timer = setTimeout(function() {
+      animateOpacity(currentEl, 1, 0, FADE_MS, function() {
+        // Noir atteint — avancer au suivant
         state.current = (state.current + 1) % 3;
         var nextEl = document.getElementById(world + '-expand-' + state.current);
-        if (nextEl) nextEl.classList.add('visible');
-        // Planifier le prochain cycle
-        scheduleNext(world);
-      }, FADE_MS);
-
+        // Fade IN image suivante
+        animateOpacity(nextEl, 0, 1, FADE_MS, function() {
+          scheduleNext(world);
+        });
+      });
     }, HOLD_MS);
   }
 
