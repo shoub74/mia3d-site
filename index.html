@@ -544,107 +544,94 @@
 </footer>
 
 <script>
-  // ---- WORLDS : slideshow auto + expand au hover miniature ----
+  // ---- WORLDS : slideshow auto + fondu noir + hover miniatures ----
+
+  var HOLD_MS = 5000;
+  var FADE_MS = 1300;
 
   var worldState = {
-    ind: { current: 0, timer: null, hovered: false },
-    art: { current: 0, timer: null, hovered: false }
+    ind: { current: 0, paused: false, timer: null },
+    art: { current: 0, paused: false, timer: null }
   };
 
-  var FADE_MS = 1300;
-  var HOLD_MS = 5000;
-  var t1 = { ind: null, art: null };
-  var t2 = { ind: null, art: null };
-
-  // Retourne l'élément expand d'un monde
-  function getEl(world, idx) {
-    return document.getElementById(world + '-expand-' + idx);
+  function getExpandEls(world) {
+    return Array.prototype.slice.call(
+      document.querySelectorAll('#world-' + world + ' .world-thumb-expand')
+    );
   }
 
-  // Remet tous les expands à opacity:0 sans animation, sauf index qui est à 1
-  function setExpand(world, index) {
-    for (var i = 0; i < 3; i++) {
-      var el = getEl(world, i);
-      if (!el) continue;
-      el.classList.remove('anim-in', 'anim-out');
-      el.style.opacity = (i === index) ? '1' : '0';
+  function showOnly(world, index) {
+    var els = getExpandEls(world);
+    els.forEach(function(el, i) {
+      el.classList.toggle('visible', i === index);
+    });
+    worldState[world].current = index;
+  }
+
+  function clearWorldTimer(world) {
+    if (worldState[world].timer) {
+      clearTimeout(worldState[world].timer);
+      worldState[world].timer = null;
     }
   }
 
-  function doTransition(world) {
-    var state = worldState[world];
-    if (state.hovered) {
-      t1[world] = setTimeout(function(){ doTransition(world); }, HOLD_MS);
-      return;
-    }
-    var fromIdx = state.current;
-    var toIdx   = (fromIdx + 1) % 3;
-    var fromEl  = getEl(world, fromIdx);
-    var toEl    = getEl(world, toIdx);
+  function runSlideshow(world) {
+    clearWorldTimer(world);
 
-    // Préparer toEl invisible sans animation
-    if (toEl) {
-      toEl.classList.remove('anim-in', 'anim-out');
-      toEl.style.opacity = '0';
-    }
-
-    // Lancer fade OUT sur fromEl
-    if (fromEl) {
-      fromEl.classList.remove('anim-in', 'anim-out');
-      void fromEl.offsetWidth; // reflow
-      fromEl.classList.add('anim-out');
-    }
-
-    // Après fade OUT : lancer fade IN sur toEl
-    t2[world] = setTimeout(function() {
-      state.current = toIdx;
-      if (fromEl) {
-        fromEl.classList.remove('anim-out');
-        fromEl.style.opacity = '0';
+    function cycle() {
+      if (worldState[world].paused) {
+        worldState[world].timer = setTimeout(cycle, 300);
+        return;
       }
-      if (toEl) {
-        toEl.classList.remove('anim-in', 'anim-out');
-        void toEl.offsetWidth;
-        toEl.classList.add('anim-in');
-      }
-      // Après fade IN : planifier le prochain cycle
-      t1[world] = setTimeout(function() {
-        if (toEl) {
-          toEl.classList.remove('anim-in');
-          toEl.style.opacity = '1';
+
+      var els = getExpandEls(world);
+      if (!els.length) return;
+
+      var current = worldState[world].current;
+      var next = (current + 1) % els.length;
+
+      // 1) fade out current vers noir
+      els[current].classList.remove('visible');
+
+      // 2) après fondu noir, fade in next
+      worldState[world].timer = setTimeout(function() {
+        if (worldState[world].paused) {
+          worldState[world].timer = setTimeout(cycle, 300);
+          return;
         }
-        t1[world] = setTimeout(function() {
-          doTransition(world);
-        }, HOLD_MS);
+
+        els[next].classList.add('visible');
+        worldState[world].current = next;
+
+        // 3) attendre 5s avant prochain cycle
+        worldState[world].timer = setTimeout(cycle, HOLD_MS);
       }, FADE_MS);
-    }, FADE_MS);
+    }
+
+    worldState[world].timer = setTimeout(cycle, HOLD_MS);
   }
 
   function startSlideshow(world) {
-    clearTimeout(t1[world]);
-    clearTimeout(t2[world]);
-    var state = worldState[world];
-    setExpand(world, state.current);
-    t1[world] = setTimeout(function() {
-      doTransition(world);
-    }, HOLD_MS);
+    showOnly(world, worldState[world].current);
+    runSlideshow(world);
   }
 
-
   function showExpand(world, index) {
-    var state = worldState[world];
-    state.hovered = true;
-    state.current = index;
-    setExpand(world, index);
+    worldState[world].paused = true;
+    clearWorldTimer(world);
+    showOnly(world, index);
+
     var panel = document.getElementById('world-' + world);
     if (panel) panel.classList.add('panel-hovered');
   }
 
   function hideExpand(world) {
-    var state = worldState[world];
-    state.hovered = false;
+    worldState[world].paused = false;
+
     var panel = document.getElementById('world-' + world);
     if (panel) panel.classList.remove('panel-hovered');
+
+    runSlideshow(world);
   }
 
   // ---- NAV scroll ----
@@ -774,7 +761,10 @@
   }
 
   function clearAutoPlay() {
-    if (autoTimer) { clearTimeout(autoTimer); clearInterval(autoTimer); autoTimer = null; }
+    if (autoTimer) {
+      clearTimeout(autoTimer);
+      autoTimer = null;
+    }
   }
 
   function filterCards(cat, btn) {
@@ -786,31 +776,51 @@
   }
 
   var observer = new IntersectionObserver(function(entries) {
-    entries.forEach(function(e) { if (e.isIntersecting) e.target.classList.add('visible'); });
+    entries.forEach(function(e) {
+      if (e.isIntersecting) e.target.classList.add('visible');
+    });
   }, { threshold: 0.1 });
-  document.querySelectorAll('.reveal').forEach(function(el) { observer.observe(el); });
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
+    observer.observe(el);
+  });
 
   var timelineStarted = false;
   window.addEventListener('load', function() {
     startSlideshow('ind');
     startSlideshow('art');
+
     alignTrack();
     showDetail(0);
     updateDotStates(0);
-    setTimeout(function() { moveOrbTo(0, false); }, 150);
+
+    setTimeout(function() {
+      moveOrbTo(0, false);
+    }, 150);
+
     var timelineSection = document.getElementById('journey');
     var visibilityObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
         if (e.isIntersecting) {
-          if (!timelineStarted) { timelineStarted = true; alignTrack(); moveOrbTo(0, false); }
+          if (!timelineStarted) {
+            timelineStarted = true;
+            alignTrack();
+            moveOrbTo(0, false);
+          }
           startAutoPlay();
-        } else { clearAutoPlay(); }
+        } else {
+          clearAutoPlay();
+        }
       });
     }, { threshold: 0.3 });
+
     if (timelineSection) visibilityObserver.observe(timelineSection);
   });
 
-  window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
+  window.addEventListener('resize', function() {
+    alignTrack();
+    moveOrbTo(currentStep, false);
+  });
 </script>
 </body>
 </html>
