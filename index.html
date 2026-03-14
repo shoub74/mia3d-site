@@ -551,78 +551,81 @@
     art: { current: 0, timer: null, hovered: false }
   };
 
+  // Slideshow : HOLD_MS d'affichage, puis FADE_MS de fondu out, puis FADE_MS de fondu in
   var FADE_MS = 1300;
   var HOLD_MS = 5000;
 
-  // Chaque monde a un compteur de génération.
-  // Toute animation qui ne correspond pas à la génération courante s'arrête.
-  var worldGen = { ind: 0, art: 0 };
+  // timers indépendants pour chaque monde
+  var slideshowTimers = { ind: [], art: [] };
 
-  function setExpand(world, index) {
-    for (var i = 0; i < 3; i++) {
-      var el = document.getElementById(world + '-expand-' + i);
-      if (!el) continue;
-      el.style.transition = 'none';
-      el.style.opacity = (i === index) ? '1' : '0';
+  function clearSlideshow(world) {
+    slideshowTimers[world].forEach(function(t) { clearTimeout(t); });
+    slideshowTimers[world] = [];
+  }
+
+  function addTimer(world, fn, delay) {
+    var t = setTimeout(fn, delay);
+    slideshowTimers[world].push(t);
+    return t;
+  }
+
+  function setOpacity(world, index, opacity) {
+    var el = document.getElementById(world + '-expand-' + index);
+    if (el) el.style.opacity = opacity;
+  }
+
+  function showOnly(world, index) {
+    for (var i = 0; i < 3; i++) setOpacity(world, i, i === index ? 1 : 0);
+  }
+
+  // Fondu linéaire par petits pas toutes les 30ms
+  function fadeStep(world, index, from, to, stepCount, totalSteps) {
+    var opacity = from + (to - from) * (stepCount / totalSteps);
+    setOpacity(world, index, opacity);
+    if (stepCount < totalSteps) {
+      addTimer(world, function() {
+        fadeStep(world, index, from, to, stepCount + 1, totalSteps);
+      }, 30);
     }
   }
 
-  function fadeRaf(world, el, startVal, endVal, gen, cb) {
-    if (!el) { if (cb) cb(); return; }
-    el.style.transition = 'none';
-    el.style.opacity = startVal;
-    void el.offsetWidth;
-    // Capturer le timestamp de départ AVANT le premier rAF
-    var startTime = performance.now();
-    function tick(ts) {
-      if (worldGen[world] !== gen) return; // annulé
-      var p = Math.min((ts - startTime) / FADE_MS, 1);
-      el.style.opacity = startVal + (endVal - startVal) * p;
-      if (p < 1) {
-        requestAnimationFrame(tick);
-      } else {
-        el.style.opacity = endVal;
-        if (cb) cb();
-      }
-    }
-    requestAnimationFrame(tick);
-  }
-
-  function runCycle(world, gen) {
+  function startCycle(world) {
     var state = worldState[world];
-    // Attendre HOLD_MS
-    state.timer = setTimeout(function() {
-      if (worldGen[world] !== gen) return; // annulé
-      if (state.hovered) { runCycle(world, gen); return; }
-
+    // Attendre HOLD_MS, puis lancer le fondu
+    addTimer(world, function() {
+      if (state.hovered) { startCycle(world); return; }
       var fromIdx = state.current;
-      var toIdx   = (fromIdx + 1) % 3;
-      var fromEl  = document.getElementById(world + '-expand-' + fromIdx);
-      var toEl    = document.getElementById(world + '-expand-' + toIdx);
+      var toIdx = (fromIdx + 1) % 3;
+      var totalSteps = Math.round(FADE_MS / 30);
 
-      // Mettre toEl à 0 immédiatement
-      if (toEl) { toEl.style.transition = 'none'; toEl.style.opacity = '0'; void toEl.offsetWidth; }
+      // S'assurer que toIdx est à 0
+      setOpacity(world, toIdx, 0);
 
-      // Fade OUT fromEl
-      fadeRaf(world, fromEl, 1, 0, gen, function() {
-        if (worldGen[world] !== gen) return;
+      // Fade OUT fromIdx
+      fadeStep(world, fromIdx, 1, 0, 0, totalSteps);
+
+      // Après fade out complet, fade IN toIdx
+      addTimer(world, function() {
         state.current = toIdx;
-        // Fade IN toEl
-        fadeRaf(world, toEl, 0, 1, gen, function() {
-          if (worldGen[world] !== gen) return;
-          runCycle(world, gen);
-        });
-      });
+        fadeStep(world, toIdx, 0, 1, 0, totalSteps);
+        // Après fade in, lancer le cycle suivant
+        addTimer(world, function() {
+          startCycle(world);
+        }, FADE_MS);
+      }, FADE_MS);
+
     }, HOLD_MS);
   }
 
+  function setExpand(world, index) {
+    showOnly(world, index);
+  }
+
   function startSlideshow(world) {
+    clearSlideshow(world);
     var state = worldState[world];
-    if (state.timer) clearTimeout(state.timer);
-    worldGen[world]++; // invalide toute animation en cours
-    var gen = worldGen[world];
-    setExpand(world, state.current);
-    runCycle(world, gen);
+    showOnly(world, state.current);
+    startCycle(world);
   }
 
   function showExpand(world, index) {
