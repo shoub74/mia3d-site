@@ -544,94 +544,106 @@
 </footer>
 
 <script>
-  // ---- WORLDS : slideshow auto + fondu noir + hover miniatures ----
+  // ---- WORLDS : slideshow simple, régulier, toutes les 5s ----
 
-  var HOLD_MS = 5000;
-  var FADE_MS = 1300;
+  var WORLD_INTERVAL = 5000;
+  var WORLD_FADE = 650;
 
   var worldState = {
-    ind: { current: 0, paused: false, timer: null },
-    art: { current: 0, paused: false, timer: null }
+    ind: { current: 0, paused: false, interval: null, timeout: null },
+    art: { current: 0, paused: false, interval: null, timeout: null }
   };
 
-  function getExpandEls(world) {
+  function getWorldPanel(world) {
+    return document.getElementById('world-' + world);
+  }
+
+  function getWorldSlides(world) {
     return Array.prototype.slice.call(
       document.querySelectorAll('#world-' + world + ' .world-thumb-expand')
     );
   }
 
-  function showOnly(world, index) {
-    var els = getExpandEls(world);
-    els.forEach(function(el, i) {
-      el.classList.toggle('visible', i === index);
+  function clearWorldTimers(world) {
+    var state = worldState[world];
+    if (state.interval) {
+      clearInterval(state.interval);
+      state.interval = null;
+    }
+    if (state.timeout) {
+      clearTimeout(state.timeout);
+      state.timeout = null;
+    }
+  }
+
+  function showOnlySlide(world, index) {
+    var slides = getWorldSlides(world);
+    slides.forEach(function(slide, i) {
+      slide.classList.toggle('visible', i === index);
     });
     worldState[world].current = index;
   }
 
-  function clearWorldTimer(world) {
-    if (worldState[world].timer) {
-      clearTimeout(worldState[world].timer);
-      worldState[world].timer = null;
-    }
-  }
+  function nextSlide(world) {
+    var state = worldState[world];
+    if (state.paused) return;
 
-  function runSlideshow(world) {
-    clearWorldTimer(world);
+    var panel = getWorldPanel(world);
+    var slides = getWorldSlides(world);
+    if (!slides.length) return;
 
-    function cycle() {
-      if (worldState[world].paused) {
-        worldState[world].timer = setTimeout(cycle, 300);
-        return;
-      }
+    var current = state.current;
+    var next = (current + 1) % slides.length;
 
-      var els = getExpandEls(world);
-      if (!els.length) return;
+    if (panel) panel.classList.add('slideshow-active');
 
-      var current = worldState[world].current;
-      var next = (current + 1) % els.length;
+    slides[current].classList.remove('visible');
 
-      // 1) fade out current vers noir
-      els[current].classList.remove('visible');
-
-      // 2) après fondu noir, fade in next
-      worldState[world].timer = setTimeout(function() {
-        if (worldState[world].paused) {
-          worldState[world].timer = setTimeout(cycle, 300);
-          return;
-        }
-
-        els[next].classList.add('visible');
-        worldState[world].current = next;
-
-        // 3) attendre 5s avant prochain cycle
-        worldState[world].timer = setTimeout(cycle, HOLD_MS);
-      }, FADE_MS);
-    }
-
-    worldState[world].timer = setTimeout(cycle, HOLD_MS);
+    state.timeout = setTimeout(function() {
+      if (state.paused) return;
+      slides[next].classList.add('visible');
+      state.current = next;
+    }, WORLD_FADE);
   }
 
   function startSlideshow(world) {
-    showOnly(world, worldState[world].current);
-    runSlideshow(world);
+    var panel = getWorldPanel(world);
+    if (panel) panel.classList.add('slideshow-active');
+
+    clearWorldTimers(world);
+    showOnlySlide(world, worldState[world].current);
+
+    worldState[world].interval = setInterval(function() {
+      nextSlide(world);
+    }, WORLD_INTERVAL);
   }
 
   function showExpand(world, index) {
-    worldState[world].paused = true;
-    clearWorldTimer(world);
-    showOnly(world, index);
+    var state = worldState[world];
+    var panel = getWorldPanel(world);
 
-    var panel = document.getElementById('world-' + world);
-    if (panel) panel.classList.add('panel-hovered');
+    state.paused = true;
+    clearWorldTimers(world);
+    showOnlySlide(world, index);
+
+    if (panel) {
+      panel.classList.add('panel-hovered');
+      panel.classList.add('slideshow-active');
+    }
   }
 
   function hideExpand(world) {
-    worldState[world].paused = false;
+    var state = worldState[world];
+    var panel = getWorldPanel(world);
 
-    var panel = document.getElementById('world-' + world);
-    if (panel) panel.classList.remove('panel-hovered');
+    state.paused = false;
 
-    runSlideshow(world);
+    if (panel) {
+      panel.classList.remove('panel-hovered');
+      panel.classList.add('slideshow-active');
+    }
+
+    startSlideshow(world);
   }
 
   // ---- NAV scroll ----
@@ -644,7 +656,7 @@
   var steps = [
     { name: 'Modélisation 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "Tout commence ici. Analyse de votre cahier des charges, scan 3D de l'existant ou création from scratch. Nous construisons en numérique la pièce parfaite avant de toucher à la matière.", visual: '&#128208;', bg: 'linear-gradient(135deg, #0d1a22, #081018)' },
     { name: 'Impression 3D', badge: 'industrial', badgeLabel: '&#9881; Étape technique', desc: "FDM pour les grandes pièces et les séries, SLA pour la précision et les détails fins. La pièce prend forme couche par couche. Ce qui sort de l'imprimante n'est qu'une ébauche — le vrai travail commence maintenant.", visual: '&#128424;', bg: 'linear-gradient(135deg, #0d1a1a, #081018)' },
-    { name: 'Post-traitement', badge: 'industrial', badgeLabel: '&#9733; L\'étape clé', desc: "C'est ici que notre savoir-faire artisanal fait toute la différence. Ponçage, assemblage, stratification, traitement de surface. Des heures de travail manuel qui effacent toute trace d'impression.", visual: '&#128295;', bg: 'linear-gradient(135deg, #1a1505, #100e02)' },
+    { name: 'Post-traitement', badge: 'industrial', badgeLabel: '&#9733; L\\'étape clé', desc: "C'est ici que notre savoir-faire artisanal fait toute la différence. Ponçage, assemblage, stratification, traitement de surface. Des heures de travail manuel qui effacent toute trace d'impression.", visual: '&#128295;', bg: 'linear-gradient(135deg, #1a1505, #100e02)' },
     { name: 'Peinture & Finition', badge: 'artistic', badgeLabel: '&#127912; Étape artistique', desc: "Aérographe, peinture à la main, effets de matière, patines, laques. C'est la touche finale qui transforme un objet en oeuvre, qu'il soit industriel ou artistique.", visual: '&#127912;', bg: 'linear-gradient(135deg, #0d1a14, #06100a)' },
     { name: 'Pièce finale', badge: 'artistic', badgeLabel: '&#10003; Résultat clé en main', desc: "La pièce que vous recevez n'a plus rien à voir avec ce qui est sorti de l'imprimante. Finie, peinte, assemblée, prête à l'usage — c'est le résultat d'un processus artisanal complet.", visual: '&#10024;', bg: 'linear-gradient(135deg, #001a14, #000e0a)' }
   ];
@@ -768,7 +780,9 @@
   }
 
   function filterCards(cat, btn) {
-    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    document.querySelectorAll('.filter-btn').forEach(function(b) {
+      b.classList.remove('active');
+    });
     btn.classList.add('active');
     document.querySelectorAll('.real-card').forEach(function(card) {
       card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
