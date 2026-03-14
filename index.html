@@ -97,98 +97,92 @@
   .step-detail-visual { aspect-ratio: 4/3; background: var(--grey); display: flex; align-items: center; justify-content: center; font-size: 4rem; position: relative; overflow: hidden; }
   .step-detail-visual::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0,229,192,0.1) 0%, transparent 50%); }
 
-  /* TWO WORLDS */
+  /* ═══ TWO WORLDS ═══ */
   #worlds { background: var(--dark); position: relative; }
-  #worlds::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+  #worlds::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--teal-dark),transparent); }
 
-  .worlds-header { text-align: center; margin-bottom: 4rem; }
-  .worlds-header p { font-size: 1rem; font-weight: 300; color: var(--muted); max-width: 500px; margin: 1rem auto 0; line-height: 1.7; }
+  .worlds-header { text-align:center; margin-bottom:3rem; }
+  .worlds-header p { font-size:1rem; font-weight:300; color:var(--muted); max-width:500px; margin:1rem auto 0; line-height:1.7; }
 
-  #worlds .container { max-width: 100%; padding: 0 2rem; }
-  #worlds .worlds-header { max-width: 1200px; margin-left: auto; margin-right: auto; margin-bottom: 4rem; }
+  #worlds .container { max-width:100%; padding:0 2rem; }
+  #worlds .worlds-header { max-width:1200px; margin-left:auto; margin-right:auto; }
 
-  .worlds-wrap { width: 100%; }
-  .worlds-split { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border: 1px solid var(--grey); overflow: hidden; }
-
-  /* Chaque panneau : hauteur fixe, position relative pour les enfants absolus */
-  .world { position: relative; overflow: hidden; height: 560px; }
-  .world + .world { border-left: 1px solid var(--grey); }
-  .world-industrial { background: #000; }
-  .world-artistic   { background: #000; }
-
-  /* Grilles déco */
-  .world-industrial::before {
-    content: ''; position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(126,184,212,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(126,184,212,0.04) 1px, transparent 1px);
-    background-size: 30px 30px; pointer-events: none; z-index: 0;
-  }
-  .world-artistic::before {
-    content: ''; position: absolute; inset: 0;
-    background-image: linear-gradient(rgba(0,229,192,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,229,192,0.04) 1px, transparent 1px);
-    background-size: 40px 40px; pointer-events: none; z-index: 0;
-    transform: rotate(15deg) scale(1.5); transform-origin: center;
+  /* Grille 2 colonnes, pleine largeur */
+  .worlds-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--grey);
+    overflow: hidden;
   }
 
-  /* Slideshow : une seule image dont on change le src, opacity animée en JS */
-  .world-slide-wrap {
-    position: absolute; inset: 0;
-    z-index: 1;
+  /* Chaque panneau : hauteur fixe, fond noir */
+  .w-panel {
+    position: relative;
+    height: 560px;
     background: #000;
-    pointer-events: none;
-    /* PAS DE TRANSITION CSS ICI */
+    overflow: hidden;
   }
-  .world-slide-img {
+  .w-panel + .w-panel { border-left: 1px solid var(--grey); }
+
+  /* Image de fond — couvre tout le panneau, object-fit contain */
+  .w-bg {
+    position: absolute;
+    inset: 0;
+    background: #000;
+  }
+  .w-bg img {
     width: 100%; height: 100%;
     object-fit: contain;
     display: block;
-    filter: brightness(0.25) saturate(0.5);
-  }
-  .world.panel-hovered .world-slide-img {
-    filter: brightness(0.7) saturate(1.1);
   }
 
-  /* Contenu texte — z-index 2, toujours visible sauf hover miniature */
-  .world-content {
+  /* Contenu textuel — par-dessus l'image, z-index 2 */
+  .w-content {
     position: absolute;
-    top: 0; left: 0; right: 0;
+    inset: 0;
     z-index: 2;
     padding: 3rem 2.5rem;
-    /* PAS DE TRANSITION sur le texte */
+    pointer-events: none;
   }
-  .world.panel-hovered .world-content { display: none; }
-
-  .world-label { font-family: var(--font-mono); font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.8rem; }
-  .world-industrial .world-label { color: #7EB8D4; }
-  .world-artistic   .world-label { color: var(--teal-light); }
-  .world-label::before { content: ''; display: block; width: 20px; height: 1px; }
-  .world-industrial .world-label::before { background: #7EB8D4; }
-  .world-artistic   .world-label::before { background: var(--teal-light); }
-
-  .world-title { font-family: var(--font-display); font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 0.95; letter-spacing: 0.03em; color: var(--white); margin-bottom: 1.5rem; }
-  .world-desc { font-size: 0.9rem; font-weight: 300; line-height: 1.8; color: var(--muted); max-width: 360px; }
-
-  .world-big-icon { position: absolute; bottom: -1rem; right: 1.5rem; font-size: 8rem; opacity: 0.05; line-height: 1; pointer-events: none; z-index: 2; }
-  .world.panel-hovered .world-big-icon { opacity: 0; }
-
-  /* Strip miniatures — z-index 5, toujours au-dessus */
-  .world-photos {
-    position: absolute; bottom: 1.5rem; left: 2rem; right: 2rem;
-    display: flex; gap: 8px; z-index: 5;
+  .w-label {
+    font-family: var(--font-mono); font-size:0.65rem; letter-spacing:0.2em;
+    text-transform:uppercase; margin-bottom:1.2rem;
+    display:flex; align-items:center; gap:0.8rem;
   }
-  .world-thumb {
-    width: 72px; height: 54px; overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.15);
-    cursor: pointer; flex-shrink: 0; background: #000;
-    transition: border-color 0.3s;
+  .w-panel-ind .w-label { color:#7EB8D4; }
+  .w-panel-art .w-label { color:var(--teal-light); }
+  .w-label::before { content:''; display:block; width:20px; height:1px; }
+  .w-panel-ind .w-label::before { background:#7EB8D4; }
+  .w-panel-art .w-label::before { background:var(--teal-light); }
+  .w-title {
+    font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem);
+    line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:1.2rem;
   }
-  .world-thumb:hover { border-color: rgba(255,255,255,0.7); }
-  .world-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.7); transition: filter 0.3s ease; }
-  .world-thumb:hover img { filter: brightness(1.1); }
+  .w-desc {
+    font-size:0.9rem; font-weight:300; line-height:1.8;
+    color:var(--muted); max-width:340px;
+  }
 
-  /* Slide unique CSS — voir nouveau bloc ci-dessous */
-  .world-slide-wrap { position: absolute; inset: 0; z-index: 1; background: #000; pointer-events: none; }
-  .world-slide-img { width: 100%; height: 100%; object-fit: contain; display: block; filter: brightness(0.25) saturate(0.5); }
-  .world.panel-hovered .world-slide-img { filter: brightness(0.7) saturate(1.1); }
+  /* Miniatures — z-index 3, toujours visibles */
+  .w-thumbs {
+    position: absolute;
+    bottom: 1.5rem; left: 2rem; right: 2rem;
+    display: flex; gap: 8px;
+    z-index: 3;
+  }
+  .w-thumb {
+    width: 72px; height: 54px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,0.2);
+    cursor: pointer; flex-shrink: 0; background:#000;
+    transition: border-color 0.25s;
+  }
+  .w-thumb:hover { border-color: rgba(255,255,255,0.8); }
+  .w-thumb img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.65); transition:filter 0.25s; }
+  .w-thumb:hover img { filter:brightness(1.1); }
+
+  /* État hover : contenu masqué */
+  .w-panel.is-hovered .w-content { display: none; }
 
   /* REALISATIONS */
   #realisations { background: var(--black); position: relative; }
@@ -331,49 +325,44 @@
       <h2 class="section-title">Un <span class="accent">outil</span>,<br>deux univers</h2>
       <p>La même technologie, la même précision — mais deux façons radicalement différentes de la sublimer.</p>
     </div>
-
-    <div class="worlds-wrap reveal">
-    <div class="worlds-split">
+    <div class="worlds-split reveal">
 
       <!-- INDUSTRIEL -->
-      <div class="world world-industrial" id="world-ind">
-        <div class="world-cover"><img src="img/worlds/ind-cover.jpg" alt="Univers industriel"></div>
-        <div class="world-slide-wrap" id="ind-slide-wrap">
-          <img class="world-slide-img" id="ind-slide-img" src="img/worlds/ind-1.png" alt="">
+      <div class="w-panel w-panel-ind" id="wp-ind">
+        <div class="w-bg" id="wbg-ind">
+          <img id="wimg-ind" src="img/worlds/ind-1.png" alt="">
         </div>
-        <div class="world-content">
-          <p class="world-label">Univers industriel</p>
-          <h3 class="world-title">Précision<br>&amp; Série</h3>
-          <p class="world-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
+        <div class="w-content" id="wcontent-ind">
+          <p class="w-label">Univers industriel</p>
+          <h3 class="w-title">Précision<br>&amp; Série</h3>
+          <p class="w-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
         </div>
-        <span class="world-big-icon">⚙️</span>
-        <div class="world-photos">
-          <div class="world-thumb" onmouseenter="thumbEnter('ind',0)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-1.png" alt="Prototype"></div>
-          <div class="world-thumb" onmouseenter="thumbEnter('ind',1)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-2.png" alt="Série technique"></div>
-          <div class="world-thumb" onmouseenter="thumbEnter('ind',2)" onmouseleave="thumbLeave('ind')"><img src="img/worlds/ind-3.jpg" alt="Maquette"></div>
+        <div class="w-thumbs">
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',0)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-1.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',1)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-2.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',2)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-4.jpg" alt=""></div>
         </div>
       </div>
 
       <!-- ARTISTIQUE -->
-      <div class="world world-artistic" id="world-art">
-        <div class="world-cover"><img src="img/worlds/art-cover.png" alt="Univers artistique"></div>
-        <div class="world-slide-wrap" id="art-slide-wrap">
-          <img class="world-slide-img" id="art-slide-img" src="img/worlds/art-1.jpg" alt="">
+      <div class="w-panel w-panel-art" id="wp-art">
+        <div class="w-bg" id="wbg-art">
+          <img id="wimg-art" src="img/worlds/art-1.jpg" alt="">
         </div>
-        <div class="world-content">
-          <p class="world-label">Univers artistique</p>
-          <h3 class="world-title">Art<br>&amp; Émotion</h3>
-          <p class="world-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
+        <div class="w-content" id="wcontent-art">
+          <p class="w-label">Univers artistique</p>
+          <h3 class="w-title">Art<br>&amp; Émotion</h3>
+          <p class="w-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
-        <span class="world-big-icon">🎭</span>
-        <div class="world-photos">
-          <div class="world-thumb" onmouseenter="thumbEnter('art',0)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-1.jpg" alt="Sculpture"></div>
-          <div class="world-thumb" onmouseenter="thumbEnter('art',1)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-2.jpg" alt="Art Toy"></div>
-          <div class="world-thumb" onmouseenter="thumbEnter('art',2)" onmouseleave="thumbLeave('art')"><img src="img/worlds/art-3.jpg" alt="Trophée"></div>
+        <div class="w-thumbs">
+          <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-1.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-2.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-4.png" alt=""></div>
         </div>
       </div>
 
-    </div>
     </div>
   </div>
 </section>
@@ -457,99 +446,99 @@
 </footer>
 
 <script>
-  // ---- WORLDS : slideshow auto + expand au hover miniature ----
+  // ════════ WORLDS SLIDESHOW ════════
+  var W_SRCS = {
+    ind: ['img/worlds/ind-1.png','img/worlds/ind-2.png','img/worlds/ind-3.jpg','img/worlds/ind-4.jpg'],
+    art: ['img/worlds/art-1.jpg','img/worlds/art-2.jpg','img/worlds/art-3.jpg','img/worlds/art-4.png']
+  };
+  var W_FADE = 1300;  // ms fondu
+  var W_HOLD = 5000;  // ms entre changements
 
-  var worldState = {
-    ind: { current: 0, timer: null, hovered: false },
-    art: { current: 0, timer: null, hovered: false }
+  // État par panneau
+  var wState = {
+    ind: { idx: 0, timer: null, hovered: false, fading: false },
+    art: { idx: 0, timer: null, hovered: false, fading: false }
   };
 
-  // ---- WORLDS SLIDESHOW ----
-  // Sources des images pour chaque monde
-  var worldSrcs = {
-    ind: ['img/worlds/ind-1.png', 'img/worlds/ind-2.png', 'img/worlds/ind-3.jpg'],
-    art: ['img/worlds/art-1.jpg', 'img/worlds/art-2.jpg', 'img/worlds/art-3.jpg']
-  };
-  var FADE_MS = 1300;
-  var HOLD_MS = 5000;
-  // État : index courant et timer pour chaque monde
-  var slideState = {
-    ind: { idx: 0, timer: null, paused: false },
-    art: { idx: 0, timer: null, paused: false }
-  };
+  // Opacity du fond en mode normal (transparent) vs hover (plein)
+  var W_OPACITY_NORMAL = 0.22;
+  var W_OPACITY_HOVER  = 1.0;
 
-  function getWrap(world) { return document.getElementById(world + '-slide-wrap'); }
-  function getImg(world)  { return document.getElementById(world + '-slide-img'); }
+  function wImg(w)  { return document.getElementById('wimg-' + w); }
+  function wBg(w)   { return document.getElementById('wbg-' + w); }
+  function wPanel(w){ return document.getElementById('wp-' + w); }
 
-  // Fade le wrap de op1 à op2 en FADE_MS ms, puis appelle cb
-  function fadeWrap(world, op1, op2, cb) {
-    var wrap = getWrap(world);
-    var start = performance.now();
+  // Anime l'opacity du bg de A vers B en W_FADE ms, puis cb()
+  function wFade(w, fromOp, toOp, cb) {
+    var bg = wBg(w);
+    var t0 = performance.now();
     function tick(ts) {
-      var p = Math.min((ts - start) / FADE_MS, 1);
-      wrap.style.opacity = op1 + (op2 - op1) * p;
+      var p = Math.min((ts - t0) / W_FADE, 1);
+      bg.style.opacity = fromOp + (toOp - fromOp) * p;
       if (p < 1) { requestAnimationFrame(tick); }
-      else { wrap.style.opacity = op2; if (cb) cb(); }
+      else       { bg.style.opacity = toOp; if (cb) cb(); }
     }
     requestAnimationFrame(tick);
   }
 
-  // Lance un cycle : attend HOLD_MS, fade out, change src, fade in, répète
-  function scheduleSlide(world) {
-    var st = slideState[world];
+  // Planifie le prochain changement d'image
+  function wSchedule(w) {
+    var st = wState[w];
+    if (st.timer) clearTimeout(st.timer);
     st.timer = setTimeout(function() {
-      if (st.paused) { scheduleSlide(world); return; }
-      // Fade OUT
-      fadeWrap(world, 1, 0, function() {
-        // Changer l'image (src)
-        st.idx = (st.idx + 1) % 3;
-        getImg(world).src = worldSrcs[world][st.idx];
-        // Fade IN
-        fadeWrap(world, 0, 1, function() {
-          scheduleSlide(world);
+      if (st.hovered) return; // pause si hover
+      st.fading = true;
+      // 1. Fade vers noir (0)
+      wFade(w, W_OPACITY_NORMAL, 0, function() {
+        if (st.hovered) {
+          // Interrompu par un hover pendant le fondu — restaurer
+          wBg(w).style.opacity = W_OPACITY_NORMAL;
+          st.fading = false;
+          return;
+        }
+        // 2. Changer l'image
+        st.idx = (st.idx + 1) % W_SRCS[w].length;
+        wImg(w).src = W_SRCS[w][st.idx];
+        // 3. Fade retour à l'opacity normale
+        wFade(w, 0, W_OPACITY_NORMAL, function() {
+          st.fading = false;
+          wSchedule(w); // cycle suivant
         });
       });
-    }, HOLD_MS);
+    }, W_HOLD);
   }
 
-  function startSlideshow(world) {
-    var st = slideState[world];
+  // Démarre le slideshow d'un panneau
+  function wStart(w) {
+    var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
-    st.paused = false;
-    st.idx = 0;
-    // Afficher la première image immédiatement
-    getImg(world).src = worldSrcs[world][0];
-    getWrap(world).style.opacity = '1';
-    scheduleSlide(world);
+    st.idx    = 0;
+    st.hovered = false;
+    st.fading  = false;
+    wImg(w).src = W_SRCS[w][0];
+    wBg(w).style.opacity = W_OPACITY_NORMAL;
+    wSchedule(w);
   }
 
-  // Appelé au mouseenter d'une miniature
-  function thumbEnter(world, index) {
-    var st = slideState[world];
-    st.paused = true;
+  // Hover sur une miniature → image pleine, pas de texte
+  function wThumbOn(w, idx) {
+    var st = wState[w];
+    st.hovered = true;
     if (st.timer) clearTimeout(st.timer);
-    // Changer la src immédiatement et garder visible
-    st.idx = index;
-    getImg(world).src = worldSrcs[world][index];
-    getWrap(world).style.opacity = '1';
-    // Masquer le texte
-    var panel = document.getElementById('world-' + world);
-    if (panel) panel.classList.add('panel-hovered');
+    st.idx = idx;
+    wImg(w).src = W_SRCS[w][idx];
+    wBg(w).style.opacity = W_OPACITY_HOVER;
+    wPanel(w).classList.add('is-hovered');
   }
 
-  // Appelé au mouseleave d'une miniature
-  function thumbLeave(world) {
-    var st = slideState[world];
-    st.paused = false;
-    // Rétablir le texte
-    var panel = document.getElementById('world-' + world);
-    if (panel) panel.classList.remove('panel-hovered');
-    // Reprendre le slideshow depuis l'image courante
-    scheduleSlide(world);
+  // Fin du hover → retour transparence + texte + reprise slideshow
+  function wThumbOff(w) {
+    var st = wState[w];
+    st.hovered = false;
+    wBg(w).style.opacity = W_OPACITY_NORMAL;
+    wPanel(w).classList.remove('is-hovered');
+    wSchedule(w);
   }
-
-
-
 
   // ---- NAV scroll ----
   var nav = document.getElementById('nav');
@@ -696,8 +685,8 @@
 
   var timelineStarted = false;
   window.addEventListener('load', function() {
-    startSlideshow('ind');
-    startSlideshow('art');
+    wStart('ind');
+    wStart('art');
     alignTrack();
     showDetail(0);
     updateDotStates(0);
