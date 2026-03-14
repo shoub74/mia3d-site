@@ -328,7 +328,7 @@
     <div class="worlds-split reveal">
 
       <!-- INDUSTRIEL -->
-      <div class="w-panel w-panel-ind" id="wp-ind">
+      <div class="w-panel w-panel-ind" id="wp-ind" onmouseenter="wPanelOn('ind')" onmouseleave="wPanelOff('ind')">
         <div class="w-bg" id="wbg-ind">
           <img id="wimg-ind" src="img/worlds/ind-1.png" alt="">
         </div>
@@ -346,7 +346,7 @@
       </div>
 
       <!-- ARTISTIQUE -->
-      <div class="w-panel w-panel-art" id="wp-art">
+      <div class="w-panel w-panel-art" id="wp-art" onmouseenter="wPanelOn('art')" onmouseleave="wPanelOff('art')">
         <div class="w-bg" id="wbg-art">
           <img id="wimg-art" src="img/worlds/art-1.jpg" alt="">
         </div>
@@ -518,6 +518,22 @@
     wImg(w).src = W_SRCS[w][0];
     wBg(w).style.opacity = W_OPACITY_NORMAL;
     wSchedule(w);
+  }
+
+  // Hover sur le panneau entier → image pleine, pas de texte
+  function wPanelOn(w) {
+    var st = wState[w];
+    wBg(w).style.opacity = W_OPACITY_HOVER;
+    wPanel(w).classList.add('is-hovered');
+  }
+
+  function wPanelOff(w) {
+    var st = wState[w];
+    // Ne restaurer que si aucune miniature n'est active
+    if (!st.hovered) {
+      wBg(w).style.opacity = W_OPACITY_NORMAL;
+      wPanel(w).classList.remove('is-hovered');
+    }
   }
 
   // Hover sur une miniature → image pleine, pas de texte
