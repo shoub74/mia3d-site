@@ -554,7 +554,6 @@
   var FADE_MS = 1300;
   var HOLD_MS = 5000;
 
-  // Affiche immédiatement une image, cache toutes les autres
   function setExpand(world, index) {
     for (var i = 0; i < 3; i++) {
       var el = document.getElementById(world + '-expand-' + i);
@@ -564,18 +563,26 @@
     }
   }
 
-  // Fondu d'une image vers opacity cible, puis callback
+  // Fade un élément vers targetOpacity, appelle cb UNE SEULE FOIS via transitionend
   function fadeTo(el, targetOpacity, cb) {
     if (!el) { if (cb) cb(); return; }
-    // Appliquer la transition CSS directement sur l'élément
-    el.style.transition = 'opacity ' + (FADE_MS / 1000) + 's ease';
-    // Forcer reflow pour que la transition parte bien du state actuel
-    void el.offsetWidth;
-    el.style.opacity = targetOpacity;
-    var tid = setTimeout(function() {
+    // Nettoyer toute transition en cours
+    el.style.transition = 'none';
+    void el.offsetWidth; // reflow
+    el.style.transition = 'opacity ' + (FADE_MS / 1000) + 's linear';
+    void el.offsetWidth; // reflow
+
+    var done = false;
+    function onEnd() {
+      if (done) return;
+      done = true;
+      el.removeEventListener('transitionend', onEnd);
       el.style.transition = 'none';
+      el.style.opacity = targetOpacity;
       if (cb) cb();
-    }, FADE_MS + 50); // +50ms marge
+    }
+    el.addEventListener('transitionend', onEnd);
+    el.style.opacity = targetOpacity;
   }
 
   function scheduleNext(world) {
@@ -590,16 +597,15 @@
       var fromEl  = document.getElementById(world + '-expand-' + fromIdx);
       var toEl    = document.getElementById(world + '-expand-' + toIdx);
 
-      // S'assurer que toEl part bien de 0 avant de commencer
+      // Préparer toEl à opacity 0 sans transition
       if (toEl) { toEl.style.transition = 'none'; toEl.style.opacity = '0'; void toEl.offsetWidth; }
 
-      // 1. Fade OUT image courante
+      // 1. Fade OUT
       fadeTo(fromEl, '0', function() {
-        // 2. Mettre à jour l'index
         state.current = toIdx;
-        // 3. Fade IN image suivante
+        // 2. Fade IN
         fadeTo(toEl, '1', function() {
-          // 4. Planifier le prochain cycle
+          // 3. Cycle suivant
           scheduleNext(world);
         });
       });
