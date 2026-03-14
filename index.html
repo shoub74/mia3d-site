@@ -567,17 +567,15 @@
     }
   }
 
-  // Anime opacity de startVal à endVal sur FADE_MS ms.
-  // gen = génération au moment du lancement. Si worldGen change, on stoppe.
   function fadeRaf(world, el, startVal, endVal, gen, cb) {
     if (!el) { if (cb) cb(); return; }
     el.style.transition = 'none';
     el.style.opacity = startVal;
     void el.offsetWidth;
-    var startTime = null;
+    // Capturer le timestamp de départ AVANT le premier rAF
+    var startTime = performance.now();
     function tick(ts) {
       if (worldGen[world] !== gen) return; // annulé
-      if (!startTime) startTime = ts;
       var p = Math.min((ts - startTime) / FADE_MS, 1);
       el.style.opacity = startVal + (endVal - startVal) * p;
       if (p < 1) {
