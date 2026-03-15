@@ -350,7 +350,7 @@
   .fiche-membre-alt { grid-template-columns: 1fr 280px; }
   .fiche-membre-alt .fiche-photo { border-right: none; border-left: 1px solid var(--grey); }
 
-  .fiche-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) saturate(0.7); transition: filter 0.4s; }
+  .fiche-photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) saturate(0.7); transition: filter 0.4s; }
   .fiche-membre:hover .fiche-photo img { filter: brightness(0.95) saturate(1); }
 
   .fiche-photo-placeholder {
