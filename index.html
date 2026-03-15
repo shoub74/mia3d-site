@@ -96,77 +96,26 @@
   .step-detail p { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; }
 
   /* VIDEO dans step-detail */
-  .step-detail-video-wrap {
-    position: relative;
-    aspect-ratio: 4/3;
-    background: #000;
-    overflow: hidden;
-  }
-  .step-detail-video-wrap video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
-    background: #000;
-    opacity: 0;
-    transition: opacity 0.5s ease;
-  }
-  .step-detail-video-wrap video.loaded {
-    opacity: 1;
-  }
+  .step-detail-video-wrap { position: relative; aspect-ratio: 4/3; background: #000; overflow: hidden; }
+  .step-detail-video-wrap video { width: 100%; height: 100%; object-fit: contain; display: block; background: #000; opacity: 0; transition: opacity 0.5s ease; }
+  .step-detail-video-wrap video.loaded { opacity: 1; }
 
   /* ═══ TWO WORLDS ═══ */
   #worlds { background: var(--dark); position: relative; }
   #worlds::before { content:''; position:absolute; top:0; left:0; right:0; height:1px; background:linear-gradient(90deg,transparent,var(--teal-dark),transparent); }
-
   .worlds-header { text-align:center; margin-bottom:3rem; }
   .worlds-header p { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; max-width:600px; margin:1rem auto 0; }
-
   #worlds .container { max-width:100%; padding:0 2rem; }
   #worlds .worlds-header { max-width:1200px; margin-left:auto; margin-right:auto; }
-
-  .worlds-split {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 3px;
-    background: linear-gradient(90deg, var(--teal-light), #ffffff, var(--teal-light));
-    gap: 3px;
-  }
-
-  .w-panel {
-    position: relative;
-    height: 560px;
-    background: #000;
-    overflow: hidden;
-  }
-
-  .w-bg {
-    position: absolute;
-    inset: 0;
-    background: #000;
-  }
-  .w-bg img {
-    width: 100%; height: 100%;
-    object-fit: contain;
-    display: block;
-  }
-
-  .w-content {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    padding: 3rem 2.5rem;
-    pointer-events: none;
-  }
-  .w-label {
-    font-family: var(--font-mono); font-size:0.65rem; letter-spacing:0.2em;
-    text-transform:uppercase; margin-bottom:1.2rem;
-    display:flex; align-items:center; gap:0.8rem;
-  }
+  .worlds-split { display: grid; grid-template-columns: 1fr 1fr; padding: 3px; background: linear-gradient(90deg, var(--teal-light), #ffffff, var(--teal-light)); gap: 3px; }
+  .w-panel { position: relative; height: 560px; background: #000; overflow: hidden; }
+  .w-bg { position: absolute; inset: 0; background: #000; }
+  .w-bg img { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .w-content { position: absolute; inset: 0; z-index: 2; padding: 3rem 2.5rem; pointer-events: none; }
+  .w-label { font-family: var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:1.2rem; display:flex; align-items:center; gap:0.8rem; }
   .w-panel-ind .w-label { color:#7EB8D4; }
   .w-panel-art .w-label { color:var(--teal-light); }
   .w-label::before { content:''; display:block; width:20px; height:1px; }
-
   .w-content-right { text-align: right; }
   .w-content-right .w-label { justify-content: flex-end; }
   .w-content-right .w-label::before { display: none; }
@@ -175,32 +124,13 @@
   .w-thumbs-right { justify-content: flex-end; }
   .w-panel-ind .w-label::before { background:#7EB8D4; }
   .w-panel-art .w-label::before { background:var(--teal-light); }
-  .w-title {
-    font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem);
-    line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:1.2rem;
-  }
-  .w-desc {
-    font-size:0.9rem; font-weight:300; line-height:1.8;
-    color:var(--muted); max-width:340px;
-  }
-
-  .w-thumbs {
-    position: absolute;
-    bottom: 1.5rem; left: 2rem; right: 2rem;
-    display: flex; gap: 8px;
-    z-index: 3;
-  }
-  .w-thumb {
-    width: 72px; height: 54px;
-    overflow: hidden;
-    border: 1px solid rgba(255,255,255,0.2);
-    cursor: pointer; flex-shrink: 0; background:#000;
-    transition: border-color 0.25s;
-  }
+  .w-title { font-family:var(--font-display); font-size:clamp(2.5rem,5vw,4.5rem); line-height:0.95; letter-spacing:0.03em; color:var(--white); margin-bottom:1.2rem; }
+  .w-desc { font-size:0.9rem; font-weight:300; line-height:1.8; color:var(--muted); max-width:340px; }
+  .w-thumbs { position: absolute; bottom: 1.5rem; left: 2rem; right: 2rem; display: flex; gap: 8px; z-index: 3; }
+  .w-thumb { width: 72px; height: 54px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); cursor: pointer; flex-shrink: 0; background:#000; transition: border-color 0.25s; }
   .w-thumb:hover { border-color: rgba(255,255,255,0.8); }
   .w-thumb img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.65); transition:filter 0.25s; }
   .w-thumb:hover img { filter:brightness(1.1); }
-
   .w-panel.is-hovered .w-content { display: none; }
 
   /* REALISATIONS */
@@ -220,6 +150,180 @@
   .real-card:hover .real-card-overlay { opacity: 1; }
   .real-card-cat { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-mid); margin-bottom: 0.4rem; }
   .real-card-name { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--white); }
+
+  /* ═══ L'ATELIER ═══ */
+  #atelier { background: var(--dark); position: relative; }
+  #atelier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
+
+  .atelier-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
+  .atelier-intro-text { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; }
+
+  /* Grille photos */
+  .atelier-grid-photos {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 240px 160px;
+    gap: 8px;
+    margin-bottom: 4rem;
+  }
+  .atelier-photo {
+    position: relative;
+    overflow: hidden;
+    background: var(--dark2);
+    border: 1px solid var(--grey);
+    transition: border-color 0.3s;
+  }
+  .atelier-photo:hover { border-color: var(--teal-dark); }
+  .atelier-photo.main { grid-row: 1 / 3; }
+  .atelier-photo img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.5s ease;
+    filter: brightness(0.75);
+  }
+  .atelier-photo:hover img { transform: scale(1.04); filter: brightness(0.9); }
+
+  /* Placeholder quand pas d'image */
+  .atelier-photo-placeholder {
+    width: 100%; height: 100%;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 10px;
+  }
+  .placeholder-icon {
+    width: 36px; height: 36px; opacity: 0.18;
+  }
+  .placeholder-label {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); opacity: 0.5;
+  }
+  .photo-caption {
+    position: absolute; bottom: 10px; left: 14px;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(245,245,245,0.6); pointer-events: none;
+  }
+
+  /* Stats */
+  .atelier-stats {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border: 1px solid var(--grey);
+    margin-bottom: 4rem;
+    clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+  }
+  .atelier-stat {
+    padding: 2rem 1.5rem; text-align: center;
+    border-right: 1px solid var(--grey);
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .atelier-stat:last-child { border-right: none; }
+  .atelier-stat:hover { background: var(--dark2); }
+  .atelier-stat::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--teal-mid);
+    transition: width 0.4s;
+  }
+  .atelier-stat:hover::after { width: 100%; }
+  .stat-num {
+    display: block; font-family: var(--font-display);
+    font-size: 3.5rem; letter-spacing: 0.03em;
+    color: var(--teal-light); line-height: 1;
+  }
+  .stat-unit {
+    display: block; font-family: var(--font-mono);
+    font-size: 0.58rem; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--muted);
+    margin-top: 0.5rem;
+  }
+
+  /* Séparateur interne */
+  .atelier-sep {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--teal-dark); margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--grey);
+  }
+
+  /* Machines */
+  .atelier-machines {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 1px; background: var(--grey);
+    border: 1px solid var(--grey);
+    margin-bottom: 5rem;
+  }
+  .machine-card {
+    background: var(--dark); padding: 1.8rem;
+    position: relative; overflow: hidden;
+    transition: background 0.3s;
+  }
+  .machine-card:hover { background: var(--dark2); }
+  .machine-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0;
+    width: 0; height: 2px; background: var(--teal-mid);
+    transition: width 0.4s;
+  }
+  .machine-card:hover::after { width: 100%; }
+  .machine-num {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    color: var(--teal-dark); letter-spacing: 0.2em;
+    margin-bottom: 0.8rem;
+  }
+  .machine-card h4 {
+    font-family: var(--font-display); font-size: 1.4rem;
+    letter-spacing: 0.05em; color: var(--white);
+    margin-bottom: 0.6rem;
+  }
+  .machine-card p {
+    font-size: 0.82rem; font-weight: 300;
+    line-height: 1.7; color: var(--muted);
+  }
+
+  /* Équipe */
+  .equipe-header { margin-bottom: 2.5rem; }
+  .equipe-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .membre-card {
+    display: flex; gap: 1.5rem; align-items: flex-start;
+    border: 1px solid var(--grey); padding: 1.8rem;
+    background: var(--dark2);
+    clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .membre-card:hover { border-color: var(--teal-dark); background: var(--grey); }
+  .membre-avatar {
+    width: 54px; height: 54px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--teal-dark);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 1.4rem;
+    letter-spacing: 0.05em; color: var(--teal-light);
+    background: rgba(0,201,167,0.06);
+  }
+  .membre-name {
+    font-family: var(--font-display); font-size: 1.6rem;
+    letter-spacing: 0.05em; color: var(--white);
+  }
+  .membre-role {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--teal-mid); margin: 0.3rem 0 0.8rem;
+  }
+  .membre-bio {
+    font-size: 0.82rem; font-weight: 300;
+    line-height: 1.7; color: var(--muted);
+  }
+  .membre-card.recrutement .membre-avatar {
+    border-style: dashed;
+    color: var(--muted);
+    border-color: var(--grey2);
+    background: transparent;
+  }
+  .membre-card.recrutement .membre-name { color: var(--muted); }
+  .membre-card.recrutement .membre-role { color: var(--grey2); }
 
   /* SAVOIR FAIRE */
   #savoir { background: var(--dark); position: relative; }
@@ -269,6 +373,7 @@
     <li><a href="#journey">Notre processus</a></li>
     <li><a href="#worlds">Nos univers</a></li>
     <li><a href="#realisations">Réalisations</a></li>
+    <li><a href="#atelier">L'atelier</a></li>
     <li><a href="#savoir">Savoir-faire</a></li>
   </ul>
   <div style="display:flex;align-items:center;gap:1.2rem;">
@@ -345,12 +450,9 @@
       <p>La même technologie, la même précision — mais deux façons radicalement différentes de la sublimer.</p>
     </div>
     <div class="worlds-split reveal">
-
       <!-- INDUSTRIEL -->
       <div class="w-panel w-panel-ind" id="wp-ind" onmouseenter="wPanelOn('ind')" onmouseleave="wPanelOff('ind')">
-        <div class="w-bg" id="wbg-ind">
-          <img id="wimg-ind" src="img/worlds/ind-1.png" alt="">
-        </div>
+        <div class="w-bg" id="wbg-ind"><img id="wimg-ind" src="img/worlds/ind-1.png" alt=""></div>
         <div class="w-content" id="wcontent-ind">
           <p class="w-label">Univers industriel</p>
           <h3 class="w-title">Précision<br>&amp; Série</h3>
@@ -363,12 +465,9 @@
           <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-4.jpg" alt=""></div>
         </div>
       </div>
-
       <!-- ARTISTIQUE -->
       <div class="w-panel w-panel-art" id="wp-art" onmouseenter="wPanelOn('art')" onmouseleave="wPanelOff('art')">
-        <div class="w-bg" id="wbg-art">
-          <img id="wimg-art" src="img/worlds/art-1.jpg" alt="">
-        </div>
+        <div class="w-bg" id="wbg-art"><img id="wimg-art" src="img/worlds/art-1.jpg" alt=""></div>
         <div class="w-content w-content-right" id="wcontent-art">
           <p class="w-label">Univers artistique</p>
           <h3 class="w-title">Art<br>&amp; Émotion</h3>
@@ -381,7 +480,6 @@
           <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-4.png" alt=""></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
@@ -412,11 +510,158 @@
   </div>
 </section>
 
+<!-- ═══ L'ATELIER ═══ -->
+<section id="atelier">
+  <div class="container">
+
+    <!-- En-tête -->
+    <div class="atelier-header reveal">
+      <div>
+        <p class="section-label">04 · L'atelier</p>
+        <h2 class="section-title">Un lieu<br>où la matière<br><span class="accent">prend forme</span></h2>
+      </div>
+      <p class="atelier-intro-text">
+        160 m² au cœur d'Annecy.<br>
+        Des machines de précision,<br>
+        des mains expertes,<br>
+        et l'obsession du détail.<br>
+        Bienvenue dans l'atelier MIA 3D.
+      </p>
+    </div>
+
+    <!-- Grille de photos -->
+    <div class="atelier-grid-photos reveal">
+      <div class="atelier-photo main">
+        <!-- Remplacer par : <img src="img/atelier/atelier-main.jpg" alt="Vue générale de l'atelier"> -->
+        <div class="atelier-photo-placeholder">
+          <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="placeholder-label">Vue générale</span>
+        </div>
+        <span class="photo-caption">L'atelier</span>
+      </div>
+      <div class="atelier-photo">
+        <!-- Remplacer par : <img src="img/atelier/atelier-fdm.jpg" alt="Impression FDM"> -->
+        <div class="atelier-photo-placeholder">
+          <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="placeholder-label">Impression FDM</span>
+        </div>
+        <span class="photo-caption">Impression FDM</span>
+      </div>
+      <div class="atelier-photo">
+        <!-- Remplacer par : <img src="img/atelier/atelier-peinture.jpg" alt="Zone peinture"> -->
+        <div class="atelier-photo-placeholder">
+          <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="placeholder-label">Zone peinture</span>
+        </div>
+        <span class="photo-caption">Zone peinture</span>
+      </div>
+      <div class="atelier-photo">
+        <!-- Remplacer par : <img src="img/atelier/atelier-posttraitement.jpg" alt="Post-traitement"> -->
+        <div class="atelier-photo-placeholder">
+          <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="placeholder-label">Post-traitement</span>
+        </div>
+        <span class="photo-caption">Post-traitement</span>
+      </div>
+      <div class="atelier-photo">
+        <!-- Remplacer par : <img src="img/atelier/atelier-detail.jpg" alt="Détail de pièce"> -->
+        <div class="atelier-photo-placeholder">
+          <svg class="placeholder-icon" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span class="placeholder-label">Détail pièce</span>
+        </div>
+        <span class="photo-caption">Détail de pièce</span>
+      </div>
+    </div>
+
+    <!-- Chiffres clés -->
+    <div class="atelier-stats reveal">
+      <div class="atelier-stat">
+        <span class="stat-num">160</span>
+        <span class="stat-unit">m² d'atelier</span>
+      </div>
+      <div class="atelier-stat">
+        <span class="stat-num">8</span>
+        <span class="stat-unit">machines actives</span>
+      </div>
+      <div class="atelier-stat">
+        <span class="stat-num">2</span>
+        <span class="stat-unit">techno d'impression</span>
+      </div>
+      <div class="atelier-stat">
+        <span class="stat-num">∞</span>
+        <span class="stat-unit">possibilités</span>
+      </div>
+    </div>
+
+    <!-- Équipements -->
+    <div class="reveal">
+      <p class="atelier-sep">Nos équipements</p>
+      <div class="atelier-machines">
+        <div class="machine-card">
+          <p class="machine-num">01</p>
+          <h4>Imprimantes FDM</h4>
+          <p>Dépôt de fil fondu pour pièces structurelles et grandes séries. Format disponible jusqu'à 600 mm d'envergure.</p>
+        </div>
+        <div class="machine-card">
+          <p class="machine-num">02</p>
+          <h4>Imprimantes SLA</h4>
+          <p>Stéréolithographie pour la précision extrême et les détails fins. Résolution jusqu'à 25 μm.</p>
+        </div>
+        <div class="machine-card">
+          <p class="machine-num">03</p>
+          <h4>Scanner 3D</h4>
+          <p>Numérisation de pièces existantes pour reverse engineering ou duplication fidèle à l'original.</p>
+        </div>
+        <div class="machine-card">
+          <p class="machine-num">04</p>
+          <h4>Cabine de peinture</h4>
+          <p>Espace dédié à l'aérographie et aux finitions. Température et hygrométrie contrôlées en permanence.</p>
+        </div>
+        <div class="machine-card">
+          <p class="machine-num">05</p>
+          <h4>Atelier post-traitement</h4>
+          <p>Ponçage, assemblage, stratification. C'est ici que la magie opère — transformer l'ébauche en objet impeccable.</p>
+        </div>
+        <div class="machine-card">
+          <p class="machine-num">06</p>
+          <h4>Outillage de précision</h4>
+          <p>Microtouches, instruments de mesure, matériel de soudure pour les assemblages les plus complexes.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Équipe -->
+    <div class="equipe-header reveal">
+      <p class="atelier-sep">L'équipe</p>
+      <h3 class="section-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Des <span class="accent">humains</span><br>derrière chaque pièce</h3>
+    </div>
+    <div class="equipe-grid reveal">
+      <div class="membre-card">
+        <div class="membre-avatar">S</div>
+        <div>
+          <div class="membre-name">Sébastien</div>
+          <div class="membre-role">Fondateur &amp; Artisan</div>
+          <p class="membre-bio">Passionné de fabrication numérique depuis 10 ans, il maîtrise chaque étape du processus — de la modélisation à la peinture finale. Made In Annecy, jusque dans l'âme.</p>
+        </div>
+      </div>
+      <div class="membre-card recrutement">
+        <div class="membre-avatar">?</div>
+        <div>
+          <div class="membre-name">Vous ?</div>
+          <div class="membre-role">On recrute</div>
+          <p class="membre-bio">Passionné par l'impression 3D, les matériaux ou la peinture ? Rejoignez l'aventure MIA 3D à Annecy et contribuez à des projets uniques.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
 <!-- SAVOIR-FAIRE -->
 <section id="savoir">
   <div class="container">
     <div class="reveal" style="max-width:600px;">
-      <p class="section-label">04 · Savoir-faire</p>
+      <p class="section-label">05 · Savoir-faire</p>
       <h2 class="section-title">Artisans<br>des <span class="accent">nouvelles</span><br>technologies</h2>
     </div>
     <div class="savoir-grid reveal">
@@ -439,7 +684,7 @@
   <div class="container">
     <div class="contact-inner">
       <div class="reveal">
-        <p class="section-label">05 · Contact</p>
+        <p class="section-label">06 · Contact</p>
         <h2 class="section-title">Parlons<br>de votre<br><span class="accent">projet</span></h2>
         <p style="font-size:1.05rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;">Un projet industriel ou artistique, petit ou grand, simple ou complexe — nous sommes là pour en discuter et trouver la meilleure solution avec vous.</p>
         <a href="tel:+33670501555" class="contact-phone">06 70 50 15 55</a>
@@ -511,47 +756,28 @@
 
   var currentStep = 0;
   var autoTimer = null;
-  var STEP_DURATION = 4000; // 4 secondes par étape
-
-  // ════════ GESTION VIDÉO ════════
+  var STEP_DURATION = 4000;
   var currentVideo = null;
 
   function loadStepVideo(index) {
     var detail = document.getElementById('step-detail');
     if (!detail) return;
-
     var wrap = detail.querySelector('.step-detail-video-wrap');
     if (!wrap) return;
-
-    // Arrêter l'ancienne vidéo proprement
-    if (currentVideo) {
-      currentVideo.pause();
-      currentVideo.src = '';
-      currentVideo.load();
-    }
-
+    if (currentVideo) { currentVideo.pause(); currentVideo.src = ''; currentVideo.load(); }
     var vid = wrap.querySelector('video');
     if (!vid) return;
-
     vid.classList.remove('loaded');
     vid.src = steps[index].video;
     vid.load();
-
-    // Lancer la lecture dès que possible
     vid.addEventListener('canplay', function onCanPlay() {
       vid.removeEventListener('canplay', onCanPlay);
       vid.play().catch(function() {});
       vid.classList.add('loaded');
     });
-
-    // Couper à 4 secondes si la vidéo est plus longue
     vid.addEventListener('timeupdate', function onTime() {
-      if (vid.currentTime >= 4) {
-        vid.pause();
-        vid.removeEventListener('timeupdate', onTime);
-      }
+      if (vid.currentTime >= 4) { vid.pause(); vid.removeEventListener('timeupdate', onTime); }
     });
-
     currentVideo = vid;
   }
 
@@ -562,12 +788,10 @@
   };
   var W_FADE = 1300;
   var W_HOLD = 5000;
-
   var wState = {
     ind: { idx: 0, timer: null, hovered: false, fading: false },
     art: { idx: 0, timer: null, hovered: false, fading: false }
   };
-
   var W_OPACITY_NORMAL = 0.22;
   var W_OPACITY_HOVER  = 1.0;
 
@@ -582,7 +806,7 @@
       var p = Math.min((ts - t0) / W_FADE, 1);
       bg.style.opacity = fromOp + (toOp - fromOp) * p;
       if (p < 1) { requestAnimationFrame(tick); }
-      else       { bg.style.opacity = toOp; if (cb) cb(); }
+      else { bg.style.opacity = toOp; if (cb) cb(); }
     }
     requestAnimationFrame(tick);
   }
@@ -594,17 +818,10 @@
       if (st.hovered || st.panelHovered) return;
       st.fading = true;
       wFade(w, W_OPACITY_NORMAL, 0, function() {
-        if (st.hovered) {
-          wBg(w).style.opacity = W_OPACITY_NORMAL;
-          st.fading = false;
-          return;
-        }
+        if (st.hovered) { wBg(w).style.opacity = W_OPACITY_NORMAL; st.fading = false; return; }
         st.idx = (st.idx + 1) % W_SRCS[w].length;
         wImg(w).src = W_SRCS[w][st.idx];
-        wFade(w, 0, W_OPACITY_NORMAL, function() {
-          st.fading = false;
-          wSchedule(w);
-        });
+        wFade(w, 0, W_OPACITY_NORMAL, function() { st.fading = false; wSchedule(w); });
       });
     }, W_HOLD);
   }
@@ -612,46 +829,31 @@
   function wStart(w) {
     var st = wState[w];
     if (st.timer) clearTimeout(st.timer);
-    st.idx          = 0;
-    st.hovered      = false;
-    st.panelHovered = false;
-    st.fading       = false;
+    st.idx = 0; st.hovered = false; st.panelHovered = false; st.fading = false;
     wImg(w).src = W_SRCS[w][0];
     wBg(w).style.opacity = W_OPACITY_NORMAL;
     wSchedule(w);
   }
 
   function wPanelOn(w) {
-    var st = wState[w];
-    st.panelHovered = true;
+    var st = wState[w]; st.panelHovered = true;
     if (st.timer) clearTimeout(st.timer);
     wBg(w).style.opacity = W_OPACITY_HOVER;
     wPanel(w).classList.add('is-hovered');
   }
-
   function wPanelOff(w) {
-    var st = wState[w];
-    st.panelHovered = false;
-    if (!st.hovered) {
-      wBg(w).style.opacity = W_OPACITY_NORMAL;
-      wPanel(w).classList.remove('is-hovered');
-      wSchedule(w);
-    }
+    var st = wState[w]; st.panelHovered = false;
+    if (!st.hovered) { wBg(w).style.opacity = W_OPACITY_NORMAL; wPanel(w).classList.remove('is-hovered'); wSchedule(w); }
   }
-
   function wThumbOn(w, idx) {
-    var st = wState[w];
-    st.hovered = true;
+    var st = wState[w]; st.hovered = true;
     if (st.timer) clearTimeout(st.timer);
-    st.idx = idx;
-    wImg(w).src = W_SRCS[w][idx];
+    st.idx = idx; wImg(w).src = W_SRCS[w][idx];
     wBg(w).style.opacity = W_OPACITY_HOVER;
     wPanel(w).classList.add('is-hovered');
   }
-
   function wThumbOff(w) {
-    var st = wState[w];
-    st.hovered = false;
+    var st = wState[w]; st.hovered = false;
     wBg(w).style.opacity = W_OPACITY_NORMAL;
     wPanel(w).classList.remove('is-hovered');
     wSchedule(w);
@@ -672,8 +874,7 @@
     if (!firstDot) return;
     var tRect = timeline.getBoundingClientRect();
     var dRect = firstDot.getBoundingClientRect();
-    var dotCenterY = dRect.top - tRect.top + dRect.height / 2;
-    track.style.top = (dotCenterY - 8) + 'px';
+    track.style.top = (dRect.top - tRect.top + dRect.height / 2 - 8) + 'px';
   }
 
   function getStepPercent(index) {
@@ -693,26 +894,23 @@
     if (!orb || !progress) return;
     var pct = getStepPercent(index);
     if (!animate) {
-      orb.style.transition      = 'none';
-      progress.style.transition = 'none';
-      orb.style.left            = pct + '%';
-      progress.style.width      = pct + '%';
+      orb.style.transition = 'none'; progress.style.transition = 'none';
+      orb.style.left = pct + '%'; progress.style.width = pct + '%';
       orb.getBoundingClientRect();
-      orb.style.transition      = 'left ' + (STEP_DURATION / 1000) + 's linear';
+      orb.style.transition = 'left ' + (STEP_DURATION / 1000) + 's linear';
       progress.style.transition = 'width ' + (STEP_DURATION / 1000) + 's linear';
     } else {
-      orb.style.transition      = 'left ' + (STEP_DURATION / 1000) + 's linear';
+      orb.style.transition = 'left ' + (STEP_DURATION / 1000) + 's linear';
       progress.style.transition = 'width ' + (STEP_DURATION / 1000) + 's linear';
-      orb.style.left            = pct + '%';
-      progress.style.width      = pct + '%';
+      orb.style.left = pct + '%'; progress.style.width = pct + '%';
     }
   }
 
   function updateDotStates(activeIndex) {
     document.querySelectorAll('.step').forEach(function(s, i) {
       s.classList.remove('active', 'visited');
-      if (i === activeIndex)      s.classList.add('active');
-      else if (i < activeIndex)   s.classList.add('visited');
+      if (i === activeIndex) s.classList.add('active');
+      else if (i < activeIndex) s.classList.add('visited');
     });
   }
 
@@ -720,11 +918,8 @@
     var detail = document.getElementById('step-detail');
     var s      = steps[index];
     if (!detail || !s) return;
-
     detail.classList.remove('visible');
-
     setTimeout(function() {
-      // Construire le HTML avec le lecteur vidéo
       detail.innerHTML =
         '<div>' +
           '<span class="step-detail-badge ' + s.badge + '">' + s.badgeLabel + '</span>' +
@@ -734,12 +929,8 @@
         '<div class="step-detail-video-wrap">' +
           '<video muted playsinline preload="auto"></video>' +
         '</div>';
-
       detail.classList.add('visible');
-
-      // Charger et jouer la vidéo
       loadStepVideo(index);
-
     }, 200);
   }
 
@@ -759,24 +950,15 @@
     function tick() {
       var from = currentStep;
       var to   = from + 1;
-
       if (to >= steps.length) {
         autoTimer = setTimeout(function() {
-          currentStep = 0;
-          updateDotStates(0);
-          moveOrbTo(0, false);
-          showDetail(0);
-          tick();
+          currentStep = 0; updateDotStates(0); moveOrbTo(0, false); showDetail(0); tick();
         }, STEP_DURATION);
         return;
       }
-
       moveOrbTo(to, true);
       autoTimer = setTimeout(function() {
-        currentStep = to;
-        updateDotStates(to);
-        showDetail(to);
-        tick();
+        currentStep = to; updateDotStates(to); showDetail(to); tick();
       }, STEP_DURATION);
     }
     tick();
@@ -815,15 +997,10 @@
     var visibilityObserver = new IntersectionObserver(function(entries) {
       entries.forEach(function(e) {
         if (e.isIntersecting) {
-          if (!timelineStarted) {
-            timelineStarted = true;
-            alignTrack();
-            moveOrbTo(0, false);
-          }
+          if (!timelineStarted) { timelineStarted = true; alignTrack(); moveOrbTo(0, false); }
           startAutoPlay();
         } else {
           clearAutoPlay();
-          // Mettre en pause la vidéo quand on quitte la section
           if (currentVideo) { currentVideo.pause(); }
         }
       });
