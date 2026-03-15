@@ -155,8 +155,8 @@
   #atelier { background: var(--dark); position: relative; }
   #atelier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, var(--teal-dark), transparent); }
 
-  .atelier-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; margin-bottom: 4rem; }
-  .atelier-intro-text { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; }
+  .atelier-header { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: stretch; margin-bottom: 4rem; }
+  .atelier-intro-text { font-family: var(--font-mono); font-size: 0.82rem; letter-spacing: 0.18em; text-transform: uppercase; color: var(--teal-mid); line-height: 2; border-left: 2px solid var(--teal-dark); padding-left: 1.8rem; display: flex; align-items: center; justify-content: flex-start; }
 
   /* Grille photos */
   .atelier-grid-photos {
@@ -324,6 +324,111 @@
   }
   .membre-card.recrutement .membre-name { color: var(--muted); }
   .membre-card.recrutement .membre-role { color: var(--grey2); }
+
+  /* ── Fiches équipe ── */
+  .fiche-membre {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0;
+    border: 1px solid var(--grey);
+    margin-bottom: 1.5rem;
+    clip-path: polygon(16px 0%, 100% 0%, calc(100% - 16px) 100%, 0% 100%);
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .fiche-membre:hover { border-color: var(--teal-dark); }
+
+  .fiche-photo {
+    position: relative;
+    background: var(--dark2);
+    border-right: 1px solid var(--grey);
+    height: 320px;
+    align-self: start;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+  }
+  .fiche-membre-alt { grid-template-columns: 1fr 280px; }
+  .fiche-membre-alt .fiche-photo { border-right: none; border-left: 1px solid var(--grey); }
+
+  .fiche-photo img { width: 100%; height: 100%; object-fit: cover; display: block; filter: brightness(0.8) saturate(0.7); transition: filter 0.4s; }
+  .fiche-membre:hover .fiche-photo img { filter: brightness(0.95) saturate(1); }
+
+  .fiche-photo-placeholder {
+    width: 100%; height: 320px;
+    display: flex; align-items: center; justify-content: center;
+    background: repeating-linear-gradient(
+      45deg,
+      var(--dark2),
+      var(--dark2) 10px,
+      var(--dark) 10px,
+      var(--dark) 20px
+    );
+    opacity: 0.6;
+  }
+
+  .fiche-photo-tag {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--black); background: var(--teal-mid);
+    padding: 0.4rem 1rem; text-align: center;
+  }
+
+  .fiche-data {
+    padding: 2rem 2.5rem;
+    display: flex; flex-direction: column; gap: 1.5rem;
+    background: var(--dark);
+  }
+
+  .fiche-id { border-bottom: 1px solid var(--grey); padding-bottom: 1.2rem; }
+  .fiche-ref {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.2em; color: var(--teal-dark);
+    display: block; margin-bottom: 0.5rem;
+  }
+  .fiche-nom {
+    font-family: var(--font-display); font-size: 2.8rem;
+    letter-spacing: 0.05em; color: var(--white);
+    line-height: 1; margin-bottom: 0.4rem;
+  }
+  .fiche-poste {
+    font-family: var(--font-mono); font-size: 0.62rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--teal-mid);
+  }
+
+  .fiche-specs { display: flex; flex-direction: column; gap: 0.5rem; }
+  .fiche-spec-row {
+    display: grid; grid-template-columns: 110px 1fr;
+    gap: 1rem; align-items: baseline;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(42,42,42,0.6);
+  }
+  .spec-key {
+    font-family: var(--font-mono); font-size: 0.58rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .spec-val {
+    font-family: var(--font-mono); font-size: 0.68rem;
+    letter-spacing: 0.08em; color: var(--white);
+  }
+
+  .fiche-bio {
+    font-size: 0.88rem; font-weight: 300;
+    line-height: 1.8; color: var(--muted);
+    border-left: 2px solid var(--teal-dark);
+    padding-left: 1rem;
+  }
+
+  .fiche-tbd {
+    display: flex; align-items: center; justify-content: center;
+    flex: 1; min-height: 120px;
+  }
+  .fiche-tbd-label {
+    font-family: var(--font-mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; color: var(--grey2);
+  }
 
   /* SAVOIR FAIRE */
   #savoir { background: var(--dark); position: relative; }
@@ -635,22 +740,109 @@
       <p class="atelier-sep">L'équipe</p>
       <h3 class="section-title" style="font-size: clamp(2rem, 4vw, 3.5rem);">Des <span class="accent">humains</span><br>derrière chaque pièce</h3>
     </div>
-    <div class="equipe-grid reveal">
-      <div class="membre-card">
-        <div class="membre-avatar">S</div>
-        <div>
-          <div class="membre-name">Sébastien</div>
-          <div class="membre-role">Fondateur &amp; Artisan</div>
-          <p class="membre-bio">Passionné de fabrication numérique depuis 10 ans, il maîtrise chaque étape du processus — de la modélisation à la peinture finale. Made In Annecy, jusque dans l'âme.</p>
-        </div>
+
+    <!-- JORIS -->
+    <div class="fiche-membre reveal">
+      <div class="fiche-photo">
+        <img src="img/equipe/prank-joris.jpg" alt="Joris">
+        <!-- <div class="fiche-photo-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div> -->
+        <div class="fiche-photo-tag">CO-GÉRANT</div>
       </div>
-      <div class="membre-card recrutement">
-        <div class="membre-avatar">?</div>
-        <div>
-          <div class="membre-name">Vous ?</div>
-          <div class="membre-role">On recrute</div>
-          <p class="membre-bio">Passionné par l'impression 3D, les matériaux ou la peinture ? Rejoignez l'aventure MIA 3D à Annecy et contribuez à des projets uniques.</p>
+      <div class="fiche-data">
+        <div class="fiche-id">
+          <span class="fiche-ref">MIA · 001</span>
+          <h4 class="fiche-nom">Joris</h4>
+          <span class="fiche-poste">Pilote de projets · Relations clients · Modélisation</span>
         </div>
+        <div class="fiche-specs">
+          <div class="fiche-spec-row">
+            <span class="spec-key">Formation</span>
+            <span class="spec-val">Conception mécanique → Technico-commercial</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Expérience</span>
+            <span class="spec-val">6 ans · SPX Clyde Union (Pompes Guinard)</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Domaines</span>
+            <span class="spec-val">Gestion de projets · Relation client · Programmation machines</span>
+          </div>
+        </div>
+        <p class="fiche-bio">
+          D'abord dessinateur projeteur, puis technico-commercial pendant six ans dans l'industrie annécienne — Joris a forgé une double culture rare, à la croisée de la technique et du commerce. C'est cette vision à 360° qui l'a conduit à créer MIA3D : une entreprise proactive et humaine, ancrée dans son territoire, tournée vers l'avenir. Aujourd'hui, il pilote les projets de A à Z, gère les relations clients et fournisseurs, et assure la modélisation ainsi que la programmation des machines. L'impression 3D, il y croit — et il le prouve chaque jour.
+        </p>
+      </div>
+    </div>
+
+    <!-- QUENTIN -->
+    <div class="fiche-membre fiche-membre-alt reveal">
+      <div class="fiche-data">
+        <div class="fiche-id">
+          <span class="fiche-ref">MIA · 002</span>
+          <h4 class="fiche-nom">Quentin</h4>
+          <span class="fiche-poste">Assemblage · Finitions · Maintenance machines</span>
+        </div>
+        <div class="fiche-specs">
+          <div class="fiche-spec-row">
+            <span class="spec-key">Formation</span>
+            <span class="spec-val">Maintenance électromécanique industrielle</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Expérience</span>
+            <span class="spec-val">4 ans · SPX Clyde Union &amp; Baikowski</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Domaines</span>
+            <span class="spec-val">Assemblage · Soudage plastique · Stratification · Lissage</span>
+          </div>
+        </div>
+        <p class="fiche-bio">
+          Technicien de maintenance dans deux grandes entreprises du bassin annécien, Quentin connaît les machines dans leurs moindres détails. C'est sur le projet Sudan — une sculpture monumentale de 2,6 m — qu'il rejoint l'aventure MIA3D aux côtés de Joris. Depuis, ses mains transforment chaque pièce brute en objet fini : assemblage, stratification, soudage plastique, lissage. Il assure aussi la maintenance du parc machines — parce qu'une imprimante bien entretenue, c'est une pièce réussie.
+        </p>
+      </div>
+      <div class="fiche-photo">
+        <img src="img/equipe/prank-quentin.jpg" alt="Quentin">
+        <!-- <div class="fiche-photo-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div> -->
+        <div class="fiche-photo-tag">CO-GÉRANT</div>
+      </div>
+    </div>
+
+    <!-- JOHANN -->
+    <div class="fiche-membre reveal">
+      <div class="fiche-photo">
+        <img src="img/equipe/prank-johann.jpg" alt="Johann">
+        <!-- <div class="fiche-photo-placeholder">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="1"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+        </div> -->
+        <div class="fiche-photo-tag">CO-GÉRANT</div>
+      </div>
+      <div class="fiche-data">
+        <div class="fiche-id">
+          <span class="fiche-ref">MIA · 003</span>
+          <h4 class="fiche-nom">Johann</h4>
+          <span class="fiche-poste">Atelier · Peinture & Finitions · Communication</span>
+        </div>
+        <div class="fiche-specs">
+          <div class="fiche-spec-row">
+            <span class="spec-key">Parcours</span>
+            <span class="spec-val">Multiples domaines · Travail manuel & relation client</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Domaines</span>
+            <span class="spec-val">Post-traitement · Peinture · Aérographie · Finitions</span>
+          </div>
+          <div class="fiche-spec-row">
+            <span class="spec-key">Digital</span>
+            <span class="spec-val">Site internet · Instagram MIA3D</span>
+          </div>
+        </div>
+        <p class="fiche-bio">
+          Un parcours fait de reconversions, de rencontres et de savoir-faire accumulés dans des univers très différents — du contact client à la création manuelle. C'est cette polyvalence qui fait sa force chez MIA3D : à l'aise aussi bien dans l'atelier que derrière un écran, il assure le post-traitement, la peinture et les finitions, tout en gérant la communication digitale de la boîte. L'impression 3D est son dernier terrain d'exploration — et visiblement, pas le moins passionnant.
+        </p>
       </div>
     </div>
 
