@@ -909,19 +909,33 @@
       img.src = w.srcs[WLB.idx];
       img.style.opacity = '1';
     }, 150);
-    document.getElementById('wlb-label').textContent = w.label;
     document.getElementById('wlb-num').textContent = '0' + (WLB.idx + 1);
     document.getElementById('wlb-counter').textContent = (WLB.idx + 1) + ' / ' + w.srcs.length;
+    // Switcher styling
+    var btnInd = document.getElementById('wlb-switch-ind');
+    var btnArt = document.getElementById('wlb-switch-art');
+    if (btnInd && btnArt) {
+      var activeStyle = 'background:#00C9A7;color:#0A0A0A;';
+      var inactiveStyle = 'background:#1A1A1A;color:#888;';
+      btnInd.style.cssText += WLB.current === 'ind' ? activeStyle : inactiveStyle;
+      btnArt.style.cssText += WLB.current === 'art' ? activeStyle : inactiveStyle;
+    }
     // Thumbs
     var tc = document.getElementById('wlb-thumbs');
     tc.innerHTML = '';
     w.srcs.forEach(function(src, i) {
       var t = document.createElement('div');
-      t.style.cssText = 'width:60px;height:45px;overflow:hidden;cursor:pointer;border:2px solid ' + (i === WLB.idx ? '#00C9A7' : '#2A2A2A') + ';transition:border-color 0.2s;';
+      t.style.cssText = 'width:72px;height:54px;overflow:hidden;cursor:pointer;border:2px solid ' + (i === WLB.idx ? '#00C9A7' : '#2A2A2A') + ';transition:border-color 0.2s;';
       t.innerHTML = '<img src="' + src + '" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(' + (i === WLB.idx ? '1' : '0.5') + ');">';
       t.addEventListener('click', function() { WLB.idx = i; wlbUpdate(); });
       tc.appendChild(t);
     });
+  }
+
+  function switchWorld(world) {
+    WLB.current = world;
+    WLB.idx = 0;
+    wlbUpdate();
   }
 
   function wlbPrev() { var l = WLB.worlds[WLB.current].srcs.length; WLB.idx = (WLB.idx - 1 + l) % l; wlbUpdate(); }
@@ -944,32 +958,33 @@
 </script>
 
 <!-- WORLD LIGHTBOX -->
-<div id="world-lightbox" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.96);align-items:center;justify-content:center;flex-direction:column;">
+<div id="world-lightbox" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.97);flex-direction:column;">
   <!-- Fond grille -->
   <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,192,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,192,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
   <!-- Numéro grand arrière-plan -->
   <div id="wlb-num" style="position:absolute;font-family:'Bebas Neue',sans-serif;font-size:30vw;color:rgba(0,229,192,0.04);line-height:1;pointer-events:none;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-  <!-- Contenu -->
-  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:900px;padding:2rem;">
+  <!-- Contenu plein écran -->
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;width:100%;height:100%;padding:1rem 1.5rem;gap:0.8rem;">
     <!-- Header -->
-    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,192,0.15);padding-bottom:0.8rem;">
-      <div style="display:flex;align-items:center;gap:0.8rem;">
-        <div style="width:6px;height:6px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,0.8);"></div>
-        <span id="wlb-label" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:#00C9A7;"></span>
+    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,192,0.15);padding-bottom:0.8rem;flex-shrink:0;">
+      <!-- Switcher univers -->
+      <div style="display:flex;gap:0;border:1px solid #2A2A2A;overflow:hidden;">
+        <button id="wlb-switch-ind" onclick="switchWorld('ind')" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.45rem 1.2rem;border:none;cursor:pointer;transition:background 0.2s,color 0.2s;">⚙ Industriel</button>
+        <button id="wlb-switch-art" onclick="switchWorld('art')" style="font-family:'Space Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.45rem 1.2rem;border:none;cursor:pointer;transition:background 0.2s,color 0.2s;">✦ Artistique</button>
       </div>
       <span id="wlb-counter" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:#888;"></span>
       <button onclick="closeWorldLightbox()" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:#00C9A7;background:transparent;border:1px solid #009E85;padding:0.35rem 0.8rem;cursor:pointer;text-transform:uppercase;">✕ Fermer</button>
     </div>
-    <!-- Image + nav -->
-    <div style="position:relative;width:100%;display:flex;align-items:center;gap:1rem;">
-      <button onclick="wlbPrev()" style="flex-shrink:0;width:44px;height:44px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.2rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">←</button>
-      <div style="flex:1;aspect-ratio:16/10;background:#000;overflow:hidden;border:1px solid rgba(0,229,192,0.15);position:relative;">
+    <!-- Image + flèches — prend tout l'espace restant -->
+    <div style="flex:1;display:flex;align-items:center;gap:1rem;min-height:0;">
+      <button onclick="wlbPrev()" style="flex-shrink:0;width:48px;height:80px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.4rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">←</button>
+      <div style="flex:1;height:100%;background:#000;overflow:hidden;border:1px solid rgba(0,229,192,0.12);">
         <img id="wlb-img" src="" alt="" style="width:100%;height:100%;object-fit:contain;display:block;transition:opacity 0.25s ease;">
       </div>
-      <button onclick="wlbNext()" style="flex-shrink:0;width:44px;height:44px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.2rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">→</button>
+      <button onclick="wlbNext()" style="flex-shrink:0;width:48px;height:80px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.4rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">→</button>
     </div>
-    <!-- Miniatures navigation -->
-    <div id="wlb-thumbs" style="display:flex;gap:6px;"></div>
+    <!-- Miniatures -->
+    <div id="wlb-thumbs" style="display:flex;gap:6px;justify-content:center;flex-shrink:0;padding-top:0.2rem;"></div>
   </div>
 </div>
 </body>
