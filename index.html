@@ -135,7 +135,7 @@
   .w-panel.is-hovered .w-content { display: none; }
 
   /* Lightbox */
-  .w-lightbox { display:none; position:fixed; inset:0; z-index:999; background:rgba(0,0,0,0.93); backdrop-filter:blur(10px); align-items:center; justify-content:center; cursor:zoom-out; }
+  .w-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.93); backdrop-filter:blur(10px); align-items:center; justify-content:center; cursor:zoom-out; }
   .w-lightbox.open { display:flex; animation:lbIn 0.25s ease; }
   @keyframes lbIn { from{opacity:0} to{opacity:1} }
   .w-lightbox-img { max-width:82vw; max-height:82vh; object-fit:contain; border:1px solid rgba(0,229,192,0.25); box-shadow:0 0 80px rgba(0,201,167,0.15); animation:lbZoom 0.3s cubic-bezier(0.34,1.56,0.64,1); }
@@ -284,6 +284,7 @@
   .machine-num { font-family: var(--font-mono); font-size: 0.58rem; color: var(--teal-dark); letter-spacing: 0.2em; margin-bottom: 0.8rem; }
   .machine-card h4 { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.05em; color: var(--white); margin-bottom: 0.6rem; }
   .machine-card p { font-size: 0.82rem; font-weight: 300; line-height: 1.7; color: var(--muted); }
+  .machine-tech { font-family: var(--font-mono) !important; font-size: 0.58rem !important; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-dark) !important; margin-top: 1rem !important; padding-top: 0.8rem; border-top: 1px solid var(--grey); }
 
   .equipe-header { margin-bottom: 2.5rem; }
   .equipe-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
@@ -363,7 +364,7 @@
     <li><a href="#worlds">Nos univers</a></li>
     <li><a href="#realisations">Réalisations</a></li>
     <li><a href="#atelier">L'atelier</a></li>
-    <li><a href="#savoir">Savoir-faire</a></li>
+    
   </ul>
   <div style="display:flex;align-items:center;gap:1.2rem;">
     <a href="tel:+33670501555" style="font-family:var(--font-mono);font-size:1rem;letter-spacing:0.1em;color:var(--teal-light);text-decoration:none;font-weight:700;">06 70 50 15 55</a>
@@ -448,10 +449,10 @@
           <p class="w-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
         </div>
         <div class="w-thumbs">
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',0)" onmouseleave="wThumbOff('ind')" onclick="openLightbox('img/worlds/ind-1.png')"><img src="img/worlds/ind-1.png" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',1)" onmouseleave="wThumbOff('ind')" onclick="openLightbox('img/worlds/ind-2.png')"><img src="img/worlds/ind-2.png" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',2)" onmouseleave="wThumbOff('ind')" onclick="openLightbox('img/worlds/ind-3.jpg')"><img src="img/worlds/ind-3.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onmouseleave="wThumbOff('ind')" onclick="openLightbox('img/worlds/ind-4.jpg')"><img src="img/worlds/ind-4.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',0);openLightbox('img/worlds/ind-1.png')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-1.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',1);openLightbox('img/worlds/ind-2.png')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-2.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',2);openLightbox('img/worlds/ind-3.jpg')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',3);openLightbox('img/worlds/ind-4.jpg')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-4.jpg" alt=""></div>
         </div>
       </div>
       <!-- ARTISTIQUE -->
@@ -463,10 +464,10 @@
           <p class="w-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
         <div class="w-thumbs w-thumbs-right">
-          <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onmouseleave="wThumbOff('art')" onclick="openLightbox('img/worlds/art-1.jpg')"><img src="img/worlds/art-1.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onmouseleave="wThumbOff('art')" onclick="openLightbox('img/worlds/art-2.jpg')"><img src="img/worlds/art-2.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onmouseleave="wThumbOff('art')" onclick="openLightbox('img/worlds/art-3.jpg')"><img src="img/worlds/art-3.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onmouseleave="wThumbOff('art')" onclick="openLightbox('img/worlds/art-4.png')"><img src="img/worlds/art-4.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',0);openLightbox('img/worlds/art-1.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-1.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',1);openLightbox('img/worlds/art-2.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-2.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',2);openLightbox('img/worlds/art-3.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',3);openLightbox('img/worlds/art-4.png')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-4.png" alt=""></div>
         </div>
       </div>
     </div>
@@ -588,12 +589,12 @@
     <div class="reveal">
       <p class="atelier-sep">Nos équipements</p>
       <div class="atelier-machines">
-        <div class="machine-card"><p class="machine-num">01</p><h4>Imprimantes FDM</h4><p>Dépôt de fil fondu pour pièces structurelles et grandes séries. Format disponible jusqu'à 600 mm d'envergure.</p></div>
-        <div class="machine-card"><p class="machine-num">02</p><h4>Imprimantes SLA</h4><p>Stéréolithographie pour la précision extrême et les détails fins. Résolution jusqu'à 25 μm.</p></div>
-        <div class="machine-card"><p class="machine-num">03</p><h4>Scanner 3D</h4><p>Numérisation de pièces existantes pour reverse engineering ou duplication fidèle à l'original.</p></div>
-        <div class="machine-card"><p class="machine-num">04</p><h4>Cabine de peinture</h4><p>Espace dédié à l'aérographie et aux finitions. Température et hygrométrie contrôlées en permanence.</p></div>
-        <div class="machine-card"><p class="machine-num">05</p><h4>Atelier post-traitement</h4><p>Ponçage, assemblage, stratification. C'est ici que la magie opère — transformer l'ébauche en objet impeccable.</p></div>
-        <div class="machine-card"><p class="machine-num">06</p><h4>Outillage de précision</h4><p>Microtouches, instruments de mesure, matériel de soudure pour les assemblages les plus complexes.</p></div>
+        <div class="machine-card"><p class="machine-num">01</p><h4>Scan 3D &amp; Modélisation</h4><p>Analyse de votre cahier des charges, scan 3D de l'existant, modélisation ou reverse engineering. Nous créons ou reconstituons votre pièce en numérique avant de la produire.</p><p class="machine-tech">Équipement · Scanner 3D de précision</p></div>
+        <div class="machine-card"><p class="machine-num">02</p><h4>Impression FDM &amp; SLA</h4><p>Dépôt de fil fondu pour les pièces structurelles et grandes séries, stéréolithographie pour la précision et les détails fins. Des pièces de quelques millimètres à plusieurs mètres d'envergure.</p><p class="machine-tech">Équipement · Imprimantes FDM jusqu'à 600 mm · Résolution SLA 25 μm</p></div>
+        <div class="machine-card"><p class="machine-num">03</p><h4>Post-traitement artisanal</h4><p>Ponçage, assemblage, stratification, traitement de surface. C'est ici que la vraie valeur se crée — transformer une pièce brute en un objet impeccable.</p><p class="machine-tech">Équipement · Atelier post-traitement · Outillage de précision</p></div>
+        <div class="machine-card"><p class="machine-num">04</p><h4>Peinture &amp; Finitions</h4><p>Aérographe, peinture à la main, effets de matière, patine. Chaque pièce reçoit la finition qu'elle mérite — du prototype industriel à la sculpture d'art unique.</p><p class="machine-tech">Équipement · Cabine de peinture · Température &amp; hygrométrie contrôlées</p></div>
+        <div class="machine-card"><p class="machine-num">05</p><h4>Assemblage &amp; Soudage</h4><p>Assemblage complexe, soudage plastique, stratification fibre. Pour les projets qui demandent une maîtrise totale de l'assemblage multi-matériaux.</p><p class="machine-tech">Équipement · Outillage de précision · Matériel de soudure</p></div>
+        <div class="machine-card"><p class="machine-num">06</p><h4>Livraison clé en main</h4><p>De la modélisation à la pièce finie — nous gérons l'intégralité du processus. Vous recevez un objet prêt à l'usage, sans aucune intervention de votre côté.</p><p class="machine-tech">100% Made In Annecy · Fabrication locale</p></div>
       </div>
     </div>
 
@@ -668,34 +669,14 @@
   </div>
 </section>
 
-<!-- SAVOIR-FAIRE -->
-<section id="savoir">
-  <div class="container">
-    <div class="reveal" style="max-width:600px;">
-      <p class="section-label">05 · Savoir-faire</p>
-      <h2 class="section-title">Artisans<br>des <span class="accent">nouvelles</span><br>technologies</h2>
-    </div>
-    <div class="savoir-grid reveal">
-      <div class="savoir-item"><p class="savoir-num">01</p><h3>Scan 3D &amp; Modélisation</h3><p>Analyse de votre cahier des charges, scan 3D de l'existant, modélisation ou reverse engineering. Nous créons ou reconstituons votre pièce en numérique avant de la produire.</p></div>
-      <div class="savoir-item"><p class="savoir-num">02</p><h3>Impression FDM &amp; SLA</h3><p>Dépôt de fil fondu pour les pièces structurelles, stéréolithographie pour la précision et le détail. Des pièces de quelques millimètres à plusieurs mètres d'envergure.</p></div>
-      <div class="savoir-item"><p class="savoir-num">03</p><h3>Post-traitement artisanal</h3><p>Ponçage, assemblage, stratification, traitement de surface. C'est ici que la vraie valeur se crée — transformer une pièce brute en un objet impeccable.</p></div>
-      <div class="savoir-item"><p class="savoir-num">04</p><h3>Peinture &amp; Finitions</h3><p>Aérographe, peinture à la main, effets de matière, patine. Chaque pièce reçoit la finition qu'elle mérite — du prototype industriel à la sculpture d'art unique.</p></div>
-    </div>
-    <div style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-top:3rem;" class="reveal">
-      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">MIA</span>Made In Annecy</div>
-      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">100%</span>Fabrication locale</div>
-      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">Bio</span>Matière biosourcée</div>
-      <div style="font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--muted); padding:0.5rem 0; border-top:1px solid var(--grey2); min-width:140px;"><span style="display:block; font-family:var(--font-display); font-size:1.6rem; color:var(--teal-light); margin-bottom:0.3rem;">∞</span>Clé en main</div>
-    </div>
-  </div>
-</section>
+
 
 <!-- CONTACT -->
 <section id="contact">
   <div class="container">
     <div class="contact-inner">
       <div class="reveal">
-        <p class="section-label">06 · Contact</p>
+        <p class="section-label">05 · Contact</p>
         <h2 class="section-title">Parlons<br>de votre<br><span class="accent">projet</span></h2>
         <p style="font-size:1.05rem;font-weight:300;color:var(--muted);line-height:1.8;margin-bottom:2.5rem;">Un projet industriel ou artistique, petit ou grand, simple ou complexe — nous sommes là pour en discuter et trouver la meilleure solution avec vous.</p>
         <a href="tel:+33670501555" class="contact-phone">06 70 50 15 55</a>
