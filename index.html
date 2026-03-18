@@ -131,56 +131,8 @@
   .w-thumb:last-child { border-right: 0; }
   .w-thumb:hover { border-top-color: var(--teal-mid); }
   .w-thumb img { width:100%; height:100%; object-fit:cover; display:block; filter:brightness(0.55); transition:filter 0.25s; }
-  .w-thumb:hover img { filter:brightness(1); }
+  .w-thumb:hover img { filter:brightness(0.85); }
   .w-panel.is-hovered .w-content { display: none; }
-
-  /* ── Zoom miniature CSS pur ── */
-  .w-thumb { position: relative; }
-  .thumb-zoom-overlay {
-    display: none;
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0.9);
-    width: min(80vw, 900px);
-    height: min(80vh, 600px);
-    z-index: 99999;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-  .w-thumb:hover .thumb-zoom-overlay {
-    display: block;
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-    animation: zoomIn 0.25s ease forwards;
-  }
-  @keyframes zoomIn {
-    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
-    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  }
-  .thumb-zoom-overlay img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: #000;
-    border: 1px solid rgba(0,229,192,0.4);
-    box-shadow: 0 0 60px rgba(0,201,167,0.2);
-    position: relative;
-    z-index: 100001;
-  }
-  /* Fond sombre derrière l'image agrandie, via pseudo-element */
-  .thumb-zoom-overlay::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.85);
-    z-index: 100000;
-  }
-  /* Miniatures au dessus du fond sombre */
-  .w-thumbs { z-index: 100002 !important; }
-  /* Miniatures : garder la même luminosité au hover */
-  .w-thumb:hover img:first-child { filter: brightness(0.55); }
 
   /* ═══ RÉALISATIONS — INSTAGRAM MOSAÏQUE ═══ */
   #realisations { background: var(--black); position: relative; }
@@ -488,10 +440,10 @@
           <p class="w-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
         </div>
         <div class="w-thumbs">
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',0)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-1.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-1.png" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',1)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-2.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-2.png" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',2)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-3.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-3.jpg" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-4.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-4.jpg" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',0)" onclick="openWorldLightbox('ind',0)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-1.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',1)" onclick="openWorldLightbox('ind',1)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-2.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',2)" onclick="openWorldLightbox('ind',2)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onclick="openWorldLightbox('ind',3)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-4.jpg" alt=""></div>
         </div>
       </div>
       <!-- ARTISTIQUE -->
@@ -503,10 +455,10 @@
           <p class="w-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
         <div class="w-thumbs w-thumbs-right">
-          <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-1.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-1.jpg" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-2.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-2.jpg" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-3.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-3.jpg" alt=""></div></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-4.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-4.png" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onclick="openWorldLightbox('art',0)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-1.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onclick="openWorldLightbox('art',1)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-2.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onclick="openWorldLightbox('art',2)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-3.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onclick="openWorldLightbox('art',3)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-4.png" alt=""></div>
         </div>
       </div>
     </div>
@@ -925,6 +877,100 @@
 
   window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
 
+  // ════════ WORLD LIGHTBOX ════════
+  var WLB = {
+    worlds: {
+      ind: { srcs: ['img/worlds/ind-1.png','img/worlds/ind-2.png','img/worlds/ind-3.jpg','img/worlds/ind-4.jpg'], label: 'Univers industriel · Précision & Série' },
+      art: { srcs: ['img/worlds/art-1.jpg','img/worlds/art-2.jpg','img/worlds/art-3.jpg','img/worlds/art-4.png'], label: 'Univers artistique · Art & Émotion' }
+    },
+    current: null,
+    idx: 0
+  };
+
+  function openWorldLightbox(world, idx) {
+    WLB.current = world;
+    WLB.idx = idx;
+    var lb = document.getElementById('world-lightbox');
+    lb.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    wlbUpdate();
+  }
+
+  function closeWorldLightbox() {
+    document.getElementById('world-lightbox').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function wlbUpdate() {
+    var w = WLB.worlds[WLB.current];
+    var img = document.getElementById('wlb-img');
+    img.style.opacity = '0';
+    setTimeout(function() {
+      img.src = w.srcs[WLB.idx];
+      img.style.opacity = '1';
+    }, 150);
+    document.getElementById('wlb-label').textContent = w.label;
+    document.getElementById('wlb-num').textContent = '0' + (WLB.idx + 1);
+    document.getElementById('wlb-counter').textContent = (WLB.idx + 1) + ' / ' + w.srcs.length;
+    // Thumbs
+    var tc = document.getElementById('wlb-thumbs');
+    tc.innerHTML = '';
+    w.srcs.forEach(function(src, i) {
+      var t = document.createElement('div');
+      t.style.cssText = 'width:60px;height:45px;overflow:hidden;cursor:pointer;border:2px solid ' + (i === WLB.idx ? '#00C9A7' : '#2A2A2A') + ';transition:border-color 0.2s;';
+      t.innerHTML = '<img src="' + src + '" style="width:100%;height:100%;object-fit:cover;display:block;filter:brightness(' + (i === WLB.idx ? '1' : '0.5') + ');">';
+      t.addEventListener('click', function() { WLB.idx = i; wlbUpdate(); });
+      tc.appendChild(t);
+    });
+  }
+
+  function wlbPrev() { var l = WLB.worlds[WLB.current].srcs.length; WLB.idx = (WLB.idx - 1 + l) % l; wlbUpdate(); }
+  function wlbNext() { var l = WLB.worlds[WLB.current].srcs.length; WLB.idx = (WLB.idx + 1) % l; wlbUpdate(); }
+
+  document.addEventListener('keydown', function(e) {
+    var lb = document.getElementById('world-lightbox');
+    if (!lb || lb.style.display === 'none') return;
+    if (e.key === 'Escape') closeWorldLightbox();
+    if (e.key === 'ArrowLeft') wlbPrev();
+    if (e.key === 'ArrowRight') wlbNext();
+  });
+  window.addEventListener('load', function() {
+    var lb = document.getElementById('world-lightbox');
+    if (lb) lb.addEventListener('click', function(e) {
+      if (e.target === this) closeWorldLightbox();
+    });
+  });
+
 </script>
+
+<!-- WORLD LIGHTBOX -->
+<div id="world-lightbox" style="display:none;position:fixed;inset:0;z-index:99999;background:rgba(0,0,0,0.96);align-items:center;justify-content:center;flex-direction:column;">
+  <!-- Fond grille -->
+  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,192,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,192,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+  <!-- Numéro grand arrière-plan -->
+  <div id="wlb-num" style="position:absolute;font-family:'Bebas Neue',sans-serif;font-size:30vw;color:rgba(0,229,192,0.04);line-height:1;pointer-events:none;user-select:none;top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+  <!-- Contenu -->
+  <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:1.5rem;width:100%;max-width:900px;padding:2rem;">
+    <!-- Header -->
+    <div style="width:100%;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(0,229,192,0.15);padding-bottom:0.8rem;">
+      <div style="display:flex;align-items:center;gap:0.8rem;">
+        <div style="width:6px;height:6px;border-radius:50%;background:#00C9A7;box-shadow:0 0 8px rgba(0,201,167,0.8);"></div>
+        <span id="wlb-label" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.25em;text-transform:uppercase;color:#00C9A7;"></span>
+      </div>
+      <span id="wlb-counter" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:#888;"></span>
+      <button onclick="closeWorldLightbox()" style="font-family:'Space Mono',monospace;font-size:0.6rem;letter-spacing:0.2em;color:#00C9A7;background:transparent;border:1px solid #009E85;padding:0.35rem 0.8rem;cursor:pointer;text-transform:uppercase;">✕ Fermer</button>
+    </div>
+    <!-- Image + nav -->
+    <div style="position:relative;width:100%;display:flex;align-items:center;gap:1rem;">
+      <button onclick="wlbPrev()" style="flex-shrink:0;width:44px;height:44px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.2rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">←</button>
+      <div style="flex:1;aspect-ratio:16/10;background:#000;overflow:hidden;border:1px solid rgba(0,229,192,0.15);position:relative;">
+        <img id="wlb-img" src="" alt="" style="width:100%;height:100%;object-fit:contain;display:block;transition:opacity 0.25s ease;">
+      </div>
+      <button onclick="wlbNext()" style="flex-shrink:0;width:44px;height:44px;background:transparent;border:1px solid #2A2A2A;color:#00C9A7;font-size:1.2rem;cursor:pointer;transition:border-color 0.2s,background 0.2s;" onmouseover="this.style.borderColor='#00C9A7';this.style.background='rgba(0,201,167,0.08)'" onmouseout="this.style.borderColor='#2A2A2A';this.style.background='transparent'">→</button>
+    </div>
+    <!-- Miniatures navigation -->
+    <div id="wlb-thumbs" style="display:flex;gap:6px;"></div>
+  </div>
+</div>
 </body>
 </html>
