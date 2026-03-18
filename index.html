@@ -134,14 +134,38 @@
   .w-thumb:hover img { filter:brightness(1); }
   .w-panel.is-hovered .w-content { display: none; }
 
-  /* Lightbox */
-  .w-lightbox { display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.93); backdrop-filter:blur(10px); align-items:center; justify-content:center; cursor:zoom-out; }
-  .w-lightbox.open { display:flex; animation:lbIn 0.25s ease; }
-  @keyframes lbIn { from{opacity:0} to{opacity:1} }
-  .w-lightbox-img { max-width:82vw; max-height:82vh; object-fit:contain; border:1px solid rgba(0,229,192,0.25); box-shadow:0 0 80px rgba(0,201,167,0.15); animation:lbZoom 0.3s cubic-bezier(0.34,1.56,0.64,1); }
-  @keyframes lbZoom { from{transform:scale(0.88);opacity:0} to{transform:scale(1);opacity:1} }
-  .w-lightbox-close { position:absolute; top:1.8rem; right:2rem; font-family:var(--font-mono); font-size:0.65rem; letter-spacing:0.2em; color:var(--teal-mid); cursor:pointer; text-transform:uppercase; padding:0.35rem 0.8rem; border:1px solid var(--teal-dark); transition:background 0.2s; }
-  .w-lightbox-close:hover { background:var(--teal-dark); color:var(--black); }
+  /* ── Zoom miniature CSS pur ── */
+  .w-thumb { position: relative; }
+  .thumb-zoom-overlay {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: min(80vw, 900px);
+    height: min(80vh, 600px);
+    z-index: 99999;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+  .w-thumb:hover .thumb-zoom-overlay {
+    display: block;
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    animation: zoomIn 0.25s ease forwards;
+  }
+  @keyframes zoomIn {
+    from { opacity: 0; transform: translate(-50%, -50%) scale(0.9); }
+    to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  }
+  .thumb-zoom-overlay img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    border: 1px solid rgba(0,229,192,0.4);
+    box-shadow: 0 0 0 9999px rgba(0,0,0,0.85), 0 0 60px rgba(0,201,167,0.2);
+  }
 
   /* ═══ RÉALISATIONS — INSTAGRAM MOSAÏQUE ═══ */
   #realisations { background: var(--black); position: relative; }
@@ -449,10 +473,10 @@
           <p class="w-desc">Pièces techniques, prototypes fonctionnels, grandes séries, maquettes de présentation. Tolérances serrées, matériaux performants, délais maîtrisés.</p>
         </div>
         <div class="w-thumbs">
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',0);openLightbox('img/worlds/ind-1.png')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-1.png" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',1);openLightbox('img/worlds/ind-2.png')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-2.png" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',2);openLightbox('img/worlds/ind-3.jpg')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-3.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('ind',3);openLightbox('img/worlds/ind-4.jpg')" onmouseleave="wThumbOff('ind');closeLightbox()"><img src="img/worlds/ind-4.jpg" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',0)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-1.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-1.png" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',1)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-2.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-2.png" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',2)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-3.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-3.jpg" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('ind',3)" onmouseleave="wThumbOff('ind')"><img src="img/worlds/ind-4.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/ind-4.jpg" alt=""></div></div>
         </div>
       </div>
       <!-- ARTISTIQUE -->
@@ -464,21 +488,16 @@
           <p class="w-desc">Sculptures, art toys, trophées sur-mesure, décoration unique. L'impression 3D au service de la création artistique — peinte, stratifiée, sublimée.</p>
         </div>
         <div class="w-thumbs w-thumbs-right">
-          <div class="w-thumb" onmouseenter="wThumbOn('art',0);openLightbox('img/worlds/art-1.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-1.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',1);openLightbox('img/worlds/art-2.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-2.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',2);openLightbox('img/worlds/art-3.jpg')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-3.jpg" alt=""></div>
-          <div class="w-thumb" onmouseenter="wThumbOn('art',3);openLightbox('img/worlds/art-4.png')" onmouseleave="wThumbOff('art');closeLightbox()"><img src="img/worlds/art-4.png" alt=""></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',0)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-1.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-1.jpg" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',1)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-2.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-2.jpg" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',2)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-3.jpg" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-3.jpg" alt=""></div></div>
+          <div class="w-thumb" onmouseenter="wThumbOn('art',3)" onmouseleave="wThumbOff('art')"><img src="img/worlds/art-4.png" alt=""><div class="thumb-zoom-overlay"><img src="img/worlds/art-4.png" alt=""></div></div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- LIGHTBOX -->
-<div class="w-lightbox" id="w-lightbox" onclick="closeLightbox()">
-  <span class="w-lightbox-close" onclick="event.stopPropagation();closeLightbox()">✕ Fermer</span>
-  <img class="w-lightbox-img" id="w-lightbox-img" src="" alt="">
-</div>
 
 <!-- RÉALISATIONS — INSTAGRAM MOSAÏQUE -->
 <section id="realisations">
@@ -890,19 +909,6 @@
   });
 
   window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
-
-  // ════════ LIGHTBOX ════════
-  function openLightbox(src) {
-    var lb = document.getElementById('w-lightbox');
-    var img = document.getElementById('w-lightbox-img');
-    if (!lb || !img) return;
-    img.src = src;
-    lb.classList.add('open');
-  }
-  function closeLightbox() {
-    var lb = document.getElementById('w-lightbox');
-    if (lb) lb.classList.remove('open');
-  }
 
 </script>
 </body>
