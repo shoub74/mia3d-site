@@ -135,7 +135,7 @@
   .w-panel.is-hovered .w-content { display: none; }
 
   /* Lightbox */
-  .w-lightbox { display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.93); backdrop-filter:blur(10px); align-items:center; justify-content:center; cursor:zoom-out; }
+  .w-lightbox { display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.93); backdrop-filter:blur(10px); align-items:center; justify-content:center; cursor:zoom-out; }
   .w-lightbox.open { display:flex; animation:lbIn 0.25s ease; }
   @keyframes lbIn { from{opacity:0} to{opacity:1} }
   .w-lightbox-img { max-width:82vw; max-height:82vh; object-fit:contain; border:1px solid rgba(0,229,192,0.25); box-shadow:0 0 80px rgba(0,201,167,0.15); animation:lbZoom 0.3s cubic-bezier(0.34,1.56,0.64,1); }
@@ -591,9 +591,9 @@
       <div class="atelier-machines">
         <div class="machine-card"><p class="machine-num">01</p><h4>Scan 3D &amp; Modélisation</h4><p>Analyse de votre cahier des charges, scan 3D de l'existant, modélisation ou reverse engineering. Nous créons ou reconstituons votre pièce en numérique avant de la produire.</p><p class="machine-tech">Équipement · Scanner 3D de précision</p></div>
         <div class="machine-card"><p class="machine-num">02</p><h4>Impression FDM &amp; SLA</h4><p>Dépôt de fil fondu pour les pièces structurelles et grandes séries, stéréolithographie pour la précision et les détails fins. Des pièces de quelques millimètres à plusieurs mètres d'envergure.</p><p class="machine-tech">Équipement · Imprimantes FDM jusqu'à 600 mm · Résolution SLA 25 μm</p></div>
-        <div class="machine-card"><p class="machine-num">03</p><h4>Post-traitement artisanal</h4><p>Ponçage, assemblage, stratification, traitement de surface. C'est ici que la vraie valeur se crée — transformer une pièce brute en un objet impeccable.</p><p class="machine-tech">Équipement · Atelier post-traitement · Outillage de précision</p></div>
-        <div class="machine-card"><p class="machine-num">04</p><h4>Peinture &amp; Finitions</h4><p>Aérographe, peinture à la main, effets de matière, patine. Chaque pièce reçoit la finition qu'elle mérite — du prototype industriel à la sculpture d'art unique.</p><p class="machine-tech">Équipement · Cabine de peinture · Température &amp; hygrométrie contrôlées</p></div>
-        <div class="machine-card"><p class="machine-num">05</p><h4>Assemblage &amp; Soudage</h4><p>Assemblage complexe, soudage plastique, stratification fibre. Pour les projets qui demandent une maîtrise totale de l'assemblage multi-matériaux.</p><p class="machine-tech">Équipement · Outillage de précision · Matériel de soudure</p></div>
+        <div class="machine-card"><p class="machine-num">03</p><h4>Assemblage &amp; Soudage</h4><p>Assemblage complexe, soudage plastique, stratification fibre. Pour les projets qui demandent une maîtrise totale de l'assemblage multi-matériaux.</p><p class="machine-tech">Équipement · Outillage de précision · Matériel de soudure</p></div>
+        <div class="machine-card"><p class="machine-num">04</p><h4>Post-traitement artisanal</h4><p>Ponçage, assemblage, stratification, traitement de surface. C'est ici que la vraie valeur se crée — transformer une pièce brute en un objet impeccable.</p><p class="machine-tech">Équipement · Atelier post-traitement · Outillage de précision</p></div>
+        <div class="machine-card"><p class="machine-num">05</p><h4>Peinture &amp; Finitions</h4><p>Aérographe, peinture à la main, effets de matière, patine. Chaque pièce reçoit la finition qu'elle mérite — du prototype industriel à la sculpture d'art unique.</p><p class="machine-tech">Équipement · Cabine de peinture · Température &amp; hygrométrie contrôlées</p></div>
         <div class="machine-card"><p class="machine-num">06</p><h4>Livraison clé en main</h4><p>De la modélisation à la pièce finie — nous gérons l'intégralité du processus. Vous recevez un objet prêt à l'usage, sans aucune intervention de votre côté.</p><p class="machine-tech">100% Made In Annecy · Fabrication locale</p></div>
       </div>
     </div>
@@ -890,6 +890,19 @@
   });
 
   window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
+
+  // ════════ LIGHTBOX ════════
+  function openLightbox(src) {
+    var lb = document.getElementById('w-lightbox');
+    var img = document.getElementById('w-lightbox-img');
+    if (!lb || !img) return;
+    img.src = src;
+    lb.classList.add('open');
+  }
+  function closeLightbox() {
+    var lb = document.getElementById('w-lightbox');
+    if (lb) lb.classList.remove('open');
+  }
 
 </script>
 </body>
