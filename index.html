@@ -152,30 +152,6 @@
   .instagram-feed-handle { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--muted); text-decoration: none; transition: color 0.2s; }
   .instagram-feed-handle:hover { color: var(--teal-light); }
 
-  /* Mosaïque Instagram */
-  #insta-mosaic-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: auto;
-    gap: 4px;
-  }
-  .insta-tile { position: relative; overflow: hidden; background: var(--dark2); cursor: pointer; }
-  /* Grande : 1ère et 6ème */
-  .insta-tile.big { grid-column: span 2; }
-  .insta-tile img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.5s ease, filter 0.4s ease; filter: brightness(0.75) saturate(0.9); }
-  .insta-tile:hover img { transform: scale(1.06); filter: brightness(1) saturate(1.1); }
-  .insta-tile::after { content: ''; position: absolute; inset: 0; border: 2px solid var(--teal-mid); opacity: 0; transition: opacity 0.3s ease; pointer-events: none; }
-  .insta-tile:hover::after { opacity: 1; }
-  .insta-tile-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 60%); opacity: 0; transition: opacity 0.35s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 1.2rem; }
-  .insta-tile:hover .insta-tile-overlay { opacity: 1; }
-  .insta-tile-caption { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.1em; color: rgba(245,245,245,0.8); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .insta-tile-ig { font-family: var(--font-mono); font-size: 0.58rem; letter-spacing: 0.15em; color: var(--teal-light); text-transform: uppercase; margin-top: 0.3rem; }
-  /* Chargement */
-  .insta-loading { display: flex; align-items: center; justify-content: center; min-height: 400px; flex-direction: column; gap: 1rem; }
-  .insta-loading-spinner { width: 32px; height: 32px; border: 2px solid var(--grey2); border-top-color: var(--teal-mid); border-radius: 50%; animation: spin 0.8s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .insta-loading-text { font-family: var(--font-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
-
   /* Bouton Instagram */
   .instagram-cta { display: flex; align-items: center; justify-content: center; margin-top: 1.5rem; }
   .instagram-cta a { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--teal-light); text-decoration: none; padding: 0.7rem 2rem; border: 1px solid var(--teal-dark); clip-path: polygon(10px 0%, 100% 0%, calc(100% - 10px) 100%, 0% 100%); transition: background 0.2s, color 0.2s; display: flex; align-items: center; gap: 0.6rem; }
@@ -454,10 +430,14 @@
         <a href="https://www.instagram.com/mia3dimpression/" target="_blank" class="instagram-feed-handle">Voir le profil ↗</a>
       </div>
 
-      <!-- Mosaïque Instagram custom -->
-      <div id="insta-mosaic-grid">
-        <div class="insta-loading"><div class="insta-loading-spinner"></div><span class="insta-loading-text">Chargement des réalisations…</span></div>
-      </div>
+      <!-- Widget Behold Instagram -->
+      <behold-widget feed-id="vI35xur5tXCmOJRBM206"></behold-widget>
+      <script>
+        (() => {
+          const d=document,s=d.createElement("script");s.type="module";
+          s.src="https://w.behold.so/widget.js";d.head.append(s);
+        })();
+      </script>
 
       <!-- Bouton Instagram -->
       <div class="instagram-cta">
@@ -608,11 +588,11 @@
           <span class="fiche-poste">Atelier · Peinture & Finitions · Communication</span>
         </div>
         <div class="fiche-specs">
-          <div class="fiche-spec-row"><span class="spec-key">Parcours</span><span class="spec-val">Multiples domaines · Travail manuel & relation client</span></div>
+          <div class="fiche-spec-row"><span class="spec-key">Parcours</span><span class="spec-val">Multiples domaines · Artisanat &amp; création manuelle</span></div>
           <div class="fiche-spec-row"><span class="spec-key">Domaines</span><span class="spec-val">Post-traitement · Peinture · Aérographie · Finitions</span></div>
           <div class="fiche-spec-row"><span class="spec-key">Digital</span><span class="spec-val">Site internet · Instagram MIA3D</span></div>
         </div>
-        <p class="fiche-bio">Un parcours fait de reconversions, de rencontres et de savoir-faire accumulés dans des univers très différents — du contact client à la création manuelle. C'est cette polyvalence qui fait sa force chez MIA3D : à l'aise aussi bien dans l'atelier que derrière un écran, il assure le post-traitement, la peinture et les finitions, tout en gérant la communication digitale de la boîte. L'impression 3D est son dernier terrain d'exploration — et visiblement, pas le moins passionnant.</p>
+        <p class="fiche-bio">Un parcours fait de reconversions, de rencontres et de savoir-faire accumulés dans des univers très différents — de l'artisanat à la communication digitale. C'est cette polyvalence qui fait sa force chez MIA3D : à l'aise aussi bien dans l'atelier que derrière un écran, il assure le post-traitement, la peinture et les finitions, tout en gérant la communication digitale de la boîte. L'impression 3D est son dernier terrain d'exploration — et visiblement, pas le moins passionnant.</p>
       </div>
     </div>
 
@@ -840,64 +820,6 @@
   });
 
   window.addEventListener('resize', function() { alignTrack(); moveOrbTo(currentStep, false); });
-
-  // ════════ MOSAÏQUE INSTAGRAM ════════
-  (function() {
-    var FEED_URL = 'https://feeds.behold.so/vI35xur5tXCmOJRBM206';
-    // Disposition : index 0 et 5 = grandes (span 2), reste = normales
-    var bigIndexes = [0, 5];
-    // Hauteurs : grandes = 420px, petites = 260px
-    var heights = { big: '420px', small: '260px' };
-
-    fetch(FEED_URL)
-      .then(function(r) {
-        if (!r.ok) throw new Error('API error');
-        return r.json();
-      })
-      .then(function(posts) {
-        var grid = document.getElementById('insta-mosaic-grid');
-        if (!grid || !posts || !posts.length) throw new Error('No posts');
-        grid.innerHTML = '';
-        var shown = posts.slice(0, 6);
-        shown.forEach(function(post, i) {
-          var imgSrc = post.sizes && post.sizes.large && post.sizes.large.mediaUrl
-            ? post.sizes.large.mediaUrl
-            : post.mediaUrl || '';
-          if (!imgSrc && post.children && post.children[0]) {
-            imgSrc = post.children[0].mediaUrl || '';
-          }
-          if (!imgSrc) return;
-          var isBig = bigIndexes.indexOf(i) !== -1;
-          var caption = post.caption ? post.caption.replace(/#\S+/g, '').trim().substring(0, 55) : '';
-          if (caption.length === 55) caption += '…';
-          var tile = document.createElement('div');
-          tile.className = 'insta-tile' + (isBig ? ' big' : '');
-          tile.style.height = isBig ? heights.big : heights.small;
-          tile.innerHTML =
-            '<img src="' + imgSrc + '" alt="Réalisation MIA 3D" loading="lazy">' +
-            '<div class="insta-tile-overlay">' +
-              (caption ? '<span class="insta-tile-caption">' + caption + '</span>' : '') +
-              '<span class="insta-tile-ig">↗ Voir sur Instagram</span>' +
-            '</div>';
-          tile.addEventListener('click', function() {
-            window.open(post.permalink || 'https://www.instagram.com/mia3dimpression/', '_blank');
-          });
-          grid.appendChild(tile);
-        });
-      })
-      .catch(function(err) {
-        console.warn('Behold API fallback:', err);
-        // Fallback widget Behold standard
-        var grid = document.getElementById('insta-mosaic-grid');
-        if (!grid) return;
-        grid.style.display = 'block';
-        grid.innerHTML = '<behold-widget feed-id="vI35xur5tXCmOJRBM206"></behold-widget>';
-        var s = document.createElement('script');
-        s.type = 'module';
-        s.src = 'https://w.behold.so/widget.js';
-        document.head.appendChild(s);
-      });
-  })();
 
   // ════════ WORLD LIGHTBOX ════════
   var WLB = {
